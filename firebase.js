@@ -1,26 +1,11 @@
-// firebase.js — konfigurácia pre projekt Finančná liga
-
-'use strict';
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-// Konfigurácia Firebase projektu Finančná liga
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB-eoRSUGEQh8hBbVLq3D32sFCZ6tHiPWg",
-  authDomain: "financna-liga.firebaseapp.com",
-  databaseURL: "https://financna-liga-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "financna-liga",
-  storageBucket: "financna-liga.appspot.com",
-  messagingSenderId: "709763303594",
-  appId: "1:709763303594:web:d990dee3bc29f65a00a8d3",
-  measurementId: "G-Y4469KN94M"
-};
-
-// Inicializácia Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-window.db = db;
-
-console.log("🔥 Firebase Finančná liga inicializovaná, DB pripravená.");
+  apiKey: "AIzaSyAzO9pXUOVqU3EKwoZ7Tdb8LMgOtYv5EnE",
+  authDomain: "technicka-liga.firebaseapp.com",
+  databaseURL: "https://technicka-liga-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "technicka-liga",
+  storageBucket: "technicka-liga.firebasestorage.app",
+  messagingSenderId: "91322598585",
+  appId: "1:91322598585:web:2a86d3c8ce13300bbb4768",
+  measurementId: "G-JB5R5XY8KJ"
+};;
