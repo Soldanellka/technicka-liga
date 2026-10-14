@@ -1,0 +1,74 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 140'>
+<defs>
+<radialGradient id='cb' cx='50%' cy='40%' r='60%'><stop offset='0%' stop-color='#f0a840'/><stop offset='100%' stop-color='#c06010'/></radialGradient>
+<radialGradient id='cy' cx='50%' cy='50%' r='55%'><stop offset='0%' stop-color='#fde8c0'/><stop offset='100%' stop-color='#f0c880'/></radialGradient>
+<radialGradient id='ce' cx='35%' cy='30%' r='65%'><stop offset='0%' stop-color='#80e040'/><stop offset='100%' stop-color='#208000'/></radialGradient>
+<radialGradient id='cn' cx='50%' cy='40%' r='60%'><stop offset='0%' stop-color='#f080a0'/><stop offset='100%' stop-color='#c04070'/></radialGradient>
+<filter id='cs'><feDropShadow dx='1' dy='2' stdDeviation='3' flood-color='rgba(0,0,0,0.2)'/></filter>
+</defs>
+<!-- Chvost -->
+<path d='M92 110 Q118 95 114 72 Q110 55 100 58 Q108 70 106 82 Q104 96 92 104Z' fill='url(#cb)'/>
+<path d='M92 110 Q116 97 112 76 Q108 60 102 62' stroke='#c06010' stroke-width='1.5' fill='none' opacity='.4'/>
+<!-- Telo -->
+<ellipse cx='60' cy='105' rx='36' ry='32' fill='url(#cb)' filter='url(#cs)'/>
+<!-- Brucho -->
+<ellipse cx='60' cy='112' rx='22' ry='22' fill='url(#cy)'/>
+<!-- Prúžky tabby na tele -->
+<path d='M34 92 Q40 100 34 108' stroke='#b05010' stroke-width='3' fill='none' opacity='.5' stroke-linecap='round'/>
+<path d='M39 88 Q45 98 39 106' stroke='#b05010' stroke-width='2' fill='none' opacity='.4' stroke-linecap='round'/>
+<path d='M86 92 Q80 100 86 108' stroke='#b05010' stroke-width='3' fill='none' opacity='.5' stroke-linecap='round'/>
+<path d='M81 88 Q75 98 81 106' stroke='#b05010' stroke-width='2' fill='none' opacity='.4' stroke-linecap='round'/>
+<!-- Hlava -->
+<ellipse cx='60' cy='60' rx='36' ry='34' fill='url(#cb)' filter='url(#cs)'/>
+<!-- Uši špicaté -->
+<polygon points='30,34 18,8 44,28' fill='url(#cb)'/>
+<polygon points='32,32 22,12 42,26' fill='#e08030' opacity='.7'/>
+<polygon points='33,30 25,16 40,25' fill='#f0b080' opacity='.5'/>
+<polygon points='90,34 102,8 76,28' fill='url(#cb)'/>
+<polygon points='88,32 98,12 78,26' fill='#e08030' opacity='.7'/>
+<polygon points='87,30 95,16 80,25' fill='#f0b080' opacity='.5'/>
+<!-- Prúžky na hlave -->
+<path d='M48 32 Q54 22 60 20 Q66 22 72 32' stroke='#c06010' stroke-width='2.5' fill='none' opacity='.5' stroke-linecap='round'/>
+<path d='M44 38 Q50 30 56 28' stroke='#c06010' stroke-width='1.8' fill='none' opacity='.4' stroke-linecap='round'/>
+<path d='M76 38 Q70 30 64 28' stroke='#c06010' stroke-width='1.8' fill='none' opacity='.4' stroke-linecap='round'/>
+<!-- Oči zelené veľké -->
+<ellipse cx='44' cy='58' rx='12' ry='13' fill='white'/>
+<ellipse cx='44' cy='59' rx='9' ry='10' fill='url(#ce)'/>
+<ellipse cx='44' cy='59' rx='4' ry='8' fill='#111'/>
+<circle cx='48' cy='54' r='3.5' fill='white'/><circle cx='40' cy='63' r='1.5' fill='white' opacity='.5'/>
+<ellipse cx='76' cy='58' rx='12' ry='13' fill='white'/>
+<ellipse cx='76' cy='59' rx='9' ry='10' fill='url(#ce)'/>
+<ellipse cx='76' cy='59' rx='4' ry='8' fill='#111'/>
+<circle cx='80' cy='54' r='3.5' fill='white'/><circle cx='72' cy='63' r='1.5' fill='white' opacity='.5'/>
+<!-- Obočie mačacie -->
+<path d='M32 44 Q44 38 56 44' stroke='#a04808' stroke-width='2.5' fill='none' stroke-linecap='round'/>
+<path d='M64 44 Q76 38 88 44' stroke='#a04808' stroke-width='2.5' fill='none' stroke-linecap='round'/>
+<!-- Nos srdciečkový -->
+<ellipse cx='60' cy='72' rx='5.5' ry='4' fill='url(#cn)'/>
+<path d='M54.5 72 Q60 77 65.5 72' fill='url(#cn)' opacity='.6'/>
+<!-- Ústa -->
+<path d='M60 75 L54 81' stroke='#c04060' stroke-width='1.8' fill='none' stroke-linecap='round'/>
+<path d='M60 75 L66 81' stroke='#c04060' stroke-width='1.8' fill='none' stroke-linecap='round'/>
+<!-- Fúzy -->
+<line x1='20' y1='68' x2='50' y2='74' stroke='white' stroke-width='1.5' opacity='.85'/>
+<line x1='20' y1='73' x2='50' y2='76' stroke='white' stroke-width='1.5' opacity='.75'/>
+<line x1='20' y1='78' x2='50' y2='77' stroke='white' stroke-width='1.2' opacity='.65'/>
+<line x1='70' y1='74' x2='100' y2='68' stroke='white' stroke-width='1.5' opacity='.85'/>
+<line x1='70' y1='76' x2='100' y2='73' stroke='white' stroke-width='1.5' opacity='.75'/>
+<line x1='70' y1='77' x2='100' y2='78' stroke='white' stroke-width='1.2' opacity='.65'/>
+<!-- Líčka -->
+<ellipse cx='32' cy='70' rx='10' ry='6' fill='#ffb0b0' opacity='.3'/>
+<ellipse cx='88' cy='70' rx='10' ry='6' fill='#ffb0b0' opacity='.3'/>
+<!-- Obojok s § -->
+<rect x='38' y='84' width='44' height='10' rx='5' fill='#cc2244'/>
+<rect x='40' y='85' width='40' height='8' rx='4' fill='#e03355'/>
+<text x='60' y='92' text-anchor='middle' font-family='serif' font-size='7' fill='#d4af37' font-weight='bold'>§ § §</text>
+<!-- Tlapky -->
+<ellipse cx='38' cy='132' rx='12' ry='8' fill='url(#cb)'/>
+<ellipse cx='32' cy='134' rx='5.5' ry='4' fill='url(#cy)'/><ellipse cx='38' cy='136' rx='5.5' ry='4' fill='url(#cy)'/><ellipse cx='44' cy='134' rx='5.5' ry='4' fill='url(#cy)'/>
+<ellipse cx='82' cy='132' rx='12' ry='8' fill='url(#cb)'/>
+<ellipse cx='76' cy='134' rx='5.5' ry='4' fill='url(#cy)'/><ellipse cx='82' cy='136' rx='5.5' ry='4' fill='url(#cy)'/><ellipse cx='88' cy='134' rx='5.5' ry='4' fill='url(#cy)'/>
+<!-- Hviezdičky -->
+<text x='8' y='30' font-size='10' fill='#d4af37' opacity='.7'>✦</text>
+<text x='100' y='24' font-size='8' fill='#d4af37' opacity='.5'>✦</text>
+</svg>

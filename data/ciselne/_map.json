@@ -1,0 +1,20 @@
+{
+  "area": "Číselné sústavy",
+  "clusters": [
+    {
+      "label": "Základy a dvojková sústava",
+      "okruhy": [1, 2, 3, 4]
+    },
+    {
+      "label": "Iné sústavy",
+      "okruhy": [5, 6]
+    }
+  ],
+  "links": [
+    {
+      "from": 2,
+      "to": 6,
+      "note": "Z váh jednotlivých bitov sa prechádza na celé skupiny bitov – štvorice pre šestnástkovú, trojice pre osmičkovú."
+    }
+  ]
+}

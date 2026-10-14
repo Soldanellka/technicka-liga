@@ -1,0 +1,313 @@
+{
+  "id": "1. A",
+  "title": "Základy investovania",
+  "schemaVersion": "1.1",
+  "tags": [
+    "investovanie",
+    "akcie",
+    "etf",
+    "dlhopisy",
+    "fondy"
+  ],
+  "summary": "Investovanie znamená používať peniaze tak, aby časom priniesli výnos. Akcia predstavuje vlastnícky podiel v spoločnosti a dividenda je časť zisku firmy vyplatená akcionárom. Dlhopis je forma pôžičky, ktorú investor poskytuje emitentovi – vracia istinu a úrok; štátne dlhopisy patria medzi najstabilnejšie investície. ETF je fond, ktorý sleduje vývoj určitého indexu alebo trhu, a indexový fond kopíruje vývoj burzového indexu – má nízke poplatky a rozkladá riziko medzi stovky firiem. Podkladové aktívum je základ, z ktorého sa odvíja hodnota investície, napríklad akcia alebo komodita. Investičný horizont je obdobie, počas ktorého investor plánuje investíciu držať; dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy.",
+  "quiz": [
+    {
+      "question": "Čo znamená investovanie?",
+      "options": [
+        "Ukladanie peňazí na bežný účet",
+        "Zhodnocovanie peňazí s cieľom dosiahnuť výnos",
+        "Nakupovanie drahých vecí",
+        "Výber hotovosti z banky"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Investovanie znamená používať peniaze tak, aby časom priniesli výnos.",
+        "wrong": "Správna odpoveď: Zhodnocovanie peňazí s cieľom dosiahnuť výnos. Investovanie znamená používať peniaze tak, aby časom priniesli výnos."
+      }
+    },
+    {
+      "question": "Čo je akcia?",
+      "options": [
+        "Dlhový cenný papier",
+        "Podiel na vlastníctve firmy",
+        "Poistenie investora",
+        "Štátny dlhopis"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Akcia predstavuje vlastnícky podiel v spoločnosti.",
+        "wrong": "Správna odpoveď: Podiel na vlastníctve firmy. Akcia predstavuje vlastnícky podiel v spoločnosti."
+      }
+    },
+    {
+      "question": "Čo je dividendový výnos?",
+      "options": [
+        "Výnos z predaja akcií",
+        "Výnos z úrokov na účte",
+        "Výplata časti zisku akcionárom",
+        "Poplatok za obchodovanie"
+      ],
+      "correct": 2,
+      "explanation": {
+        "correct": "Dividenda je časť zisku firmy vyplatená akcionárom.",
+        "wrong": "Správna odpoveď: Výplata časti zisku akcionárom. Dividenda je časť zisku firmy vyplatená akcionárom."
+      }
+    },
+    {
+      "question": "Čo je ETF?",
+      "options": [
+        "Individuálna akcia",
+        "Fond kopírujúci index alebo trh",
+        "Typ poistky",
+        "Kryptomena"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "ETF je fond, ktorý sleduje vývoj určitého indexu alebo trhu.",
+        "wrong": "Správna odpoveď: Fond kopírujúci index alebo trh. ETF je fond, ktorý sleduje vývoj určitého indexu alebo trhu."
+      }
+    },
+    {
+      "question": "Čo je dlhopis?",
+      "options": [
+        "Podiel na firme",
+        "Dlhový cenný papier, ktorý vracia istinu a úrok",
+        "Poistenie investora",
+        "Kryptomenový token"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Dlhopis je forma pôžičky, ktorú investor poskytuje emitentovi.",
+        "wrong": "Správna odpoveď: Dlhový cenný papier, ktorý vracia istinu a úrok. Dlhopis je forma pôžičky, ktorú investor poskytuje emitentovi."
+      }
+    },
+    {
+      "question": "Ktoré tvrdenie o dlhodobom investovaní je pravdivé?",
+      "options": [
+        "Je vhodné len pre profesionálov",
+        "Znižuje vplyv krátkodobých výkyvov trhu",
+        "Je vždy bez rizika",
+        "Garantuje vysoký výnos"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy.",
+        "wrong": "Správna odpoveď: Znižuje vplyv krátkodobých výkyvov trhu. Dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy."
+      }
+    },
+    {
+      "question": "Čo je investičný horizont?",
+      "options": [
+        "Čas, počas ktorého investor drží investíciu",
+        "Typ investičného účtu",
+        "Poplatok za investovanie",
+        "Miera inflácie"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Horizont je obdobie, počas ktorého investor plánuje investíciu držať.",
+        "wrong": "Správna odpoveď: Čas, počas ktorého investor drží investíciu. Horizont je obdobie, počas ktorého investor plánuje investíciu držať."
+      }
+    },
+    {
+      "question": "Ktorá investícia je typicky najstabilnejšia?",
+      "options": [
+        "Akcie technologických startupov",
+        "Kryptomeny",
+        "Štátne dlhopisy",
+        "NFT"
+      ],
+      "correct": 2,
+      "explanation": {
+        "correct": "Štátne dlhopisy patria medzi najstabilnejšie investície.",
+        "wrong": "Správna odpoveď: Štátne dlhopisy. Štátne dlhopisy patria medzi najstabilnejšie investície."
+      }
+    },
+    {
+      "question": "Čo je indexový fond?",
+      "options": [
+        "Fond, ktorý investuje len do jednej firmy",
+        "Fond kopírujúci vývoj burzového indexu",
+        "Fond garantujúci pevný výnos",
+        "Fond investujúci len do dlhopisov"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Indexový fond sleduje vývoj konkrétneho indexu, napríklad S&P 500.",
+        "wrong": "Správna odpoveď: Fond kopírujúci vývoj burzového indexu. Indexový fond sleduje vývoj konkrétneho indexu, napríklad S&P 500."
+      }
+    },
+    {
+      "question": "Prečo sú indexové fondy obľúbené medzi dlhodobými investormi?",
+      "options": [
+        "Majú extrémne vysoké riziko",
+        "Sú zvyčajne lacné a široko diverzifikované",
+        "Garantujú vysoký výnos",
+        "Sú dostupné len pre profesionálov"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Indexové fondy majú nízke poplatky a rozkladajú riziko medzi stovky firiem.",
+        "wrong": "Správna odpoveď: Sú zvyčajne lacné a široko diverzifikované. Indexové fondy majú nízke poplatky a rozkladajú riziko medzi stovky firiem."
+      }
+    },
+    {
+      "question": "Čo je podkladové aktívum pri investovaní?",
+      "options": [
+        "Poplatok za obchodovanie",
+        "Aktívum, od ktorého sa odvíja hodnota investície",
+        "Rezervný fond investora",
+        "Daň z výnosu"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Podkladové aktívum je základ, z ktorého sa odvíja hodnota investície, napríklad akcia alebo komodita.",
+        "wrong": "Správna odpoveď: Aktívum, od ktorého sa odvíja hodnota investície. Podkladové aktívum je základ, z ktorého sa odvíja hodnota investície, napríklad akcia alebo komodita."
+      }
+    }
+  ],
+  "tiles": [
+    {
+      "term": "Investovanie",
+      "definition": "Používanie peňazí tak, aby časom priniesli výnos."
+    },
+    {
+      "term": "Akcia",
+      "definition": "Vlastnícky podiel v spoločnosti."
+    },
+    {
+      "term": "Dividenda",
+      "definition": "Časť zisku firmy vyplatená akcionárom."
+    },
+    {
+      "term": "Dlhopis",
+      "definition": "Forma pôžičky emitentovi – dlhový cenný papier, ktorý vracia istinu a úrok."
+    },
+    {
+      "term": "ETF",
+      "definition": "Fond, ktorý sleduje vývoj určitého indexu alebo trhu."
+    },
+    {
+      "term": "Indexový fond",
+      "definition": "Fond kopírujúci vývoj burzového indexu; má nízke poplatky a rozkladá riziko medzi stovky firiem."
+    },
+    {
+      "term": "Podkladové aktívum",
+      "definition": "Základ, z ktorého sa odvíja hodnota investície, napríklad akcia alebo komodita."
+    },
+    {
+      "term": "Investičný horizont",
+      "definition": "Obdobie, počas ktorého investor plánuje investíciu držať."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 1 – Všetko do jednej akcie?",
+      "difficulty": "ľahká",
+      "steps": [
+        {
+          "question": "Kamarát ti radí vložiť všetky úspory do akcií jednej firmy, ktorá vraj „určite porastie“.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Čo je bezpečnejší postup?",
+          "options": [
+            "Diverzifikovať portfólio",
+            "Vložiť všetko do jednej akcie",
+            "Navždy sa vyhnúť investovaniu"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Diverzifikácia rozkladá riziko medzi rôzne aktíva.",
+            "wrong": "Správna odpoveď: Diverzifikovať portfólio. Diverzifikácia rozkladá riziko medzi rôzne aktíva."
+          }
+        },
+        {
+          "question": "Kamarát tvrdí, že vysoký výnos nič nestojí. Platí to?",
+          "options": [
+            "Nie – vyšší potenciálny výnos často znamená vyššie riziko",
+            "Áno – výnos a riziko spolu nesúvisia",
+            "Áno – riziko sa dá úplne odstrániť"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Investície s vyšším výnosom zvyčajne nesú vyššie riziko.",
+            "wrong": "Správna odpoveď: Nie – vyšší potenciálny výnos často znamená vyššie riziko. Investície s vyšším výnosom zvyčajne nesú vyššie riziko."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 2 – Krátkodobý pokles",
+      "difficulty": "stredná",
+      "steps": [
+        {
+          "question": "Mesiac po prvej investícii hodnota tvojho fondu klesla.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Čo o takom kolísaní vieš?",
+          "options": [
+            "Volatilita znamená, že cena investície sa mení – pri dlhom horizonte sa výkyvy vyrovnávajú",
+            "Pokles znamená, že investícia je pokazená navždy",
+            "Fondy nikdy neklesajú"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy.",
+            "wrong": "Správna odpoveď: Volatilita znamená, že cena investície sa mení – pri dlhom horizonte sa výkyvy vyrovnávajú. Dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy."
+          }
+        },
+        {
+          "question": "Ako znižuje riziko pravidelné investovanie?",
+          "options": [
+            "Vyrovnáva nákupy v rôznych trhových podmienkach",
+            "Zaručuje vysoký výnos",
+            "Odstraňuje riziko úplne"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach.",
+            "wrong": "Správna odpoveď: Vyrovnáva nákupy v rôznych trhových podmienkach. Pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach."
+          }
+        }
+      ]
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu"
+  },
+  "spider": {
+    "center": "Základy investovania",
+    "branches": [
+      {
+        "label": "Cenné papiere",
+        "leaves": [
+          "Akcia predstavuje vlastnícky podiel v spoločnosti.",
+          "Dividenda je časť zisku firmy vyplatená akcionárom.",
+          "Dlhopis je forma pôžičky, ktorú investor poskytuje emitentovi.",
+          "Štátne dlhopisy patria medzi najstabilnejšie investície."
+        ]
+      },
+      {
+        "label": "Fondy",
+        "leaves": [
+          "ETF je fond, ktorý sleduje vývoj určitého indexu alebo trhu.",
+          "Indexový fond sleduje vývoj konkrétneho indexu, napríklad S&P 500.",
+          "Indexové fondy majú nízke poplatky a rozkladajú riziko medzi stovky firiem."
+        ]
+      },
+      {
+        "label": "Čas a hodnota",
+        "leaves": [
+          "Horizont je obdobie, počas ktorého investor plánuje investíciu držať.",
+          "Dlhodobé investovanie pomáha vyrovnať krátkodobé trhové výkyvy.",
+          "Podkladové aktívum je základ, z ktorého sa odvíja hodnota investície."
+        ]
+      }
+    ]
+  }
+}

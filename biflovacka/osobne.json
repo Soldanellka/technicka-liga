@@ -1,0 +1,84 @@
+{
+  "area": "Osobné financie",
+  "slug": "osobne",
+  "schemaVersion": "1.1",
+  "zdroj": "Demo dataset Finančnej ligy – odvodené z vysvetlení otázok, obsah na odbornú kontrolu",
+  "okruhy": [
+    {
+      "id": "A1",
+      "title": "Peniaze a úver",
+      "definitions": [
+        {
+          "question": "RPMN",
+          "answer": "Celkové ročné náklady úveru vrátane poplatkov. Zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok."
+        },
+        {
+          "question": "Kreditná karta",
+          "answer": "Karta, ktorou čerpáš peniaze požičané od banky. Je to úver; neskoré splatenie znamená úrok."
+        },
+        {
+          "question": "Debetná karta",
+          "answer": "Karta, ktorou čerpáš svoje vlastné peniaze."
+        },
+        {
+          "question": "Phishing",
+          "answer": "Podvodná správa, ktorá pýta tvoje údaje cez odkaz. Banka nikdy nepýta údaje cez odkaz v SMS."
+        },
+        {
+          "question": "Čistá mzda",
+          "answer": "Mzda po odvodoch a dani, ktorú dostaneš na účet. Hrubá mzda mínus odvody a preddavok na daň = čistá."
+        },
+        {
+          "question": "Predčasné splatenie úveru",
+          "answer": "Skoršie splatenie, ktoré znižuje celkové zaplatené úroky. Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie."
+        },
+        {
+          "question": "Ručiteľ",
+          "answer": "Ten, kto spláca úver, ak dlžník prestane. Ručenie je reálny záväzok, nie formalita."
+        },
+        {
+          "question": "BNPL – kúp teraz, zaplať neskôr",
+          "answer": "Forma úveru, ktorá sa pri omeškaní predraží. Odložená platba je úverový produkt so sankciami pri omeškaní."
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Sporenie a investovanie",
+      "definitions": [
+        {
+          "question": "Zložené úročenie",
+          "answer": "Úrok z vkladu aj z už pripísaných úrokov. Úroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie."
+        },
+        {
+          "question": "Inflácia",
+          "answer": "Rast cien, pri ktorom za rovnaké peniaze kúpiš menej. Inflácia znižuje kúpnu silu peňazí."
+        },
+        {
+          "question": "Finančná rezerva",
+          "answer": "Odložené peniaze vo výške aspoň 3–6 mesiacov výdavkov. Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky."
+        },
+        {
+          "question": "Kde držať rezervu",
+          "answer": "Na sporiacom alebo bežnom účte s rýchlym prístupom. Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty."
+        },
+        {
+          "question": "Diverzifikácia",
+          "answer": "Rozloženie peňazí do rôznych investícií. Rozloženie znižuje riziko veľkej straty naraz."
+        },
+        {
+          "question": "Akcie",
+          "answer": "Investícia s dlhodobo najvyšším očakávaným výnosom aj najvyšším kolísaním. Vyšší výnos = vyššie riziko kolísania; preto akcie na dlhý horizont."
+        },
+        {
+          "question": "Spoluúčasť",
+          "answer": "Suma, ktorou sa na škode podieľaš ty. Poisťovňa platí škodu nad dohodnutú spoluúčasť."
+        },
+        {
+          "question": "„Najprv zaplať sebe“",
+          "answer": "Trvalé sporenie nastavené hneď po výplate. Automatické sporenie pred míňaním je najspoľahlivejší návyk."
+        }
+      ]
+    }
+  ]
+}

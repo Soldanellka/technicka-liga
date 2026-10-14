@@ -1,0 +1,19 @@
+{
+  "area": "Osobné financie",
+  "clusters": [
+    {
+      "label": "Osobné financie",
+      "okruhy": [
+        1,
+        2
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": 1,
+      "to": 2,
+      "note": "úver aj sporenie sú súčasťou rozpočtu"
+    }
+  ]
+}

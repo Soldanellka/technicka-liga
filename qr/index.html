@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finančná liga – QR</title>
+  <meta name="robots" content="noindex">
+
+  <!-- ⚠️ Vendorovaný enkodér, ŽIADNE CDN: stránka musí fungovať aj bez
+       internetu. Na stretnutí je Wi-Fi neistá a QR sa musí vykresliť
+       aj vtedy, keď appka samotná ešte načítava. -->
+  <script src="../assets/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --qr-bg: #ffffff;
+      --qr-ink: #14262c;
+      --qr-muted: #54706b;
+      --qr-accent: #17806f;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--qr-bg); color: var(--qr-ink); }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .qr-page {
+      width: 100%;
+      max-width: 680px;
+      text-align: center;
+    }
+    .qr-title {
+      margin: 0 0 6px;
+      font-size: clamp(30px, 7vw, 58px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .qr-lead {
+      margin: 0 0 clamp(18px, 4vh, 40px);
+      font-size: clamp(15px, 2.6vw, 24px);
+      color: var(--qr-muted);
+      font-weight: 500;
+    }
+    /* QR sa škáluje podľa menšieho rozmeru okna – pri premietnutí na
+       šírku aj pri tlači na výšku ostane celý viditeľný. */
+    #qr {
+      display: inline-block;
+      width: min(72vw, 58vh, 460px);
+      height: min(72vw, 58vh, 460px);
+      padding: 14px;
+      background: #fff;
+      border: 2px solid var(--qr-ink);
+      border-radius: 14px;
+    }
+    #qr svg { display: block; width: 100%; height: 100%; }
+    .qr-url {
+      margin-top: clamp(14px, 3vh, 26px);
+      font-size: clamp(13px, 2vw, 19px);
+      font-weight: 600;
+      color: var(--qr-accent);
+      word-break: break-all;
+    }
+    .qr-note {
+      margin-top: 8px;
+      font-size: clamp(12px, 1.6vw, 15px);
+      color: var(--qr-muted);
+    }
+    .qr-error {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      background: #fdecec;
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    /* ---------- TLAČ: čistá A4 ---------- */
+    @page { size: A4 portrait; margin: 16mm; }
+    @media print {
+      html, body { background: #fff; }
+      body { display: block; padding: 0; }
+      .qr-page { max-width: none; padding-top: 22mm; }
+      .qr-title { font-size: 34pt; }
+      .qr-lead { font-size: 15pt; margin-bottom: 14mm; }
+      /* Pevný rozmer v mm – vytlačený QR má byť veľký a rovnaký
+         bez ohľadu na to, aké okno mala tlačiareň. */
+      #qr { width: 120mm; height: 120mm; border-width: 1.5pt; }
+      .qr-url { font-size: 12pt; margin-top: 10mm; }
+      .qr-note { font-size: 10pt; }
+      .qr-print-hide { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="qr-page">
+    <h1 class="qr-title">Finančná liga</h1>
+    <p class="qr-lead">Naskenuj a hraj — bez registrácie</p>
+
+    <div id="qr" aria-label="QR kód na Finančnú ligu"></div>
+
+    <div class="qr-url" id="qrUrl"></div>
+    <div class="qr-note qr-print-hide" id="qrNote"></div>
+  </div>
+
+<script>
+(function () {
+  /* ⚠️ Cieľ sa skladá z location.origin, NIE z natvrdo zapísanej domény.
+     Vďaka tomu stránka prežila prechod na vlastnú doménu bez jedinej
+     úpravy: QR otvorený z financna-liga.sk vedie na financna-liga.sk,
+     otvorený z pôvodnej vercel.app adresy vedie tam. Rovnaký princíp
+     ako odkazy na výzvy v scripts/duels.js. */
+  var params = new URLSearchParams(location.search);
+  var duel = params.get('duel');
+
+  var ciel = location.origin + '/';
+  var poznamka = 'Otvorí úvodnú stránku Finančnej ligy.';
+  if (duel) {
+    /* encodeURIComponent, nech ID s neobvyklým znakom nerozbije URL. */
+    ciel = location.origin + '/?duel=' + encodeURIComponent(duel);
+    poznamka = 'Otvorí konkrétnu výzvu na súboj (' + duel + ').';
+  }
+
+  document.getElementById('qrUrl').textContent = ciel;
+  document.getElementById('qrNote').textContent = poznamka;
+
+  var box = document.getElementById('qr');
+  try {
+    if (typeof qrcode !== 'function') throw new Error('enkodér sa nenačítal');
+    /* typeNumber 0 = automatický výber najmenšej verzie, ktorá text pojme.
+       Korekcia 'M' je štandardný kompromis: znesie ~15 % poškodenia,
+       čo pri premietaní aj tlači bohato stačí a drží QR riedky. */
+    var qr = qrcode(0, 'M');
+    qr.addData(ciel);
+    qr.make();
+    /* SVG namiesto <img> s data URI: ostrý pri akomkoľvek zväčšení,
+       teda aj na projektore aj vytlačený na A4. */
+    box.innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+  } catch (e) {
+    box.innerHTML = '';
+    var err = document.createElement('div');
+    err.className = 'qr-error';
+    err.textContent = 'QR sa nepodarilo vykresliť. Adresu vyššie zadaj do prehliadača ručne.';
+    box.parentNode.insertBefore(err, box.nextSibling);
+  }
+})();
+</script>
+</body>
+</html>

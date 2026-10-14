@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Nočný výcuc — TEST prehrávania (zahoditeľné)</title>
+<style>
+  /* Zahoditeľná testovacia stránka — NEPATRÍ do produkcie, nemá nič spoločné so styles.css */
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px; font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1220; color: #e8e6f0; max-width: 480px; margin-inline: auto;
+  }
+  h1 { font-size: 1.15rem; margin: 8px 0 2px; }
+  .sub { color: #9a94b8; font-size: .8rem; margin-bottom: 14px; }
+  .panel { background: #171d33; border: 1px solid #2a3352; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+  .track-title { font-size: 1rem; font-weight: 600; min-height: 1.3em; }
+  .time { color: #9a94b8; font-variant-numeric: tabular-nums; font-size: .85rem; margin-top: 2px; }
+  .row { display: flex; gap: 8px; margin-top: 12px; }
+  button {
+    flex: 1; padding: 14px 6px; font-size: 1rem; border-radius: 12px; border: 1px solid #3a4470;
+    background: #232c4d; color: #e8e6f0; cursor: pointer; touch-action: manipulation;
+  }
+  button.big { font-size: 1.5rem; padding: 18px 6px; }
+  button.active { background: #4b3f86; border-color: #7a6cd0; }
+  button:disabled { opacity: .4; }
+  .label { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #9a94b8; margin: 12px 0 4px; }
+  #log {
+    font-family: ui-monospace, Consolas, monospace; font-size: .72rem; line-height: 1.5;
+    max-height: 240px; overflow-y: auto; background: #0a0e1a; border-radius: 10px; padding: 10px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .checklist { font-size: .85rem; line-height: 1.55; color: #c9c4e0; }
+  .checklist li { margin-bottom: 8px; }
+  .warn { color: #ffb86b; }
+</style>
+</head>
+<body>
+
+<h1>🌙 Nočný výcuc — technický test</h1>
+<div class="sub">Zahoditeľná stránka. Testuje: zvuk pri zamknutej obrazovke, ovládanie na lock screene, reťazenie stôp, časovač spánku, fade-out.</div>
+
+<div class="panel">
+  <div class="track-title" id="trackTitle">— stlač ▶︎ —</div>
+  <div class="time" id="timeInfo">0:00 / 0:00 · stopa –/–</div>
+  <div class="row">
+    <button id="btnPrev">⏮</button>
+    <button id="btnPlay" class="big">▶︎</button>
+    <button id="btnNext">⏭</button>
+  </div>
+  <div class="label">Časovač spánku (krátky, nech sa dá otestovať)</div>
+  <div class="row">
+    <button data-timer="0" class="tmr active">Vyp.</button>
+    <button data-timer="1" class="tmr">1 min</button>
+    <button data-timer="3" class="tmr">3 min</button>
+    <button data-timer="10" class="tmr">10 min</button>
+  </div>
+  <div class="label">Slučka</div>
+  <div class="row">
+    <button id="btnLoop">Opakovať dokola: NIE</button>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="label">Záznam udalostí (prežije obnovenie stránky)</div>
+  <div id="log"></div>
+  <div class="row">
+    <button id="btnClearLog">Vymazať záznam</button>
+  </div>
+</div>
+
+<div class="panel checklist">
+  <div class="label">Checklist pre Babu</div>
+  <ol>
+    <li>Stlač <b>▶︎</b> a počúvaj — hrajú 3 „okruhy“ po 60 s (rôzne výšky tónu), mali by prejsť jeden do druhého <b>bez ticha</b>.</li>
+    <li><b>Zamkni telefón.</b> Hrá ďalej? Zmenila sa stopa aj pri zamknutej obrazovke (počuješ inú výšku tónu)?</li>
+    <li>Pozri zamknutú obrazovku: vidno <b>názov stopy + play/pauza + ⏮⏭</b>? Fungujú?</li>
+    <li>Prepni na inú appku (pozadie) — hrá ďalej?</li>
+    <li>Nastav <b>časovač 1 min</b>, pusti, zamkni telefón. Stíchlo to samo po minúte? Bol pred koncom počuteľný <b>fade-out</b> (~15 s zoslabovanie)?</li>
+    <li>Odomkni a pozri <b>záznam udalostí</b> — je tam „časovač zastavil prehrávanie“ a prípadné <span class="warn">varovania</span>? Odfoť/odpíš ich.</li>
+    <li>Zapni <b>slučku</b> a nechaj prejsť koniec 3. stopy — vrátilo sa to na prvú?</li>
+  </ol>
+</div>
+
+<audio id="player" playsinline preload="auto"></audio>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- záznam udalostí ---------- */
+  var LOG_KEY = 'nv-test-log';
+  var logEl = document.getElementById('log');
+  var logLines = [];
+  try { logLines = JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch (e) { logLines = []; }
+  function renderLog() {
+    logEl.textContent = logLines.join('\n');
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+  function log(msg) {
+    var t = new Date();
+    var ts = t.toLocaleTimeString('sk-SK') + '.' + String(t.getMilliseconds()).padStart(3, '0');
+    logLines.push(ts + '  ' + msg);
+    if (logLines.length > 400) logLines = logLines.slice(-400);
+    try { localStorage.setItem(LOG_KEY, JSON.stringify(logLines)); } catch (e) {}
+    renderLog();
+  }
+  renderLog();
+  document.getElementById('btnClearLog').addEventListener('click', function () {
+    logLines = [];
+    try { localStorage.removeItem(LOG_KEY); } catch (e) {}
+    renderLog();
+  });
+
+  /* ---------- syntéza testovacích stôp (WAV -> blob URL) ---------- */
+  var SR = 22050, TRACK_SEC = 60;
+  function makeWavUrl(baseFreq) {
+    var n = SR * TRACK_SEC;
+    var buf = new ArrayBuffer(44 + n * 2);
+    var dv = new DataView(buf);
+    function wstr(off, s) { for (var i = 0; i < s.length; i++) dv.setUint8(off + i, s.charCodeAt(i)); }
+    wstr(0, 'RIFF'); dv.setUint32(4, 36 + n * 2, true); wstr(8, 'WAVE');
+    wstr(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+    dv.setUint32(24, SR, true); dv.setUint32(28, SR * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true);
+    wstr(36, 'data'); dv.setUint32(40, n * 2, true);
+    var TAU = Math.PI * 2;
+    for (var i = 0; i < n; i++) {
+      var t = i / SR;
+      var env = Math.min(1, t / 1.5, (TRACK_SEC - t) / 2);      // nábeh 1,5 s, dobeh 2 s
+      var wobble = 0.72 + 0.28 * Math.sin(TAU * 0.08 * t);      // pomalé dýchanie hlasitosti
+      var s = Math.sin(TAU * baseFreq * t) * 0.8 + Math.sin(TAU * baseFreq * 2 * t) * 0.2;
+      dv.setInt16(44 + i * 2, Math.round(s * env * wobble * 0.28 * 32767), true);
+    }
+    return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  }
+
+  var TRACKS = [
+    { title: 'Okruh 1 — hlboký tón (220 Hz)', freq: 220 },
+    { title: 'Okruh 2 — stredný tón (293 Hz)', freq: 293.66 },
+    { title: 'Okruh 3 — vysoký tón (392 Hz)', freq: 392 }
+  ];
+  TRACKS.forEach(function (tr) { tr.url = makeWavUrl(tr.freq); });
+  log('stránka načítaná, ' + TRACKS.length + ' testovacie stopy vygenerované (' + TRACK_SEC + ' s / stopa)');
+
+  /* ---------- obal albumu pre lock screen ---------- */
+  var artUrl = null;
+  try {
+    var cv = document.createElement('canvas'); cv.width = cv.height = 512;
+    var cx = cv.getContext('2d');
+    cx.fillStyle = '#171d33'; cx.fillRect(0, 0, 512, 512);
+    cx.font = '220px serif'; cx.textAlign = 'center'; cx.textBaseline = 'middle';
+    cx.fillText('🌙', 256, 230);
+    cx.fillStyle = '#c9c4e0'; cx.font = 'bold 44px sans-serif';
+    cx.fillText('Finančná liga — test', 256, 420);
+    artUrl = cv.toDataURL('image/png');
+  } catch (e) { log('obal albumu sa nepodarilo vygenerovať: ' + e.message); }
+
+  /* ---------- prehrávač ---------- */
+  var player = document.getElementById('player');
+  var idx = 0, loop = false;
+  var titleEl = document.getElementById('trackTitle');
+  var timeEl = document.getElementById('timeInfo');
+  var btnPlay = document.getElementById('btnPlay');
+
+  function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+
+  function updateMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: TRACKS[idx].title,
+        artist: 'Nočný výcuc — technický test',
+        album: 'Finančná liga',
+        artwork: artUrl ? [{ src: artUrl, sizes: '512x512', type: 'image/png' }] : []
+      });
+    } catch (e) { log('MediaMetadata zlyhalo: ' + e.message); }
+  }
+
+  function loadTrack(i, autoplay) {
+    idx = (i + TRACKS.length) % TRACKS.length;
+    player.src = TRACKS[idx].url;
+    titleEl.textContent = TRACKS[idx].title;
+    updateMediaSession();
+    if (autoplay) {
+      var p = player.play();
+      if (p && p.catch) p.catch(function (e) {
+        log('VAROVANIE: play() po prepnutí stopy zlyhalo (' + e.name + ') — stav obrazovky: ' + document.visibilityState);
+      });
+    }
+  }
+
+  function togglePlay() {
+    if (player.paused) {
+      if (!player.src) loadTrack(0, false);
+      var p = player.play();
+      if (p && p.catch) p.catch(function (e) { log('VAROVANIE: play() zlyhalo: ' + e.name + ' ' + e.message); });
+    } else {
+      player.pause();
+    }
+  }
+
+  btnPlay.addEventListener('click', togglePlay);
+  document.getElementById('btnNext').addEventListener('click', function () { log('ručne: ďalšia stopa'); loadTrack(idx + 1, !player.paused || player.currentTime > 0); });
+  document.getElementById('btnPrev').addEventListener('click', function () { log('ručne: predošlá stopa'); loadTrack(idx - 1, !player.paused || player.currentTime > 0); });
+
+  var btnLoop = document.getElementById('btnLoop');
+  btnLoop.addEventListener('click', function () {
+    loop = !loop;
+    btnLoop.textContent = 'Opakovať dokola: ' + (loop ? 'ÁNO' : 'NIE');
+    btnLoop.classList.toggle('active', loop);
+    log('slučka: ' + (loop ? 'zapnutá' : 'vypnutá'));
+  });
+
+  player.addEventListener('play', function () {
+    btnPlay.textContent = '⏸';
+    log('prehrávanie beží (stopa ' + (idx + 1) + ', obrazovka: ' + document.visibilityState + ')');
+  });
+  player.addEventListener('pause', function () {
+    btnPlay.textContent = '▶︎';
+    if (!player.ended) log('pauza (obrazovka: ' + document.visibilityState + ')');
+  });
+  player.addEventListener('ended', function () {
+    log('stopa ' + (idx + 1) + ' dohraná (obrazovka: ' + document.visibilityState + ')');
+    if (idx < TRACKS.length - 1) {
+      loadTrack(idx + 1, true);
+    } else if (loop) {
+      log('slučka: začínam odznova');
+      loadTrack(0, true);
+    } else {
+      log('koniec playlistu — stop');
+      btnPlay.textContent = '▶︎';
+    }
+  });
+  player.addEventListener('error', function () {
+    log('CHYBA audia: ' + (player.error ? player.error.code : '?'));
+  });
+
+  /* ---------- Media Session ovládanie na zamknutej obrazovke ---------- */
+  if ('mediaSession' in navigator) {
+    log('Media Session API: dostupné');
+    try {
+      navigator.mediaSession.setActionHandler('play', function () { log('lock screen: play'); togglePlay(); });
+      navigator.mediaSession.setActionHandler('pause', function () { log('lock screen: pauza'); togglePlay(); });
+      navigator.mediaSession.setActionHandler('nexttrack', function () { log('lock screen: ďalšia'); loadTrack(idx + 1, true); });
+      navigator.mediaSession.setActionHandler('previoustrack', function () { log('lock screen: predošlá'); loadTrack(idx - 1, true); });
+    } catch (e) { log('setActionHandler zlyhalo: ' + e.message); }
+  } else {
+    log('VAROVANIE: Media Session API NIE JE dostupné — lock screen ovládanie nebude');
+  }
+
+  /* ---------- časovač spánku + fade-out ----------
+     Zámerne NEpoužíva setTimeout (na iOS v pozadí nespoľahlivý).
+     Kontroluje sa deadline v 'timeupdate', ktorý beží kým hrá audio. */
+  var timerDeadline = null, FADE_MS = 15000, volumeWarned = false, fadeStarted = false;
+
+  document.querySelectorAll('.tmr').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.tmr').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var min = parseInt(b.dataset.timer, 10);
+      fadeStarted = false;
+      try { player.volume = 1; } catch (e) {}
+      if (min === 0) {
+        timerDeadline = null;
+        log('časovač spánku vypnutý');
+      } else {
+        timerDeadline = Date.now() + min * 60000;
+        log('časovač spánku nastavený na ' + min + ' min');
+      }
+    });
+  });
+
+  player.addEventListener('timeupdate', function () {
+    timeEl.textContent = fmt(player.currentTime) + ' / ' + fmt(player.duration) +
+      ' · stopa ' + (idx + 1) + '/' + TRACKS.length +
+      (timerDeadline ? ' · časovač: ' + fmt((timerDeadline - Date.now()) / 1000) : '');
+
+    if ('mediaSession' in navigator && navigator.mediaSession.setPositionState && isFinite(player.duration)) {
+      try { navigator.mediaSession.setPositionState({ duration: player.duration, playbackRate: 1, position: player.currentTime }); } catch (e) {}
+    }
+
+    if (timerDeadline && !player.paused) {
+      var rem = timerDeadline - Date.now();
+      if (rem <= 0) {
+        timerDeadline = null;
+        player.pause();
+        try { player.volume = 1; } catch (e) {}
+        log('ČASOVAČ ZASTAVIL PREHRÁVANIE (obrazovka: ' + document.visibilityState + ')');
+        document.querySelectorAll('.tmr').forEach(function (x) { x.classList.toggle('active', x.dataset.timer === '0'); });
+      } else if (rem <= FADE_MS) {
+        if (!fadeStarted) { fadeStarted = true; log('začínam fade-out (' + (FADE_MS / 1000) + ' s do konca)'); }
+        var target = Math.max(0.02, rem / FADE_MS);
+        try {
+          player.volume = target;
+          if (!volumeWarned && Math.abs(player.volume - target) > 0.1) {
+            volumeWarned = true;
+            log('VAROVANIE: audio.volume sa nedá meniť (typicky iOS — volume je read-only). Fade-out tu nebude fungovať.');
+          }
+        } catch (e) {
+          if (!volumeWarned) { volumeWarned = true; log('VAROVANIE: zmena hlasitosti zlyhala: ' + e.message); }
+        }
+      }
+    }
+  });
+
+  /* ---------- viditeľnosť stránky ---------- */
+  document.addEventListener('visibilitychange', function () {
+    log('obrazovka: ' + document.visibilityState + (player.paused ? ' (nehrá)' : ' (hrá, stopa ' + (idx + 1) + ')'));
+  });
+
+  loadTrack(0, false);
+  log('pripravené — stlač ▶︎');
+})();
+</script>
+</body>
+</html>

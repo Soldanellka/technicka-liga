@@ -1,0 +1,19 @@
+{
+  "area": "Makroekonómia",
+  "clusters": [
+    {
+      "label": "Makroekonómia",
+      "okruhy": [
+        1,
+        2
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": 1,
+      "to": 2,
+      "note": "rast HDP ovplyvňuje infláciu a nezamestnanosť"
+    }
+  ]
+}

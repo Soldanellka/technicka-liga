@@ -1,0 +1,125 @@
+{
+  "rules": {
+    // ============================================================
+    // FINANČNÁ LIGA – Firebase Realtime Database Security Rules (v3)
+    //
+    // Projekt: financna-liga (NIE lexarena-af45f – sú to dve oddelené
+    // Firebase databázy). Appka vznikla forkom LexAreny, takže väčšina
+    // vetiev aj mechaník (users/$nick, paragrafy, promoCodes) je
+    // spoločná a validácie nižšie naozaj platia aj tu. Do v2 bol ale
+    // skopírovaný aj text hlavičky vrátane názvu LexArena a odkazov na
+    // jej súbory – opravené pri bezpečnostnom audite 2026-08-30 spolu
+    // s doplnením uzla demoLimits (viď koniec súboru).
+    //
+    // Appka nemá Firebase Authentication (identita = prezývka v
+    // localStorage), preto Rules NEVEDIA rozlíšiť, KTO zapisuje –
+    // klient je vždy anonymný. V tomto stave sa dá chrániť len
+    // ŠTRUKTÚRA (kam a v akom tvare sa smie písať), nie identita.
+    //
+    // VEREJNÉ ČÍTANIE JE TU ZÁMER, NIE OPOMENUTIE: liga beží ako
+    // verejné demo a nezbiera osobné údaje – identita je prezývka,
+    // appka to používateľovi aj explicitne hovorí (index.html, sekcia
+    // „Súkromie"). Chránený je teda zápis (anti-wipe nižšie), nie
+    // čítanie.
+    //
+    // ČO PRIDÁVA v2 oproti v1 (".write": true na koreni):
+    // 1. ANTI-WIPE: žiadne .write na koreni ani na vrchole vetiev.
+    //    Zápis je povolený až od DRUHEJ úrovne ($branch/$child).
+    //    Dôsledok: set(/, null) aj set(/users, null) sú ZAMIETNUTÉ –
+    //    celú databázu ani celú vetvu už nejde zmazať jedným zápisom.
+    //    Bežné operácie appky (update/push/remove na users/$nick,
+    //    duels/$id, reports/$id, promoCodes/$code, multi-path update
+    //    faculties/$id/... atď.) fungujú bez zmeny – overené proti
+    //    kódu: appka nikde nezapisuje priamo na vrchol vetvy.
+    // 2. VALIDÁCIE TVAROV (len polia s overeným tvarom v kóde):
+    //    - users/$nick/paragrafy musí byť číslo (ekonomika píše len
+    //      čísla – scripts/economy.js econAward/econSpend),
+    //    - promoCodes/$code/amount: číslo; NOVÝ kód len 10–50 §
+    //      (rovnaký clamp ako admin UI, init.js promoCreateBtn);
+    //      existujúca hodnota sa smie prepísať nezmenená (redeem
+    //      transakcia prepisuje celý uzol),
+    //    - promoCodes/$code/active musí byť boolean.
+    //
+    // ČO OSTÁVA (zámerne, rovnaké ako v1):
+    // - users/$nick/role sa NEDÁ zmeniť z klienta (validate nižšie);
+    //   rolu mení výhradne majiteľka vo Firebase konzole / Admin SDK.
+    //   Admin panel tlačidlá "Garant/Student" preto zápis ticho
+    //   nespravia – známe a zámerné (viď v1 komentár v git histórii).
+    // - .read: true globálne – appka číta všetko bez auth; zamykanie
+    //   čítania by bez Auth rozbilo funkčnosť a nič by nechránilo
+    //   (dáta neobsahujú e-maily ani osobné údaje, identita = nick).
+    //
+    // ⚠️ ZNÁME LIMITY (bez Firebase Auth sa NEDAJÚ vyriešiť tu):
+    // - ktokoľvek stále vie prepísať/zmazať JEDNOTLIVÉ záznamy
+    //   (cudzí users/$nick, duel, report...) – ochrana identity
+    //   vyžaduje Auth (anonymné prihlásenie + nárok na nick),
+    // - .validate sa NEVYHODNOCUJE pri mazaní – users/$nick/role sa
+    //   dá zmazať (nie však nastaviť na novú hodnotu),
+    // - proti skriptom mimo prehliadača pomôže až App Check.
+    //
+    // KASKÁDOVÁ POZNÁMKA (z v1, stále platí): .write sa dedí NADOL
+    // a hlbšie ".write": false nevie zrušiť povolenie z vyššej
+    // úrovne. Zámky preto robíme cez .validate (nekaskádujú) a cez
+    // NEUDELENIE .write na vrchných úrovniach (anti-wipe vyššie).
+    // ============================================================
+    ".read": true,
+
+    // Anti-wipe: zápis až od druhej úrovne, pre všetky vetvy
+    // (aj budúce – wildcard pokryje nové vetvy bez úpravy Rules).
+    "$branch": {
+      "$child": {
+        ".write": true
+      }
+    },
+
+    // Menované vetvy NEspadajú pod $branch wildcard – potrebujú
+    // vlastné (rovnaké) povolenie druhej úrovne + svoje validácie.
+    "users": {
+      "$nick": {
+        ".write": true,
+        "role": {
+          ".validate": "newData.val() === data.val()"
+        },
+        "paragrafy": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+
+    "promoCodes": {
+      "$code": {
+        ".write": true,
+        "amount": {
+          ".validate": "newData.isNumber() && (data.exists() || (newData.val() >= 10 && newData.val() <= 50))"
+        },
+        "active": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+
+    // ============================================================
+    // demoLimits – POČÍTADLO DENNÉHO STROPU AI VOLANÍ (v3, 2026-08-30)
+    //
+    // Zapisuje sem VÝHRADNE server (api/_dailyLimit.js, volaný z
+    // grade-answer.js a quiz-feedback.js) cez service account.
+    // Požiadavka podpísaná service accountom Rules OBCHÁDZA, takže
+    // ".write": false server NEobmedzuje – zamyká len klienta.
+    //
+    // PREČO TO TU MUSÍ BYŤ. Bez tohto menovaného uzla demoLimits spadá
+    // pod wildcard "$branch"/"$child" vyššie, ktorý dáva ".write": true
+    // na druhej úrovni. Ktokoľvek vie z prehliadača spraviť
+    // set(/demoLimits/2026-08-30, { gradeAnswer: 0, quizFeedback: 0 })
+    // a tým vynulovať denný strop výdavkov za Anthropic – teda presne
+    // tú poistku, ktorú má počítadlo predstavovať. Opačným smerom vie
+    // nastaviť obrovské číslo a AI funkcie ligy vypnúť.
+    //
+    // Čítanie ostáva verejné – ".read": true z koreňa sa hlbšie zrušiť
+    // nedá (kaskáda, viď hlavička) a ani netreba: sú to len počty
+    // volaní za deň, žiadne osobné údaje.
+    // ============================================================
+    "demoLimits": {
+      ".write": false
+    }
+  }
+}

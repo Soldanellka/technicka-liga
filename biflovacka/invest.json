@@ -1,0 +1,84 @@
+{
+  "area": "Investovanie",
+  "slug": "invest",
+  "schemaVersion": "1.1",
+  "zdroj": "Demo dataset Finančnej ligy – odvodené z vysvetlení otázok, obsah na odbornú kontrolu",
+  "okruhy": [
+    {
+      "id": "A1",
+      "title": "Základy investovania",
+      "definitions": [
+        {
+          "question": "Investovanie",
+          "answer": "Používanie peňazí tak, aby časom priniesli výnos."
+        },
+        {
+          "question": "Akcia",
+          "answer": "Vlastnícky podiel v spoločnosti."
+        },
+        {
+          "question": "Dividenda",
+          "answer": "Časť zisku firmy vyplatená akcionárom."
+        },
+        {
+          "question": "Dlhopis",
+          "answer": "Forma pôžičky emitentovi – dlhový cenný papier, ktorý vracia istinu a úrok."
+        },
+        {
+          "question": "ETF",
+          "answer": "Fond, ktorý sleduje vývoj určitého indexu alebo trhu."
+        },
+        {
+          "question": "Indexový fond",
+          "answer": "Fond kopírujúci vývoj burzového indexu; má nízke poplatky a rozkladá riziko medzi stovky firiem."
+        },
+        {
+          "question": "Podkladové aktívum",
+          "answer": "Základ, z ktorého sa odvíja hodnota investície, napríklad akcia alebo komodita."
+        },
+        {
+          "question": "Investičný horizont",
+          "answer": "Obdobie, počas ktorého investor plánuje investíciu držať."
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Riziko, diverzifikácia a deriváty",
+      "definitions": [
+        {
+          "question": "Riziko",
+          "answer": "Pravdepodobnosť, že investícia stratí hodnotu."
+        },
+        {
+          "question": "Volatilita",
+          "answer": "Výrazné kolísanie ceny investície."
+        },
+        {
+          "question": "Trhové riziko",
+          "answer": "Riziko celkového poklesu trhu – ovplyvňuje všetky investície."
+        },
+        {
+          "question": "Diverzifikácia",
+          "answer": "Rozloženie investícií do viacerých aktív; rozkladá riziko."
+        },
+        {
+          "question": "Pravidelné investovanie",
+          "answer": "Vyrovnáva nákupy v rôznych trhových podmienkach a znižuje vplyv kolísania trhu."
+        },
+        {
+          "question": "Finančný derivát",
+          "answer": "Kontrakt, ktorého hodnota sa odvíja od podkladového aktíva."
+        },
+        {
+          "question": "Futures",
+          "answer": "Derivát viazaný na budúci nákup alebo predaj aktíva."
+        },
+        {
+          "question": "Opcia",
+          "answer": "Právo, nie povinnosť, kúpiť alebo predať aktívum za vopred stanovenú cenu."
+        }
+      ]
+    }
+  ]
+}

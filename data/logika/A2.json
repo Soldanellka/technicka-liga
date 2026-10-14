@@ -1,0 +1,114 @@
+{
+  "id": "logika-A2",
+  "title": "Logický súčet OR",
+  "schemaVersion": 1,
+  "tags": [
+    "logické funkcie",
+    "Booleova algebra",
+    "číslicová technika"
+  ],
+  "summary": "Logický súčet OR: Y = A + B. Výstup je 1, keď je aspoň jeden vstup rovný 1; 0 je iba pri A = 0 a B = 0.\nPozor: v Booleovej algebre platí 1 + 1 = 1.\nV schéme má hradlo OR znak ≥1 („aspoň jeden“).\nKontaktová realizácia: dva spínače zapojené vedľa seba (paralelne). Žiarovka svieti, keď je zopnutý A alebo B alebo oba.\nV časovom diagrame je Y v log. 1 vždy, keď je v log. 1 aspoň jeden zo vstupov.",
+  "quiz": [
+    {
+      "id": "lg06",
+      "q": "Kedy má logický súčet OR na výstupe 1?",
+      "options": [
+        "Len keď sú oba vstupy 1",
+        "Keď je aspoň jeden vstup 1",
+        "Len keď sú oba vstupy 0",
+        "Nikdy"
+      ],
+      "correct": 1,
+      "explanation": "Y = A + B je 1, ak je aspoň jedna premenná 1; 0 je iba pri A = 0 a B = 0."
+    },
+    {
+      "id": "lg07",
+      "q": "Aký je výstup OR pre A = 1, B = 1?",
+      "options": [
+        "0",
+        "2",
+        "1",
+        "11"
+      ],
+      "correct": 2,
+      "explanation": "V Booleovej algebre 1 + 1 = 1, nie 2. Na jednotku stačí jeden vstup."
+    },
+    {
+      "id": "lg08",
+      "q": "Ktorá značka v schéme patrí hradlu OR?",
+      "options": [
+        "&",
+        "≥1",
+        "=",
+        "Jeden vstup a krúžok na výstupe"
+      ],
+      "correct": 1,
+      "explanation": "≥1 znamená „aspoň jeden vstup je 1“, čo je presne logický súčet."
+    },
+    {
+      "id": "lg09",
+      "q": "Ako vyzerá kontaktová realizácia OR?",
+      "options": [
+        "Dva spínače za sebou",
+        "Dva spínače vedľa seba (paralelne)",
+        "Jeden rozpínací kontakt",
+        "Dve žiarovky za sebou"
+      ],
+      "correct": 1,
+      "explanation": "Pri paralelných spínačoch má prúd dve cesty, takže žiarovka svieti, keď je zopnutý A alebo B."
+    },
+    {
+      "id": "lg10",
+      "q": "Pri ktorej kombinácii je výstup OR rovný 0?",
+      "options": [
+        "A = 0, B = 0",
+        "A = 1, B = 0",
+        "A = 0, B = 1",
+        "A = 1, B = 1"
+      ],
+      "correct": 0,
+      "explanation": "OR dá 0 iba vtedy, keď sú oba vstupy 0."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Logický súčet OR",
+    "branches": [
+      {
+        "label": "Definícia OR",
+        "leaves": [
+          "Y = A + B",
+          "1 pri aspoň jednej jednotke",
+          "logický súčet"
+        ]
+      },
+      {
+        "label": "Tabuľka OR",
+        "leaves": [
+          "0 + 0 = 0",
+          "0 + 1 = 1 + 0 = 1",
+          "1 + 1 = 1"
+        ]
+      },
+      {
+        "label": "Schéma OR",
+        "leaves": [
+          "značka ≥1",
+          "≥1 = aspoň jeden",
+          "rovnaký tvar, iná značka"
+        ]
+      },
+      {
+        "label": "Kontakty OR",
+        "leaves": [
+          "spínače vedľa seba",
+          "stačí zopnúť jeden",
+          "dve paralelné cesty prúdu"
+        ]
+      }
+    ]
+  }
+}

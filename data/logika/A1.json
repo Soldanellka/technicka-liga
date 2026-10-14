@@ -1,0 +1,114 @@
+{
+  "id": "logika-A1",
+  "title": "Logický súčin AND",
+  "schemaVersion": 1,
+  "tags": [
+    "logické funkcie",
+    "Booleova algebra",
+    "číslicová technika"
+  ],
+  "summary": "Logický súčin AND: Y = A·B. Výstup je 1 len vtedy, keď sú oba vstupy A aj B rovné 1; inak je 0.\nPravdivostná tabuľka má pre dva vstupy 4 riadky (00, 01, 10, 11) a jednotku iba v poslednom.\nV schéme má hradlo AND v obdĺžniku znak &.\nKontaktová realizácia: dva spínače zapojené za sebou (sériovo). Žiarovka svieti, len keď sú zopnuté oba.\nV časovom diagrame je Y v log. 1 iba v úseku, keď sú A aj B v log. 1.",
+  "quiz": [
+    {
+      "id": "lg01",
+      "q": "Kedy má logický súčin AND na výstupe 1?",
+      "options": [
+        "Keď je aspoň jeden vstup 1",
+        "Len keď sú oba vstupy 1",
+        "Keď sú oba vstupy 0",
+        "Keď sú vstupy rôzne"
+      ],
+      "correct": 1,
+      "explanation": "Y = A·B je 1 iba pri A = 1 a B = 1, vo všetkých ostatných prípadoch je 0."
+    },
+    {
+      "id": "lg02",
+      "q": "Aký je výstup AND pre A = 1, B = 0?",
+      "options": [
+        "1",
+        "0",
+        "10",
+        "Nedá sa určiť"
+      ],
+      "correct": 1,
+      "explanation": "1·0 = 0. Na jednotku by museli byť oba vstupy 1."
+    },
+    {
+      "id": "lg03",
+      "q": "Ktorá značka v schéme patrí hradlu AND?",
+      "options": [
+        "&",
+        "≥1",
+        "=1",
+        "Jeden vstup a krúžok na výstupe"
+      ],
+      "correct": 0,
+      "explanation": "AND má v obdĺžniku znak &, OR znak ≥1 a NOT má jeden vstup a krúžok na výstupe."
+    },
+    {
+      "id": "lg04",
+      "q": "Ako vyzerá kontaktová realizácia AND?",
+      "options": [
+        "Dva spínače zapojené za sebou (sériovo)",
+        "Dva spínače vedľa seba (paralelne)",
+        "Jeden rozpínací kontakt",
+        "Žiarovka bez spínača"
+      ],
+      "correct": 0,
+      "explanation": "Pri spínačoch za sebou žiarovka svieti, len keď sú zopnuté oba – teda A aj B."
+    },
+    {
+      "id": "lg05",
+      "q": "Koľko riadkov má pravdivostná tabuľka AND s dvoma vstupmi?",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "8"
+      ],
+      "correct": 2,
+      "explanation": "Dva vstupy majú 2² = 4 kombinácie: 00, 01, 10 a 11."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Logický súčin AND",
+    "branches": [
+      {
+        "label": "Definícia AND",
+        "leaves": [
+          "Y = A·B",
+          "1 len pri A = 1 a B = 1",
+          "logický súčin"
+        ]
+      },
+      {
+        "label": "Tabuľka AND",
+        "leaves": [
+          "0·0 = 0",
+          "0·1 = 1·0 = 0",
+          "1·1 = 1"
+        ]
+      },
+      {
+        "label": "Schéma AND",
+        "leaves": [
+          "značka &",
+          "obdĺžnik s dvoma vstupmi",
+          "výstup Y vpravo"
+        ]
+      },
+      {
+        "label": "Kontakty AND",
+        "leaves": [
+          "spínače za sebou",
+          "oba zopnuté → svieti",
+          "jeden rozopnutý → nesvieti"
+        ]
+      }
+    ]
+  }
+}

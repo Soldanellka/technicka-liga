@@ -1,0 +1,153 @@
+{
+  "id": "2. A",
+  "title": "Sporenie a investovanie",
+  "schemaVersion": "1.1",
+  "tags": ["financna-gramotnost", "sporenie", "investovanie", "rezerva", "inflacia", "poistenie"],
+  "summary": "Sporenie a investovanie\n\nÚroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie – to je zložené úročenie. Proti nemu stojí inflácia, ktorá znižuje kúpnu silu peňazí: pri 5 % ročne za rovnaké peniaze kúpiš o približne 5 % menej.\n\nZákladom je finančná rezerva vo výške aspoň 3–6 mesiacov výdavkov. Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky, a musí byť dostupná a bez rizika prudkej straty hodnoty – teda na sporiacom alebo bežnom účte s rýchlym prístupom.\n\nPri investovaní znižuje riziko veľkej straty naraz rozloženie peňazí do rôznych investícií, teda diverzifikácia. Historicky majú najvyšší očakávaný výnos a zároveň najvyššie kolísanie akcie: vyšší výnos = vyššie riziko kolísania, preto akcie na dlhý horizont.\n\nPri poistení sa na škode podieľaš dohodnutou spoluúčasťou – poisťovňa platí škodu nad túto sumu.\n\nNajspoľahlivejší návyk je automatické sporenie pred míňaním, teda princíp „najprv zaplať sebe“.",
+  "quiz": [
+    {
+      "question": "Čo je zložené úročenie?",
+      "options": ["úrok len z vkladu", "úrok z vkladu aj z už pripísaných úrokov", "poplatok banky", "úrok z dvoch účtov"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Úroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie.",
+        "wrong": "Správna odpoveď: úrok z vkladu aj z už pripísaných úrokov. Úroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie."
+      }
+    },
+    {
+      "question": "Inflácia 5 % ročne znamená, že:",
+      "options": ["ceny klesli o 5 %", "za rovnaké peniaze kúpiš o ~5 % menej", "mzdy rastú o 5 %", "banka platí 5 % úrok"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Inflácia znižuje kúpnu silu peňazí.",
+        "wrong": "Správna odpoveď: za rovnaké peniaze kúpiš o ~5 % menej. Inflácia znižuje kúpnu silu peňazí."
+      }
+    },
+    {
+      "question": "Odporúčaná finančná rezerva domácnosti je aspoň:",
+      "options": ["1 týždeň výdavkov", "1 mesiac", "3–6 mesiacov výdavkov", "rezerva netreba"],
+      "correct": 2,
+      "explanation": {
+        "correct": "Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky.",
+        "wrong": "Správna odpoveď: 3–6 mesiacov výdavkov. Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky."
+      }
+    },
+    {
+      "question": "Diverzifikácia znamená:",
+      "options": ["investovať všetko do jednej akcie", "rozložiť peniaze do rôznych investícií", "neinvestovať", "mať dva účty v jednej banke"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Rozloženie znižuje riziko veľkej straty naraz.",
+        "wrong": "Správna odpoveď: rozložiť peniaze do rôznych investícií. Rozloženie znižuje riziko veľkej straty naraz."
+      }
+    },
+    {
+      "question": "Spoluúčasť v poistení je:",
+      "options": ["suma, ktorou sa na škode podieľaš ty", "provízia agenta", "bonus", "daň"],
+      "correct": 0,
+      "explanation": {
+        "correct": "Poisťovňa platí škodu nad dohodnutú spoluúčasť.",
+        "wrong": "Správna odpoveď: suma, ktorou sa na škode podieľaš ty. Poisťovňa platí škodu nad dohodnutú spoluúčasť."
+      }
+    },
+    {
+      "question": "Peniaze na nečakané výdavky je najlepšie držať:",
+      "options": ["v akciách", "na sporiacom/bežnom účte s rýchlym prístupom", "v kryptomene", "doma v hotovosti bez limitu"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty.",
+        "wrong": "Správna odpoveď: na sporiacom/bežnom účte s rýchlym prístupom. Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty."
+      }
+    },
+    {
+      "question": "Dlhodobo najvyšší očakávaný výnos (a najvyššie kolísanie) majú historicky:",
+      "options": ["bežné účty", "dlhopisy", "akcie", "hotovosť"],
+      "correct": 2,
+      "explanation": {
+        "correct": "Vyšší výnos = vyššie riziko kolísania; preto akcie na dlhý horizont.",
+        "wrong": "Správna odpoveď: akcie. Vyšší výnos = vyššie riziko kolísania; preto akcie na dlhý horizont."
+      }
+    },
+    {
+      "question": "Ak si nastavíš trvalé sporenie hneď po výplate, využívaš princíp:",
+      "options": ["„najprv zaplať sebe“", "pákový efekt", "inflačný efekt", "daňový bonus"],
+      "correct": 0,
+      "explanation": {
+        "correct": "Automatické sporenie pred míňaním je najspoľahlivejší návyk.",
+        "wrong": "Správna odpoveď: „najprv zaplať sebe“. Automatické sporenie pred míňaním je najspoľahlivejší návyk."
+      }
+    }
+  ],
+  "tiles": [
+    { "term": "Zložené úročenie", "definition": "Úrok z vkladu aj z už pripísaných úrokov. Úroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie." },
+    { "term": "Inflácia", "definition": "Rast cien, pri ktorom za rovnaké peniaze kúpiš menej. Inflácia znižuje kúpnu silu peňazí." },
+    { "term": "Finančná rezerva", "definition": "Odložené peniaze vo výške aspoň 3–6 mesiacov výdavkov. Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky." },
+    { "term": "Kde držať rezervu", "definition": "Na sporiacom alebo bežnom účte s rýchlym prístupom. Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty." },
+    { "term": "Diverzifikácia", "definition": "Rozloženie peňazí do rôznych investícií. Rozloženie znižuje riziko veľkej straty naraz." },
+    { "term": "Akcie", "definition": "Investícia s dlhodobo najvyšším očakávaným výnosom aj najvyšším kolísaním. Vyšší výnos = vyššie riziko kolísania; preto akcie na dlhý horizont." },
+    { "term": "Spoluúčasť", "definition": "Suma, ktorou sa na škode podieľaš ty. Poisťovňa platí škodu nad dohodnutú spoluúčasť." },
+    { "term": "„Najprv zaplať sebe“", "definition": "Trvalé sporenie nastavené hneď po výplate. Automatické sporenie pred míňaním je najspoľahlivejší návyk." }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 4 – Budujem si rezervu",
+      "difficulty": "stredná",
+      "steps": [
+        { "question": "Chceš si vytvoriť finančnú rezervu, ale nevieš, koľko a kam.", "options": [], "correct": 0 },
+        {
+          "question": "Aká veľká by mala rezerva byť?",
+          "options": ["3–6 mesiacov výdavkov", "1 týždeň výdavkov", "Rezerva netreba"],
+          "correct": 0,
+          "explanation": { "correct": "Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky.", "wrong": "Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky." }
+        },
+        {
+          "question": "Kde ju budeš držať?",
+          "options": ["Na sporiacom/bežnom účte s rýchlym prístupom", "V akciách", "V kryptomene"],
+          "correct": 0,
+          "explanation": { "correct": "Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty.", "wrong": "Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty." }
+        },
+        {
+          "question": "Ako zabezpečíš, aby ti sporenie vydržalo?",
+          "options": ["Nastavím trvalý príkaz hneď po výplate", "Odložím to, čo mi na konci mesiaca zvýši", "Budem sporiť nepravidelne"],
+          "correct": 0,
+          "explanation": { "correct": "Automatické sporenie pred míňaním je najspoľahlivejší návyk.", "wrong": "Automatické sporenie pred míňaním je najspoľahlivejší návyk." }
+        }
+      ]
+    }
+  ],
+  "zdroj": { "type": "ucebnica", "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu" },
+  "spider": {
+    "center": "Sporenie a investovanie",
+    "branches": [
+      {
+        "label": "Ako peniaze rastú",
+        "leaves": [
+          "Úroky sa pripisujú aj z úrokov, preto vklad rastie čoraz rýchlejšie.",
+          "Vyšší výnos = vyššie riziko kolísania; preto akcie na dlhý horizont."
+        ]
+      },
+      {
+        "label": "Ako peniaze strácajú hodnotu",
+        "leaves": [
+          "Inflácia znižuje kúpnu silu peňazí.",
+          "Pri inflácii 5 % ročne za rovnaké peniaze kúpiš o ~5 % menej."
+        ]
+      },
+      {
+        "label": "Rezerva",
+        "leaves": [
+          "Rezerva kryje výpadok príjmu či nečakané výdavky bez pôžičky.",
+          "Rezerva musí byť dostupná a bez rizika prudkej straty hodnoty.",
+          "Automatické sporenie pred míňaním je najspoľahlivejší návyk."
+        ]
+      },
+      {
+        "label": "Riziko a ochrana",
+        "leaves": [
+          "Rozloženie znižuje riziko veľkej straty naraz.",
+          "Poisťovňa platí škodu nad dohodnutú spoluúčasť."
+        ]
+      }
+    ]
+  }
+}

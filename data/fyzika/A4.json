@@ -1,0 +1,114 @@
+{
+  "id": "fyzika-A4",
+  "title": "Skladanie síl na priamke",
+  "schemaVersion": 1,
+  "tags": [
+    "fyzika",
+    "vektory",
+    "sily"
+  ],
+  "summary": "Ak na teleso (napríklad vozík) pôsobia dve sily na jednej priamke, vektorovo zapíšeme výslednicu vždy ako súčet vektorov F = F₁ + F₂.\nSkalárne, teda len s veľkosťami, pri rovnakom smere: F = F₁ + F₂.\nSkalárne pri opačnom smere: F = F₂ − F₁, ak F₂ > F₁, prípadne F = F₁ − F₂, ak F₁ > F₂. Výslednica má smer väčšej sily.\nDve rovnako veľké sily opačného smeru dajú nulovú výslednicu.",
+  "quiz": [
+    {
+      "id": "fy16",
+      "q": "Na vozík pôsobia dve sily rovnakým smerom: F₁ = 30 N a F₂ = 50 N. Aká je výslednica?",
+      "options": [
+        "20 N",
+        "80 N",
+        "1 500 N",
+        "50 N"
+      ],
+      "correct": 1,
+      "explanation": "Rovnaký smer: F = F₁ + F₂ = 30 N + 50 N = 80 N."
+    },
+    {
+      "id": "fy17",
+      "q": "Sily F₁ = 30 N a F₂ = 50 N pôsobia opačnými smermi. Aká je výslednica?",
+      "options": [
+        "80 N v smere F₁",
+        "20 N v smere F₁",
+        "20 N v smere F₂",
+        "0 N"
+      ],
+      "correct": 2,
+      "explanation": "Opačný smer: F = F₂ − F₁ = 50 N − 30 N = 20 N, v smere väčšej sily F₂."
+    },
+    {
+      "id": "fy18",
+      "q": "Dve rovnako veľké sily pôsobia opačnými smermi. Aká je výslednica?",
+      "options": [
+        "Nulová",
+        "Dvojnásobná",
+        "Rovná jednej sile",
+        "Nedá sa určiť"
+      ],
+      "correct": 0,
+      "explanation": "F = F₂ − F₁ a pri F₁ = F₂ je to 0."
+    },
+    {
+      "id": "fy19",
+      "q": "Ktorý vektorový zápis výslednice dvoch síl platí vždy?",
+      "options": [
+        "F = F₁ − F₂",
+        "F = F₁ · F₂",
+        "F = F₁ + F₂ (súčet vektorov)",
+        "Žiadny, závisí od smeru"
+      ],
+      "correct": 2,
+      "explanation": "Vektorovo sa sily vždy sčítajú: F = F₁ + F₂. Až pri skalárnom zápise sa pri opačnom smere veľkosti odčítajú."
+    },
+    {
+      "id": "fy20",
+      "q": "F₁ = 70 N pôsobí doprava, F₂ = 40 N doľava. Aká je výslednica?",
+      "options": [
+        "30 N doprava",
+        "30 N doľava",
+        "110 N doprava",
+        "110 N doľava"
+      ],
+      "correct": 0,
+      "explanation": "F₁ > F₂, preto F = F₁ − F₂ = 70 N − 40 N = 30 N, v smere väčšej sily F₁, teda doprava."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Skladanie síl na priamke",
+    "branches": [
+      {
+        "label": "Rovnaký smer",
+        "leaves": [
+          "F = F₁ + F₂",
+          "veľkosti sa sčítajú",
+          "30 N + 50 N = 80 N"
+        ]
+      },
+      {
+        "label": "Opačný smer",
+        "leaves": [
+          "F = F₂ − F₁",
+          "smer väčšej sily",
+          "50 N − 30 N = 20 N"
+        ]
+      },
+      {
+        "label": "Zápis výslednice",
+        "leaves": [
+          "vektorový: súčet vektorov",
+          "skalárny: s veľkosťami",
+          "vektorový platí vždy"
+        ]
+      },
+      {
+        "label": "Rovnováha síl",
+        "leaves": [
+          "rovnaké sily proti sebe",
+          "výslednica je nulová",
+          "stojaci vozík ostane stáť"
+        ]
+      }
+    ]
+  }
+}

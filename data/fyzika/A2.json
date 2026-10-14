@@ -1,0 +1,114 @@
+{
+  "id": "fyzika-A2",
+  "title": "Násobenie a delenie vektora číslom",
+  "schemaVersion": 1,
+  "tags": [
+    "fyzika",
+    "vektory",
+    "sily"
+  ],
+  "summary": "Násobenie vektora kladným číslom mení veľkosť, orientácia ostáva: vektor b = 4·a je 4-krát dlhší než a.\nZáporné číslo navyše otočí orientáciu: (−1)·a = −a je opačný vektor.\nPre veľkosť platí |k·a| = |k|·|a|, preto veľkosť nikdy nie je záporná.\nDelenie číslom je násobenie prevrátenou hodnotou: a : 2 = ½·a a a : (−2) = −½·a. Oba majú veľkosť ½·|a|.\nVynásobenie nulou dá nulový vektor: a·0 = 0 a 0·k = 0, kde 0 je nulový vektor [0; 0].",
+  "quiz": [
+    {
+      "id": "fy06",
+      "q": "Vektor b = 4·a. Aká je veľkosť b?",
+      "options": [
+        "4·|a|",
+        "|a| + 4",
+        "|a| : 4",
+        "Rovnaká ako |a|"
+      ],
+      "correct": 0,
+      "explanation": "|b| = |4|·|a| = 4·|a|; kladné číslo orientáciu nemení."
+    },
+    {
+      "id": "fy07",
+      "q": "Vektor b = (−1)·a. Čo platí?",
+      "options": [
+        "b je nulový vektor",
+        "b má rovnakú veľkosť a opačnú orientáciu ako a",
+        "b je dvakrát dlhší",
+        "b = a"
+      ],
+      "correct": 1,
+      "explanation": "(−1)·a = −a je opačný vektor: |−1|·|a| = |a|, orientácia sa otočí."
+    },
+    {
+      "id": "fy08",
+      "q": "Vektor b = a : (−2). Čo platí pre b?",
+      "options": [
+        "Veľkosť 2·|a|, rovnaká orientácia",
+        "Veľkosť −½·|a|",
+        "Veľkosť ½·|a|, opačná orientácia",
+        "Veľkosť ½·|a|, rovnaká orientácia"
+      ],
+      "correct": 2,
+      "explanation": "a : (−2) = −½·a, veľkosť 1/|−2|·|a| = ½·|a|; záporné číslo otočí orientáciu. Veľkosť nemôže byť záporná."
+    },
+    {
+      "id": "fy09",
+      "q": "Čomu sa rovná a·0?",
+      "options": [
+        "Číslu 0",
+        "Vektoru a",
+        "Vektoru −a",
+        "Nulovému vektoru"
+      ],
+      "correct": 3,
+      "explanation": "Vynásobením vektora nulou dostaneme nulový vektor: a·0 = 0, teda vektor so súradnicami [0; 0]."
+    },
+    {
+      "id": "fy10",
+      "q": "Čo spraví s vektorom delenie kladným číslom 2?",
+      "options": [
+        "Polovičná veľkosť, rovnaká orientácia",
+        "Polovičná veľkosť, opačná orientácia",
+        "Dvojnásobná veľkosť",
+        "Vznikne nulový vektor"
+      ],
+      "correct": 0,
+      "explanation": "a : 2 = ½·a: veľkosť ½·|a|, kladné číslo orientáciu nemení."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Násobenie a delenie vektora číslom",
+    "branches": [
+      {
+        "label": "Kladné číslo",
+        "leaves": [
+          "4·a je 4-krát dlhší",
+          "orientácia ostáva",
+          "a : 2 = ½·a"
+        ]
+      },
+      {
+        "label": "Záporné číslo",
+        "leaves": [
+          "(−1)·a = −a",
+          "orientácia sa otočí",
+          "a : (−2) = −½·a"
+        ]
+      },
+      {
+        "label": "Veľkosť výsledku",
+        "leaves": [
+          "|k·a| = |k|·|a|",
+          "veľkosť nie je záporná",
+          "|a : (−2)| = ½·|a|"
+        ]
+      },
+      {
+        "label": "Násobenie nulou",
+        "leaves": [
+          "a·0 = nulový vektor",
+          "0·k = nulový vektor",
+          "nulový vektor [0; 0]"
+        ]
+      }
+    ]
+  }
+}

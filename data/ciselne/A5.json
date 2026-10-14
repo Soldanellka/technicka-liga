@@ -1,0 +1,125 @@
+{
+  "id": "ciselne-A5",
+  "title": "Šestnástková a iné",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "šestnástková sústava"
+  ],
+  "summary": "Šestnástková a iné sústavy: A = 10, B = 11, C = 12, D = 13, E = 14, F = 15. Každú číslicu vynásob základom na jej pozíciu a sčítaj: 2F₁₆ = 2·16 + 15 = 47.",
+  "quiz": [
+    {
+      "id": "cs11",
+      "q": "Akú hodnotu má číslica D v šestnástkovej sústave?",
+      "options": [
+        "4",
+        "12",
+        "14",
+        "13"
+      ],
+      "correct": 3,
+      "explanation": "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15."
+    },
+    {
+      "id": "cs12",
+      "q": "Koľko je 2F₁₆ v desiatkovej sústave?",
+      "options": [
+        "47",
+        "215",
+        "32",
+        "45"
+      ],
+      "correct": 0,
+      "explanation": "F = 15, preto 2·16 + 15·1 = 32 + 15 = 47."
+    },
+    {
+      "id": "cs13",
+      "q": "Koľko je AECD₁₆ v desiatkovej sústave?",
+      "options": [
+        "43 981",
+        "44 749",
+        "40 960",
+        "52 941"
+      ],
+      "correct": 1,
+      "explanation": "13·1 + 12·16 + 14·256 + 10·4096 = 13 + 192 + 3584 + 40 960 = 44 749."
+    },
+    {
+      "id": "cs29",
+      "q": "Koľko je 1A3₁₆?",
+      "options": [
+        "413",
+        "163",
+        "419",
+        "403"
+      ],
+      "correct": 2,
+      "explanation": "1·256 + 10·16 + 3 = 256 + 160 + 3 = 419."
+    },
+    {
+      "id": "cs30",
+      "q": "Koľko je 157₈?",
+      "options": [
+        "111",
+        "157",
+        "103",
+        "119"
+      ],
+      "correct": 0,
+      "explanation": "1·64 + 5·8 + 7 = 64 + 40 + 7 = 111."
+    },
+    {
+      "id": "cs31",
+      "q": "Koľko je 213₆?",
+      "options": [
+        "213",
+        "75",
+        "87",
+        "81"
+      ],
+      "correct": 3,
+      "explanation": "2·36 + 1·6 + 3 = 72 + 6 + 3 = 81."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Šestnástková a iné",
+    "branches": [
+      {
+        "label": "Písmená v šestnástkovej",
+        "leaves": [
+          "A = 10, B = 11",
+          "C = 12, D = 13",
+          "E = 14, F = 15"
+        ]
+      },
+      {
+        "label": "Prevod do desiatkovej",
+        "leaves": [
+          "pozície sprava od 0",
+          "číslica × základ na pozíciu",
+          "všetko sčítaj"
+        ]
+      },
+      {
+        "label": "Mocniny základov",
+        "leaves": [
+          "8: 1, 8, 64, 512",
+          "12: 1, 12, 144, 1728",
+          "16: 1, 16, 256, 4096"
+        ]
+      },
+      {
+        "label": "Opačný smer",
+        "leaves": [
+          "deľ základom",
+          "zvyšky zdola nahor",
+          "44749 → AECD₁₆"
+        ]
+      }
+    ]
+  }
+}

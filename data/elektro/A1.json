@@ -1,0 +1,126 @@
+{
+  "id": "elektro-A1",
+  "title": "PN prechod a hradlová vrstva",
+  "schemaVersion": 1,
+  "tags": [
+    "elektrotechnika",
+    "polovodiče",
+    "PN prechod"
+  ],
+  "summary": "PN prechod je rozhranie polovodiča typu P a polovodiča typu N.\nV polovodiči typu P prevažujú diery (kladné nosiče náboja, ⊕), v type N voľné elektróny (záporné nosiče, ⊖).\nNa rozhraní sa elektróny a diery rekombinujú a vznikne hradlová vrstva – oblasť bez voľných elektrónov a dier, ktorá bráni ďalšej rekombinácii. Nazýva sa aj potenciálová bariéra.\nS PN prechodom sa stretneme v dióde, tranzistore a integrovanom obvode.",
+  "quiz": [
+    {
+      "id": "el01",
+      "q": "Čo je PN prechod?",
+      "options": [
+        "Rozhranie polovodiča typu P a polovodiča typu N",
+        "Spoj dvoch kovových drôtov",
+        "Typ batérie",
+        "Izolant medzi vodičmi"
+      ],
+      "correct": 0,
+      "explanation": "PN prechod je rozhranie polovodiča typu P a polovodiča typu N."
+    },
+    {
+      "id": "el02",
+      "q": "Ktoré nosiče náboja prevažujú v polovodiči typu P?",
+      "options": [
+        "Voľné elektróny",
+        "Diery (kladné nosiče)",
+        "Protóny",
+        "Ióny vzduchu"
+      ],
+      "correct": 1,
+      "explanation": "V type P prevažujú diery (kladné nosiče, ⊕), v type N voľné elektróny (záporné, ⊖)."
+    },
+    {
+      "id": "el03",
+      "q": "Ktoré nosiče náboja prevažujú v polovodiči typu N?",
+      "options": [
+        "Diery",
+        "Protóny",
+        "Voľné elektróny",
+        "Neutróny"
+      ],
+      "correct": 2,
+      "explanation": "N znamená negatívny: prevažujú voľné elektróny so záporným nábojom (⊖)."
+    },
+    {
+      "id": "el04",
+      "q": "Čo je hradlová vrstva?",
+      "options": [
+        "Oblasť na rozhraní P a N bez voľných elektrónov a dier",
+        "Kladný pól zdroja",
+        "Kovový kontakt diódy",
+        "Najvodivejšia časť polovodiča"
+      ],
+      "correct": 0,
+      "explanation": "Hradlová vrstva je oblasť na rozhraní P a N bez voľných elektrónov a dier; bráni ďalšej rekombinácii."
+    },
+    {
+      "id": "el05",
+      "q": "Ako sa ešte nazýva hradlová vrstva?",
+      "options": [
+        "Prepustný smer",
+        "Potenciálová bariéra",
+        "Elektrolyt",
+        "Kondenzátor"
+      ],
+      "correct": 1,
+      "explanation": "Hradlová vrstva sa nazýva aj potenciálová (potenciálna) bariéra."
+    },
+    {
+      "id": "el06",
+      "q": "Kde sa stretneme s PN prechodom?",
+      "options": [
+        "Len v žiarovke",
+        "V rezistore",
+        "V transformátore",
+        "V dióde, tranzistore a integrovanom obvode"
+      ],
+      "correct": 3,
+      "explanation": "PN prechod je základom diódy, tranzistora aj integrovaného obvodu."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "PN prechod a hradlová vrstva",
+    "branches": [
+      {
+        "label": "Polovodič P",
+        "leaves": [
+          "prevažujú diery",
+          "kladné nosiče náboja",
+          "na náčrte ⊕"
+        ]
+      },
+      {
+        "label": "Polovodič N",
+        "leaves": [
+          "prevažujú voľné elektróny",
+          "záporné nosiče náboja",
+          "na náčrte ⊖"
+        ]
+      },
+      {
+        "label": "Hradlová vrstva",
+        "leaves": [
+          "na rozhraní P a N",
+          "bez voľných nosičov",
+          "potenciálová bariéra"
+        ]
+      },
+      {
+        "label": "Použitie PN prechodu",
+        "leaves": [
+          "dióda",
+          "tranzistor",
+          "integrovaný obvod"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "id": "ciselne-A4",
+  "title": "Sčítanie",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "sčítanie"
+  ],
+  "summary": "Sčítanie v dvojkovej: 0 + 0 = 0, 0 + 1 = 1, 1 + 1 = 0 a prenášam 1, 1 + 1 + 1 = 1 a prenášam 1. Napríklad 11110 + 01101 = 101011 (30 + 13 = 43).",
+  "quiz": [
+    {
+      "id": "cs09",
+      "q": "Koľko je 1 + 1 v dvojkovej sústave?",
+      "options": [
+        "2",
+        "11",
+        "10",
+        "0"
+      ],
+      "correct": 2,
+      "explanation": "Napíšeme 0 a 1 prenášame do ďalšieho stĺpca; 10₂ = 2."
+    },
+    {
+      "id": "cs10",
+      "q": "11110₂ + 01101₂ = ?",
+      "options": [
+        "101011₂",
+        "100011₂",
+        "11011₂",
+        "101111₂"
+      ],
+      "correct": 0,
+      "explanation": "30 + 13 = 43 a 43 = 32 + 8 + 2 + 1 = 101011₂."
+    },
+    {
+      "id": "cs26",
+      "q": "Koľko je 1 + 1 + 1 v dvojkovej (napr. s prenosom)?",
+      "options": [
+        "3",
+        "10",
+        "11",
+        "111"
+      ],
+      "correct": 2,
+      "explanation": "1 + 1 + 1 = 3 = 11₂: píšem 1 a 1 prenášam."
+    },
+    {
+      "id": "cs27",
+      "q": "11001₂ + 00111₂ = ?",
+      "options": [
+        "11110₂",
+        "100001₂",
+        "10000₂",
+        "100000₂"
+      ],
+      "correct": 3,
+      "explanation": "25 + 7 = 32 = 100000₂."
+    },
+    {
+      "id": "cs28",
+      "q": "1111₂ + 1₂ = ?",
+      "options": [
+        "10000₂",
+        "1112₂",
+        "11110₂",
+        "1110₂"
+      ],
+      "correct": 0,
+      "explanation": "15 + 1 = 16 = 10000₂. Prenos sa prenesie cez všetky stĺpce."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Sčítanie",
+    "branches": [
+      {
+        "label": "Základné pravidlá",
+        "leaves": [
+          "0 + 0 = 0",
+          "0 + 1 = 1",
+          "1 + 1 = 10₂"
+        ]
+      },
+      {
+        "label": "Prenos",
+        "leaves": [
+          "1 + 1 + 1 = 11₂",
+          "prenos píš nad ďalší stĺpec",
+          "posledný prenos ide na začiatok"
+        ]
+      },
+      {
+        "label": "Postup",
+        "leaves": [
+          "čísla pod seba",
+          "sprava doľava",
+          "skúška v desiatkovej"
+        ]
+      },
+      {
+        "label": "Príklady",
+        "leaves": [
+          "11110 + 01101 = 101011",
+          "1011 + 0110 = 10001",
+          "1111 + 1 = 10000"
+        ]
+      }
+    ]
+  }
+}

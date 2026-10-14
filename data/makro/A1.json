@@ -1,0 +1,298 @@
+{
+  "id": "1. A",
+  "title": "HDP a ekonomický rast",
+  "schemaVersion": "1.1",
+  "tags": [
+    "makroekonomia",
+    "hdp",
+    "rast",
+    "ecb"
+  ],
+  "summary": "HDP meria hodnotu všetkých tovarov a služieb vyrobených v krajine; nezahŕňa však nelegálne aktivity ani neplatenú prácu. Nominálny HDP používa ceny platné v danom roku, reálny HDP odstraňuje vplyv inflácie. Ekonomický rast je rast HDP v čase – podporujú ho investície, ktoré zvyšujú produktivitu. Potenciálny rast je udržateľný rast bez prehriatia ekonomiky. Menovú politiku krajín, ktoré používajú euro, riadi Európska centrálna banka; jej hlavným cieľom je cenová stabilita, teda nízka a predvídateľná inflácia. Ekonomický rast ovplyvňuje nastavovaním úrokových sadzieb, ktoré pôsobia na úvery a investície.",
+  "quiz": [
+    {
+      "question": "Čo je HDP?",
+      "options": [
+        "Celková hodnota vyrobených tovarov a služieb v krajine",
+        "Počet obyvateľov krajiny",
+        "Výška štátneho dlhu",
+        "Miera inflácie"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "HDP meria hodnotu všetkých tovarov a služieb vyrobených v krajine.",
+        "wrong": "Správna odpoveď: Celková hodnota vyrobených tovarov a služieb v krajine. HDP meria hodnotu všetkých tovarov a služieb vyrobených v krajine."
+      }
+    },
+    {
+      "question": "Čo znamená ekonomický rast?",
+      "options": [
+        "Pokles výroby",
+        "Zvýšenie HDP",
+        "Zníženie nezamestnanosti",
+        "Zvýšenie inflácie"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Ekonomický rast je rast HDP v čase.",
+        "wrong": "Správna odpoveď: Zvýšenie HDP. Ekonomický rast je rast HDP v čase."
+      }
+    },
+    {
+      "question": "Ktorý faktor podporuje ekonomický rast?",
+      "options": [
+        "Pokles produktivity",
+        "Zvyšovanie investícií",
+        "Znižovanie výroby",
+        "Rast nezamestnanosti"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Investície zvyšujú produktivitu a podporujú rast.",
+        "wrong": "Správna odpoveď: Zvyšovanie investícií. Investície zvyšujú produktivitu a podporujú rast."
+      }
+    },
+    {
+      "question": "Čo je nominálny HDP?",
+      "options": [
+        "HDP upravený o infláciu",
+        "HDP meraný v aktuálnych cenách",
+        "HDP meraný v zahraničnej mene",
+        "HDP bez služieb"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Nominálny HDP používa ceny platné v danom roku.",
+        "wrong": "Správna odpoveď: HDP meraný v aktuálnych cenách. Nominálny HDP používa ceny platné v danom roku."
+      }
+    },
+    {
+      "question": "Čo je reálny HDP?",
+      "options": [
+        "HDP bez tovarov",
+        "HDP upravený o infláciu",
+        "HDP meraný v budúcich cenách",
+        "HDP meraný v zahraničnej mene"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Reálny HDP odstraňuje vplyv inflácie.",
+        "wrong": "Správna odpoveď: HDP upravený o infláciu. Reálny HDP odstraňuje vplyv inflácie."
+      }
+    },
+    {
+      "question": "Ktoré tvrdenie o HDP je správne?",
+      "options": [
+        "HDP meria životnú úroveň presne",
+        "HDP nezahŕňa nelegálnu ekonomiku",
+        "HDP zahŕňa všetky neplatené činnosti",
+        "HDP je vždy presný"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "HDP nezahŕňa nelegálne aktivity ani neplatenú prácu.",
+        "wrong": "Správna odpoveď: HDP nezahŕňa nelegálnu ekonomiku. HDP nezahŕňa nelegálne aktivity ani neplatenú prácu."
+      }
+    },
+    {
+      "question": "Čo je potenciálny rast ekonomiky?",
+      "options": [
+        "Maximálny možný rast bez tlaku na infláciu",
+        "Rast spôsobený infláciou",
+        "Rast spôsobený poklesom produktivity",
+        "Rast spôsobený nezamestnanosťou"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Potenciálny rast je udržateľný rast bez prehriatia ekonomiky.",
+        "wrong": "Správna odpoveď: Maximálny možný rast bez tlaku na infláciu. Potenciálny rast je udržateľný rast bez prehriatia ekonomiky."
+      }
+    },
+    {
+      "question": "Ktorá inštitúcia je zodpovedná za menovú politiku eurozóny?",
+      "options": [
+        "Európska komisia",
+        "Európska centrálna banka (ECB)",
+        "Svetová banka",
+        "Medzinárodný menový fond"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "ECB riadi menovú politiku krajín, ktoré používajú euro.",
+        "wrong": "Správna odpoveď: Európska centrálna banka (ECB). ECB riadi menovú politiku krajín, ktoré používajú euro."
+      }
+    },
+    {
+      "question": "Aký je hlavný cieľ ECB?",
+      "options": [
+        "Zvyšovať HDP",
+        "Udržiavať cenovú stabilitu",
+        "Znižovať dane",
+        "Zvyšovať mzdy"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "ECB sa zameriava na stabilitu cien, teda nízku a predvídateľnú infláciu.",
+        "wrong": "Správna odpoveď: Udržiavať cenovú stabilitu. ECB sa zameriava na stabilitu cien, teda nízku a predvídateľnú infláciu."
+      }
+    },
+    {
+      "question": "Ako ECB ovplyvňuje ekonomický rast?",
+      "options": [
+        "Nastavovaním úrokových sadzieb",
+        "Tvorbou štátneho rozpočtu",
+        "Stanovením cien energií",
+        "Riadením výroby"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Úrokové sadzby ovplyvňujú úvery, investície a tým aj rast ekonomiky.",
+        "wrong": "Správna odpoveď: Nastavovaním úrokových sadzieb. Úrokové sadzby ovplyvňujú úvery, investície a tým aj rast ekonomiky."
+      }
+    }
+  ],
+  "tiles": [
+    {
+      "term": "HDP",
+      "definition": "Celková hodnota tovarov a služieb vyrobených v krajine."
+    },
+    {
+      "term": "Nominálny HDP",
+      "definition": "HDP meraný v cenách platných v danom roku."
+    },
+    {
+      "term": "Reálny HDP",
+      "definition": "HDP upravený o infláciu."
+    },
+    {
+      "term": "Ekonomický rast",
+      "definition": "Rast HDP v čase."
+    },
+    {
+      "term": "Potenciálny rast",
+      "definition": "Udržateľný rast bez prehriatia ekonomiky a tlaku na infláciu."
+    },
+    {
+      "term": "ECB",
+      "definition": "Európska centrálna banka – riadi menovú politiku krajín, ktoré používajú euro."
+    },
+    {
+      "term": "Cenová stabilita",
+      "definition": "Hlavný cieľ ECB: nízka a predvídateľná inflácia."
+    },
+    {
+      "term": "Úrokové sadzby",
+      "definition": "Nástroj ECB – ovplyvňujú úvery, investície a tým aj rast ekonomiky."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 1 – Krajina rastie",
+      "difficulty": "ľahká",
+      "steps": [
+        {
+          "question": "V správach hlásia, že HDP krajiny sa medziročne zvýšil.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Čo to znamená?",
+          "options": [
+            "Ekonomika rastie – rast HDP v čase je ekonomický rast",
+            "Ceny klesli",
+            "Krajina má viac obyvateľov"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Ekonomický rast je rast HDP v čase.",
+            "wrong": "Správna odpoveď: Ekonomika rastie – rast HDP v čase je ekonomický rast. Ekonomický rast je rast HDP v čase."
+          }
+        },
+        {
+          "question": "Čo takýto rast podporuje?",
+          "options": [
+            "Zvyšovanie investícií",
+            "Pokles produktivity",
+            "Rast nezamestnanosti"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Investície zvyšujú produktivitu a podporujú rast.",
+            "wrong": "Správna odpoveď: Zvyšovanie investícií. Investície zvyšujú produktivitu a podporujú rast."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 2 – Rast, alebo len drahšie ceny?",
+      "difficulty": "stredná",
+      "steps": [
+        {
+          "question": "Nominálny HDP vzrástol o 5 %, ale ceny stúpli tiež o 5 %.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Ktorý ukazovateľ ukáže skutočný rast?",
+          "options": [
+            "Reálny HDP – odstraňuje vplyv inflácie",
+            "Nominálny HDP – používa aktuálne ceny",
+            "Počet obyvateľov"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Reálny HDP odstraňuje vplyv inflácie.",
+            "wrong": "Správna odpoveď: Reálny HDP – odstraňuje vplyv inflácie. Reálny HDP odstraňuje vplyv inflácie."
+          }
+        },
+        {
+          "question": "Prečo nominálny HDP nestačí?",
+          "options": [
+            "Používa ceny platné v danom roku, takže ho zvyšuje aj samotný rast cien",
+            "Nezahŕňa služby",
+            "Meria len export"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Nominálny HDP používa ceny platné v danom roku.",
+            "wrong": "Správna odpoveď: Používa ceny platné v danom roku, takže ho zvyšuje aj samotný rast cien. Nominálny HDP používa ceny platné v danom roku."
+          }
+        }
+      ]
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu"
+  },
+  "spider": {
+    "center": "HDP a ekonomický rast",
+    "branches": [
+      {
+        "label": "Meranie ekonomiky",
+        "leaves": [
+          "HDP meria hodnotu všetkých tovarov a služieb vyrobených v krajine.",
+          "HDP nezahŕňa nelegálne aktivity ani neplatenú prácu.",
+          "Nominálny HDP používa ceny platné v danom roku.",
+          "Reálny HDP odstraňuje vplyv inflácie."
+        ]
+      },
+      {
+        "label": "Rast",
+        "leaves": [
+          "Ekonomický rast je rast HDP v čase.",
+          "Investície zvyšujú produktivitu a podporujú rast.",
+          "Potenciálny rast je udržateľný rast bez prehriatia ekonomiky."
+        ]
+      },
+      {
+        "label": "ECB a rast",
+        "leaves": [
+          "ECB riadi menovú politiku krajín, ktoré používajú euro.",
+          "Hlavným cieľom ECB je cenová stabilita.",
+          "Úrokové sadzby ovplyvňujú úvery, investície a tým aj rast ekonomiky."
+        ]
+      }
+    ]
+  }
+}

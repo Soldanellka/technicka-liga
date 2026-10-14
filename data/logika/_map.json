@@ -1,0 +1,14 @@
+{
+  "area": "Logické funkcie",
+  "clusters": [
+    {
+      "label": "Booleova algebra",
+      "okruhy": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "links": []
+}

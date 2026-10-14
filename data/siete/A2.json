@@ -1,0 +1,114 @@
+{
+  "id": "siete-A2",
+  "title": "Adresy: port, IP, MAC",
+  "schemaVersion": 1,
+  "tags": [
+    "počítačové siete",
+    "vrstvy",
+    "adresy"
+  ],
+  "summary": "Zariadenie v sieti používa tri druhy adries.\nL4 transportná vrstva: port, 16 bitov (0 až 65 535). Určuje, ktorej aplikácii dáta patria.\nL3 sieťová vrstva: IP adresa. IPv4 adresa má 32 bitov, napríklad 192.168.1.10 (štyri čísla po 8 bitov). Určuje počítač v sieti.\nL2 spojová vrstva: MAC adresa, 48 bitov, zapisuje sa ako 6 dvojíc šestnástkových číslic. Určuje konkrétnu sieťovú kartu.",
+  "quiz": [
+    {
+      "id": "ps06",
+      "q": "Ktorá adresa patrí transportnej vrstve L4?",
+      "options": [
+        "MAC adresa",
+        "IP adresa",
+        "Port",
+        "E-mailová adresa"
+      ],
+      "correct": 2,
+      "explanation": "L4 port (16 bitov), L3 IP adresa (32 bitov), L2 MAC adresa (48 bitov)."
+    },
+    {
+      "id": "ps07",
+      "q": "Koľko bitov má IPv4 adresa?",
+      "options": [
+        "16",
+        "32",
+        "48",
+        "64"
+      ],
+      "correct": 1,
+      "explanation": "IPv4 adresa má 32 bitov, napríklad 192.168.1.10 sú štyri čísla po 8 bitov: 4·8 = 32."
+    },
+    {
+      "id": "ps08",
+      "q": "Koľko bitov má MAC adresa?",
+      "options": [
+        "16",
+        "32",
+        "48",
+        "128"
+      ],
+      "correct": 2,
+      "explanation": "MAC adresa má 48 bitov a zapisuje sa ako 6 dvojíc šestnástkových číslic: 6·8 = 48."
+    },
+    {
+      "id": "ps09",
+      "q": "Na ktorej vrstve pracuje MAC adresa?",
+      "options": [
+        "L2 spojová",
+        "L3 sieťová",
+        "L4 transportná",
+        "L1 fyzická"
+      ],
+      "correct": 0,
+      "explanation": "MAC adresa patrí spojovej vrstve L2, IP adresa sieťovej L3 a port transportnej L4."
+    },
+    {
+      "id": "ps10",
+      "q": "Koľko rôznych portov sa dá zapísať do 16 bitov?",
+      "options": [
+        "16",
+        "255",
+        "1 024",
+        "65 536"
+      ],
+      "correct": 3,
+      "explanation": "16 bitov dá 2¹⁶ = 65 536 kombinácií, teda porty 0 až 65 535."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Adresy: port, IP, MAC",
+    "branches": [
+      {
+        "label": "Port",
+        "leaves": [
+          "adresa na vrstve L4",
+          "16 bitov",
+          "0 až 65 535"
+        ]
+      },
+      {
+        "label": "IP adresa",
+        "leaves": [
+          "adresa na vrstve L3",
+          "32 bitov (IPv4)",
+          "napr. 192.168.1.10"
+        ]
+      },
+      {
+        "label": "MAC adresa",
+        "leaves": [
+          "adresa na vrstve L2",
+          "48 bitov",
+          "6 dvojíc šestnástkových číslic"
+        ]
+      },
+      {
+        "label": "Čo adresa určuje",
+        "leaves": [
+          "port → aplikáciu",
+          "IP → počítač v sieti",
+          "MAC → sieťovú kartu"
+        ]
+      }
+    ]
+  }
+}

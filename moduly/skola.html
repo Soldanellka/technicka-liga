@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Študijný modul – Finančná liga</title>
+<script>
+/* Téma sa riadi tým istým nastavením ako zvyšok appky: kľúč lex_theme
+   v localStorage, ktorý zapisuje theme.js. Appka má predvolene svetlú
+   tému a preferenciu systému ignoruje, preto sa pri chýbajúcej hodnote
+   nastaví "light". Beží v <head> pred vykreslením, aby stránka neblikla.
+   localStorage v súkromnom režime Safari hádže už pri čítaní – fail-soft. */
+(function(){
+  var t = "light";
+  try { if (localStorage.getItem("lex_theme") === "dark") t = "dark"; } catch (e) {}
+  document.documentElement.setAttribute("data-theme", t);
+})();
+</script>
+<style>
+/* ============================================================
+   Rozloženie je prevzaté zo študijného modulu LexAreny
+   (ob-pravo-app: .header / .sidebar s krúžkom progresu /
+   .welcome-screen s tromi štatistikami). Prevzala sa KOSTRA,
+   nie vzhľad – paleta aj písmo sú z Finančnej ligy (styles.css),
+   ružová #ff6f91 ani Google Fonts sa sem nedostali.
+============================================================ */
+:root{
+  /* Paleta prevzatá zo styles.css, nech modul sedí so zvyškom appky:
+     --bg/--panel/--ink/--muted sú 1:1 appkové --bg/--surface/--text/--muted,
+     --accent je appkové --accent-2, --ok vychádza zo zelenej #15803d,
+     ktorú appka používa na potvrdenia. --line, --accent-soft a --bit-off
+     appka nemá, sú odvodené z --accent-1 a overené na kontrast. */
+  --bg:#f5faf9; --panel:#ffffff; --ink:#14262c; --muted:#54706b; --line:#d9e8e4;
+  --accent:#17806f; --accent-soft:#e4f2ef;
+  --ok:#15803d; --ok-bg:#e7f6ed; --bad:#ef4444; --bad-bg:#fdeced;
+  --bit-off:#eaf3f1;
+  --radius:14px;
+  --shadow:0 4px 20px rgba(16,16,16,.06);
+  box-sizing:border-box;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1220; --panel:#0f1724; --ink:#e6eef6; --muted:#9aa6b2; --line:#23314a;
+    --accent:#7cc1e3; --accent-soft:#16283c;
+    --ok:#4ade80; --ok-bg:#14301f; --bad:#f87171; --bad-bg:#3a1f22; --bit-off:#17202e;
+    --shadow:0 8px 28px rgba(2,6,23,.6);
+  }
+}
+:root[data-theme="dark"]{
+  /* ⚠️ Rovnaké hodnoty ako v bloku @media vyššie – appka tmavú tému riadi
+     atribútom data-theme, preferencia systému je len záloha. */
+  --bg:#0b1220; --panel:#0f1724; --ink:#e6eef6; --muted:#9aa6b2; --line:#23314a;
+  --accent:#7cc1e3; --accent-soft:#16283c;
+  --ok:#4ade80; --ok-bg:#14301f; --bad:#f87171; --bad-bg:#3a1f22; --bit-off:#17202e;
+  --shadow:0 8px 28px rgba(2,6,23,.6);
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.6}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* Obsah okruhu dostáva ohnisko programovo (kvôli čítačkám obrazovky pri
+   prepnutí okruhu), nie je to ovládací prvok – viditeľný prstenec okolo
+   celého panela by bol len vizuálny šum. Prvky, ktoré sa dajú ovládať
+   klávesnicou, si prstenec ponechávajú. */
+#okruhDetail:focus,#okruhDetail:focus-visible{outline:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ── HORNÁ LIŠTA ── */
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:calc(12px + env(safe-area-inset-top,0px)) 20px 12px;
+  background:var(--panel);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.back-link{display:flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;
+  font-size:13px;font-weight:600;background:none;border:0;cursor:pointer;font-family:inherit;
+  padding:4px 2px;transition:color .2s}
+.back-link:hover{color:var(--accent)}
+.header-title{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:600;
+  color:var(--ink);min-width:0}
+.header-title span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logo-dot{width:8px;height:8px;border-radius:999px;background:var(--accent);flex-shrink:0}
+.theme-btn{background:none;border:1.5px solid var(--line);border-radius:999px;padding:7px;
+  cursor:pointer;color:var(--muted);display:flex;align-items:center;transition:all .2s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── MRIEŽKA ── */
+.app-container{display:flex;gap:24px;padding:20px 24px calc(40px + env(safe-area-inset-bottom,0px));
+  max-width:1200px;margin:0 auto;align-items:flex-start}
+
+/* ── ZOZNAM OKRUHOV ── */
+.sidebar{width:280px;flex-shrink:0;background:var(--panel);border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;
+  position:sticky;top:78px;max-height:calc(100vh - 100px);display:flex;flex-direction:column}
+.sidebar-header{display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--accent-soft)}
+.sidebar-header h2{font-size:14px;font-weight:700;color:var(--ink);margin:0}
+.progress-ring-wrap{position:relative;width:48px;height:48px;flex-shrink:0}
+.progress-ring{display:block}
+.progress-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--accent)}
+.okruhy-list{overflow-y:auto;flex:1;padding:8px}
+.okruh-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+  cursor:pointer;transition:background .18s,border-color .18s,color .18s;font-size:13px;
+  color:var(--ink);border:1.5px solid transparent;width:100%;text-align:left;
+  background:none;font-family:inherit}
+.okruh-item:hover{background:var(--accent-soft)}
+.okruh-item.active{background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:600}
+.okruh-num{font-size:11px;font-weight:700;color:var(--muted);min-width:28px;flex-shrink:0}
+.okruh-item.active .okruh-num{color:var(--accent)}
+.okruh-title{flex:1;min-width:0}
+.okruh-status{color:var(--ok);font-weight:700;flex-shrink:0}
+
+/* ── OBSAH ── */
+.content{flex:1;min-width:0}
+
+/* ── UVÍTACÍ PANEL ── */
+.welcome-screen{text-align:center;padding:48px 20px}
+.welcome-icon{font-size:56px;margin-bottom:16px;line-height:1}
+.welcome-title{font-size:32px;font-weight:700;color:var(--ink);margin:0 0 10px}
+.welcome-sub{color:var(--muted);margin:0 0 28px}
+.welcome-stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.stat-box{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);
+  padding:18px 24px;min-width:96px;box-shadow:var(--shadow)}
+.stat-num{font-size:28px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* ── TYPOGRAFIA OBSAHU KAPITOLY ── */
+h1{font-size:2rem;line-height:1.15;margin:0 0 6px}
+h2{font-size:1.5rem;line-height:1.25;margin:0 0 14px}
+h3{font-size:1.1rem;margin:32px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+p{margin:0 0 12px}
+.num{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+  overflow-x:auto;font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:15px;
+  line-height:1.5;margin:0 0 14px}
+.tbl{overflow-x:auto;margin:0 0 14px}
+table{border-collapse:collapse;min-width:100%;background:var(--panel);font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:center}
+th{background:var(--accent-soft);font-weight:600}
+td:first-child,th:first-child{text-align:left}
+.note{background:var(--accent-soft);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+.note b{display:block;margin-bottom:2px}
+ul,ol{margin:0 0 12px;padding-left:22px}
+li{margin-bottom:4px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:0 0 10px}
+summary{cursor:pointer;font-weight:600}
+
+/* ── OTÁZKY (kroky prípadu + kvíz) ── */
+.q{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:0 0 12px}
+.q .qt{font-weight:600;margin-bottom:10px}
+.q .qn{color:var(--muted);font-weight:400;font-size:14px;display:block}
+.opts{display:grid;gap:8px}
+.opt{font:inherit;text-align:left;cursor:pointer;border:1px solid var(--line);background:var(--bg);color:var(--ink);
+  border-radius:10px;padding:10px 12px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ink)}
+.opt.bad{background:var(--bad-bg);border-color:var(--bad);color:var(--ink)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-bg)} .fb.bad{background:var(--bad-bg)}
+.fb strong{display:block}
+.case-intro{margin-bottom:12px}
+.score{font-weight:600;padding:12px 14px;border-radius:10px;background:var(--accent-soft);display:none}
+.score.show{display:block}
+.btn{font:inherit;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--panel);
+  border-radius:10px;padding:9px 16px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--accent)}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:32px;flex-wrap:wrap}
+
+/* ── MOBIL ──
+   LexArena pri ≤768 px len poskladá zoznam nad obsah a stlačí ho do
+   220 px vysokého skrolovacieho boxu, takže na telefóne sú oba panely
+   naraz a ani jeden poriadne. Tu preto platí zadanie: najprv zoznam
+   (aj s uvítacím panelom a štatistikami), ťuknutie otvorí kapitolu,
+   šípka späť v lište vráti na zoznam. Prepína sa atribútom
+   data-view na <body>, takže !important premôže aj inline display,
+   ktorý nastavuje JS pre desktop. */
+@media (max-width:768px){
+  .app-container{flex-direction:column;gap:16px;padding:16px 14px 32px}
+  .sidebar{width:100%;position:static;max-height:none;order:2}
+  .content{width:100%;order:1}
+  .welcome-screen{padding:20px 4px 4px}
+  .welcome-icon{font-size:44px;margin-bottom:10px}
+  .welcome-title{font-size:24px}
+  .welcome-sub{margin-bottom:20px}
+  .stat-box{padding:14px 18px;min-width:88px}
+  body[data-view="list"] #welcomeScreen{display:block!important}
+  body[data-view="list"] #okruhDetail{display:none!important}
+  body[data-view="detail"] #welcomeScreen{display:none!important}
+  body[data-view="detail"] #okruhDetail{display:block!important}
+  body[data-view="detail"] .sidebar{display:none}
+}
+@media (max-width:420px){
+  body{font-size:16px}
+  h2{font-size:1.3rem}
+  .stat-box{padding:12px 14px;min-width:0;flex:1}
+  .welcome-stats{gap:10px}
+  .header{padding-left:14px;padding-right:14px}
+  .header-title{font-size:15px}
+}
+</style>
+</head>
+<body data-view="list">
+
+<header class="header">
+  <button class="back-link" id="backBtn" type="button">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    <span id="backLabel">Finančná liga</span>
+  </button>
+  <div class="header-title"><span class="logo-dot"></span><span class="t" id="headerTitle">Študijný modul</span></div>
+  <button class="theme-btn" id="themeBtn" type="button" title="Prepnúť tému" aria-label="Prepnúť tému">
+    <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  </button>
+</header>
+
+<main class="app-container">
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Okruhy</h2>
+      <div class="progress-ring-wrap">
+        <svg class="progress-ring" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="20" fill="none" stroke="var(--line)" stroke-width="4"/>
+          <circle id="progressRing" cx="24" cy="24" r="20" fill="none"
+            stroke="var(--accent)" stroke-width="4"
+            stroke-dasharray="125.6" stroke-dashoffset="125.6"
+            stroke-linecap="round" transform="rotate(-90 24 24)"/>
+        </svg>
+        <span id="progressText" class="progress-text">0%</span>
+      </div>
+    </div>
+    <div id="okruhyList" class="okruhy-list"></div>
+  </aside>
+
+  <section class="content">
+
+    <div id="welcomeScreen" class="welcome-screen">
+      <div class="welcome-icon" id="welcomeIcon">📘</div>
+      <h1 class="welcome-title" id="welcomeTitle">Načítavam…</h1>
+      <p class="welcome-sub" id="welcomeSub">Vyber okruh zo zoznamu a začni študovať.</p>
+      <div class="welcome-stats" id="welcomeStats">
+        <div class="stat-box">
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">okruhov</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statDone">0</div>
+          <div class="stat-label">dokončených</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statCorrect">—</div>
+          <div class="stat-label">správnych</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="okruhDetail" tabindex="-1" style="display:none"></div>
+
+  </section>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   UNIVERZÁLNY ŠTUDIJNÝ MODUL ŠKOLSKÝCH OBLASTÍ
+   moduly/skola.html?oblast=<slug>
+
+   Obsah NEDUPLIKUJE: číta tie isté data/<slug>/A{n}.json, z ktorých
+   ťahá otázky aj hra. Zoznam okruhov aj názov oblasti berie z
+   data/<slug>/_map.json (pole `area` a čísla okruhov v klastroch),
+   takže netreba žiadny ďalší register – mapa pre pavúka aj tak
+   existuje pre každú školskú oblasť.
+
+   ⚠️ ZÁVISLOSŤ: bez _map.json modul oblasť nevykreslí a ukáže chybový
+   stav s odkazom späť. Je to zámer (jeden zdroj pravdy namiesto dvoch),
+   ale znamená to, že _map.json nie je len pre pavúka – viď README-DEMO.md.
+
+   Rozloženie, CSS aj ovládanie sú zhodné s modulom Číselných sústav;
+   tento modul navyše nemá riešené prípady ani prepínače bitov.
+============================================================ */
+
+var params = new URLSearchParams(location.search);
+var SLUG = (params.get("oblast") || "").replace(/[^a-z0-9_-]/gi, "");
+
+var detail   = document.getElementById("okruhDetail");
+var welcome  = document.getElementById("welcomeScreen");
+var okruhyList = document.getElementById("okruhyList");
+var backBtn  = document.getElementById("backBtn");
+var backLabel = document.getElementById("backLabel");
+
+var OBLAST = "";
+var OKRUHY = [];          /* [{ n, key, title, summary, quiz }] */
+var store = {};
+var KEY = "";
+
+/* ---------- ukladanie pokroku ---------- */
+function nacitajStore(){
+  KEY = "skola-modul-" + SLUG;
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { store = {}; }
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+function jeDokonceny(key){ var r = store[key]; return !!(r && r.done); }
+
+function statistiky(){
+  var done = 0, good = 0, total = 0;
+  OKRUHY.forEach(function(o){
+    var r = store[o.key];
+    if (!r || !r.done) return;
+    done++;
+    if (typeof r.good === "number" && typeof r.total === "number") { good += r.good; total += r.total; }
+  });
+  return { pocet: OKRUHY.length, done: done, pct: total ? Math.round(good / total * 100) : null };
+}
+
+/* ---------- chybový stav ---------- */
+function chyba(text){
+  document.getElementById("welcomeIcon").textContent = "⚠️";
+  document.getElementById("welcomeTitle").textContent = "Obsah oblasti sa nepodarilo načítať";
+  document.getElementById("welcomeSub").textContent = text;
+  var stats = document.getElementById("welcomeStats");
+  stats.innerHTML = "";
+  var a = document.createElement("button");
+  a.type = "button"; a.className = "btn";
+  a.textContent = "← Späť do Finančnej ligy";
+  a.addEventListener("click", function(){ location.href = "/"; });
+  stats.appendChild(a);
+  document.querySelector(".sidebar").style.display = "none";
+}
+
+/* ---------- načítanie ---------- */
+async function nacitaj(){
+  if (!SLUG) { chyba("V odkaze chýba oblasť (?oblast=…)."); return false; }
+
+  var mapa;
+  try {
+    var r = await fetch("../data/" + SLUG + "/_map.json");
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    mapa = await r.json();
+  } catch (e) {
+    chyba("Mapa oblasti (_map.json) sa nedá načítať. Skús to prosím znova.");
+    return false;
+  }
+  if (!mapa || !Array.isArray(mapa.clusters)) { chyba("Mapa oblasti má neplatný tvar."); return false; }
+
+  OBLAST = mapa.area || SLUG;
+
+  /* čísla okruhov = zjednotenie klastrov, zoradené */
+  var cisla = [];
+  mapa.clusters.forEach(function(cl){
+    (cl.okruhy || []).forEach(function(n){ n = Number(n); if (n && cisla.indexOf(n) < 0) cisla.push(n); });
+  });
+  cisla.sort(function(a, b){ return a - b; });
+  if (!cisla.length) { chyba("Mapa oblasti neobsahuje žiadne okruhy."); return false; }
+
+  var nacitane = await Promise.all(cisla.map(async function(n){
+    try {
+      var r = await fetch("../data/" + SLUG + "/A" + n + ".json");
+      if (!r.ok) return null;
+      var j = await r.json();
+      return {
+        n: n,
+        key: "A" + n,
+        title: j.title || ("Okruh A" + n),
+        summary: typeof j.summary === "string" ? j.summary : "",
+        quiz: Array.isArray(j.quiz) ? j.quiz : []
+      };
+    } catch (e) { return null; }
+  }));
+
+  OKRUHY = nacitane.filter(Boolean);
+  if (!OKRUHY.length) { chyba("Okruhy oblasti sa nepodarilo načítať."); return false; }
+  return true;
+}
+
+/* ---------- zoznam okruhov, krúžok, štatistiky ---------- */
+function renderStats(){
+  var s = statistiky();
+  document.getElementById("statTotal").textContent   = s.pocet;
+  document.getElementById("statDone").textContent    = s.done;
+  document.getElementById("statCorrect").textContent = s.pct === null ? "—" : s.pct + " %";
+  var pct = s.pocet ? Math.round(s.done / s.pocet * 100) : 0;
+  var obvod = 125.6;
+  var ring = document.getElementById("progressRing");
+  if (ring) ring.style.strokeDashoffset = obvod - (pct / 100 * obvod);
+  document.getElementById("progressText").textContent = pct + "%";
+}
+
+function renderSidebar(aktivny){
+  okruhyList.innerHTML = "";
+  OKRUHY.forEach(function(o){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "okruh-item" + (o.key === aktivny ? " active" : "");
+    if (o.key === aktivny) b.setAttribute("aria-current", "true");
+    var kod = document.createElement("span"); kod.className = "okruh-num"; kod.textContent = o.key;
+    var naz = document.createElement("span"); naz.className = "okruh-title"; naz.textContent = o.title;
+    var st  = document.createElement("span"); st.className = "okruh-status";
+    st.textContent = jeDokonceny(o.key) ? "✓" : "";
+    if (jeDokonceny(o.key)) st.setAttribute("aria-label", "dokončené");
+    b.appendChild(kod); b.appendChild(naz); b.appendChild(st);
+    b.addEventListener("click", function(){ go(o.key, true); });
+    okruhyList.appendChild(b);
+  });
+  renderStats();
+}
+
+/* Drží LEPŠÍ z pokusov – rovnaký princíp ako writeOkruhBest v appke. */
+function zapisVysledok(o, good){
+  var r = store[o.key];
+  var najlepsi = (r && typeof r.good === "number") ? r.good : -1;
+  if (good > najlepsi) store[o.key] = { done: 1, good: good, total: o.quiz.length };
+  else if (r) r.done = 1;
+  save();
+  renderSidebar(o.key);
+}
+
+/* ---------- otázka: jeden pokus, po odpovedi vysvetlenie ---------- */
+function makeQ(item, label, onDone){
+  var box = document.createElement("div"); box.className = "q";
+  var t = document.createElement("div"); t.className = "qt";
+  if (label){ var n = document.createElement("span"); n.className = "qn"; n.textContent = label; t.appendChild(n); }
+  t.appendChild(document.createTextNode(item.q || item.question || ""));
+  box.appendChild(t);
+  var opts = document.createElement("div"); opts.className = "opts"; box.appendChild(opts);
+  var fb = document.createElement("div"); fb.className = "fb"; fb.setAttribute("aria-live", "polite"); box.appendChild(fb);
+  var btns = [];
+  (item.options || []).forEach(function(txt, i){
+    var b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.textContent = txt;
+    b.addEventListener("click", function(){
+      btns.forEach(function(x){ x.disabled = true; });
+      var spravne = i === item.correct;
+      b.classList.add(spravne ? "ok" : "bad");
+      if (!spravne) btns[item.correct].classList.add("ok");
+      fb.className = "fb show " + (spravne ? "ok" : "bad");
+      fb.innerHTML = "";
+      var s = document.createElement("strong");
+      s.textContent = spravne ? "Správne." : ("Nesprávne. Správna odpoveď: " + item.options[item.correct] + ".");
+      fb.appendChild(s);
+      fb.appendChild(document.createTextNode(item.explanation || ""));
+      if (onDone) onDone(spravne);
+    });
+    btns.push(b); opts.appendChild(b);
+  });
+  return box;
+}
+
+/* ---------- obsah okruhu ---------- */
+function render(key){
+  var idx = OKRUHY.findIndex(function(o){ return o.key === key; });
+  if (idx < 0) idx = 0;
+  var o = OKRUHY[idx];
+  detail.innerHTML = "";
+
+  var h = document.createElement("h2"); h.textContent = o.title; detail.appendChild(h);
+
+  var h3 = document.createElement("h3"); h3.textContent = "Výklad";
+  h3.style.borderTop = "0"; h3.style.marginTop = "12px"; h3.style.paddingTop = "0";
+  detail.appendChild(h3);
+
+  /* Zalomenia v summary sú odseky – autorka ich tak píše v zadaní. */
+  o.summary.split(/\n+/).forEach(function(odsek){
+    var t = odsek.trim();
+    if (!t) return;
+    var p = document.createElement("p"); p.textContent = t; detail.appendChild(p);
+  });
+
+  if (o.quiz.length){
+    var hq = document.createElement("h3"); hq.textContent = "Kvíz"; detail.appendChild(hq);
+    var qp = document.createElement("p");
+    qp.textContent = "Každá otázka má jeden pokus. Po odpovedi uvidíš vysvetlenie.";
+    detail.appendChild(qp);
+
+    var answered = 0, good = 0;
+    var sc = document.createElement("div"); sc.className = "score"; sc.setAttribute("aria-live", "polite");
+    o.quiz.forEach(function(q, i){
+      detail.appendChild(makeQ(q, "Otázka " + (i + 1) + " z " + o.quiz.length, function(ok){
+        answered++; if (ok) good++;
+        if (answered === o.quiz.length){
+          sc.textContent = "Výsledok: " + good + " z " + o.quiz.length + " správne."
+            + (good === o.quiz.length ? " Výborne, okruh je zvládnutý." : " Prejdi si výklad ešte raz a skús kvíz znova.");
+          sc.classList.add("show");
+          zapisVysledok(o, good);
+          if (good < o.quiz.length){
+            var again = document.createElement("button");
+            again.type = "button"; again.className = "btn ghost"; again.style.marginTop = "10px";
+            again.textContent = "Skúsiť kvíz znova";
+            again.addEventListener("click", function(){ go(o.key, true); });
+            sc.appendChild(document.createElement("br")); sc.appendChild(again);
+          }
+        }
+      }));
+    });
+    detail.appendChild(sc);
+  }
+
+  var pg = document.createElement("div"); pg.className = "pager";
+  if (idx > 0){
+    var p = document.createElement("button"); p.type = "button"; p.className = "btn ghost";
+    p.textContent = "← " + OKRUHY[idx - 1].title;
+    p.addEventListener("click", function(){ go(OKRUHY[idx - 1].key, true); });
+    pg.appendChild(p);
+  } else pg.appendChild(document.createElement("span"));
+  if (idx < OKRUHY.length - 1){
+    var nx = document.createElement("button"); nx.type = "button"; nx.className = "btn";
+    nx.textContent = "Ďalej: " + OKRUHY[idx + 1].title;
+    nx.addEventListener("click", function(){ go(OKRUHY[idx + 1].key, true); });
+    pg.appendChild(nx);
+  }
+  detail.appendChild(pg);
+
+  renderSidebar(o.key);
+}
+
+/* ---------- prepínanie zoznam ↔ okruh (mobil) ---------- */
+function jeMobil(){
+  try { return window.matchMedia("(max-width: 768px)").matches; }
+  catch (e) { return window.innerWidth <= 768; }
+}
+function setView(v){
+  document.body.setAttribute("data-view", v);
+  backLabel.textContent = (v === "detail" && jeMobil()) ? "Okruhy" : "Finančná liga";
+}
+function zobrazZoznam(){
+  welcome.style.display = "block";
+  detail.style.display = "none";
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  renderSidebar(null);
+  setView("list");
+  window.scrollTo(0, 0);
+}
+function go(key, scroll){
+  if (location.hash !== "#" + key) history.replaceState(null, "", location.pathname + location.search + "#" + key);
+  render(key);
+  welcome.style.display = "none";
+  detail.style.display = "block";
+  setView("detail");
+  if (scroll){ window.scrollTo(0, 0); try { detail.focus({ preventScroll: true }); } catch (e) {} }
+}
+
+backBtn.addEventListener("click", function(){
+  if (jeMobil() && document.body.getAttribute("data-view") === "detail") zobrazZoznam();
+  else location.href = "/";
+});
+window.addEventListener("resize", function(){ setView(document.body.getAttribute("data-view") || "list"); });
+window.addEventListener("hashchange", function(){
+  var k = location.hash.slice(1);
+  if (k && OKRUHY.some(function(o){ return o.key === k; })) go(k, false);
+  else zobrazZoznam();
+});
+
+/* ---------- prepínač témy ---------- */
+function aktualnaTema(){ return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light"; }
+function nastavIkonu(t){
+  var i = document.getElementById("themeIcon");
+  if (!i) return;
+  i.innerHTML = t === "dark"
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M6.3 17.7l-1.4 1.4M19.1 4.9l-1.4 1.4"/>'
+    : '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+}
+document.getElementById("themeBtn").addEventListener("click", function(){
+  var t = aktualnaTema() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem("lex_theme", t); } catch (e) {}
+  nastavIkonu(t);
+});
+nastavIkonu(aktualnaTema());
+
+/* ---------- štart ---------- */
+(async function(){
+  nacitajStore();
+  var ok = await nacitaj();
+  if (!ok) return;
+  document.title = OBLAST + " – Finančná liga";
+  document.getElementById("headerTitle").textContent = OBLAST;
+  document.getElementById("welcomeTitle").textContent = OBLAST;
+  var start = location.hash.slice(1);
+  if (start && OKRUHY.some(function(o){ return o.key === start; })) go(start, false);
+  else zobrazZoznam();
+})();
+
+})();
+</script>
+</body>
+</html>

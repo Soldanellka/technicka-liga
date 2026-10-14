@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+<defs>
+  <radialGradient id="skinF" cx="45%" cy="35%" r="65%">
+    <stop offset="0%" stop-color="#fde8d0"/>
+    <stop offset="100%" stop-color="#f0b88a"/>
+  </radialGradient>
+  <radialGradient id="hairF" cx="50%" cy="10%" r="75%">
+    <stop offset="0%" stop-color="#7a4a20"/>
+    <stop offset="100%" stop-color="#3a1a05"/>
+  </radialGradient>
+  <radialGradient id="irisF" cx="35%" cy="30%" r="65%">
+    <stop offset="0%" stop-color="#c87830"/>
+    <stop offset="100%" stop-color="#6a3010"/>
+  </radialGradient>
+  <linearGradient id="suiteF" x1="0%" y1="0%" x2="10%" y2="100%">
+    <stop offset="0%" stop-color="#1a1a2e"/>
+    <stop offset="100%" stop-color="#0d0d18"/>
+  </linearGradient>
+  <radialGradient id="cheekF" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#ffb0b0" stop-opacity="0.7"/>
+    <stop offset="100%" stop-color="#ff8888" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="shadow3d">
+    <feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.25)"/>
+  </filter>
+  <filter id="glow">
+    <feGaussianBlur stdDeviation="2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+</defs>
+
+<!-- TELO -->
+<ellipse cx="120" cy="240" rx="65" ry="60" fill="url(#suiteF)" filter="url(#shadow3d)"/>
+<!-- golier biely -->
+<path d="M95 185 Q120 200 145 185 L140 205 Q120 215 100 205 Z" fill="#111122"/>
+<path d="M105 185 Q120 196 135 185 L132 202 Q120 210 108 202 Z" fill="#f5f5ff"/>
+<!-- gombíky -->
+<circle cx="120" cy="215" r="3" fill="#333355" stroke="#555577" stroke-width="1"/>
+<circle cx="120" cy="228" r="3" fill="#333355" stroke="#555577" stroke-width="1"/>
+<circle cx="120" cy="241" r="3" fill="#333355" stroke="#555577" stroke-width="1"/>
+<!-- lesk na saku -->
+<path d="M90 195 Q100 220 95 255" stroke="#3a3a5a" stroke-width="8" fill="none" opacity="0.3" stroke-linecap="round"/>
+<!-- kravata červená - nie, mašľa -->
+<ellipse cx="116" cy="190" rx="6" ry="4" fill="#cc2244"/>
+<ellipse cx="124" cy="190" rx="6" ry="4" fill="#cc2244"/>
+<circle cx="120" cy="192" r="3" fill="#991133"/>
+
+<!-- KRÚŽOK §  v ruke -->
+<text x="172" y="235" font-family="serif" font-size="38" fill="#d4af37" font-weight="bold" filter="url(#glow)" opacity="0.95">§</text>
+
+<!-- KNIHA v druhej ruke -->
+<rect x="48" y="218" width="52" height="42" rx="4" fill="#8B0000" filter="url(#shadow3d)"/>
+<rect x="50" y="220" width="48" height="38" rx="3" fill="#a01010"/>
+<rect x="68" y="218" width="6" height="42" fill="#6B0000"/>
+<text x="74" y="238" text-anchor="middle" font-family="serif" font-size="7" fill="#f0d080" font-weight="bold">LAW</text>
+<!-- lesk na knihe -->
+<path d="M52 222 Q58 228 52 240" stroke="rgba(255,255,255,0.2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+<!-- RUKY -->
+<ellipse cx="62" cy="218" rx="16" ry="11" fill="url(#skinF)"/>
+<ellipse cx="178" cy="222" rx="14" ry="10" fill="url(#skinF)"/>
+
+<!-- VLASY zadné -->
+<ellipse cx="120" cy="95" rx="72" ry="65" fill="url(#hairF)"/>
+<!-- dlhé vlasy -->
+<path d="M50 110 Q35 160 42 210 Q55 200 58 180 Q54 148 56 115 Z" fill="url(#hairF)"/>
+<path d="M190 110 Q205 160 198 210 Q185 200 182 180 Q186 148 184 115 Z" fill="url(#hairF)"/>
+<!-- vrch hlavy vlasy -->
+<ellipse cx="120" cy="65" rx="68" ry="38" fill="url(#hairF)"/>
+<!-- Ofina -->
+<path d="M52 100 Q70 65 120 60 Q170 65 188 100 Q168 82 148 80 Q134 65 120 68 Q106 65 92 80 Q72 82 52 100 Z" fill="url(#hairF)"/>
+
+<!-- HLAVA -->
+<ellipse cx="120" cy="118" rx="62" ry="66" fill="url(#skinF)" filter="url(#shadow3d)"/>
+
+<!-- UŠI -->
+<ellipse cx="58" cy="122" rx="12" ry="14" fill="url(#skinF)"/>
+<ellipse cx="58" cy="122" rx="8" ry="10" fill="#f0c090"/>
+<ellipse cx="182" cy="122" rx="12" ry="14" fill="url(#skinF)"/>
+<ellipse cx="182" cy="122" rx="8" ry="10" fill="#f0c090"/>
+<!-- náušnice -->
+<circle cx="56" cy="135" r="4" fill="#d4af37"/>
+<circle cx="184" cy="135" r="4" fill="#d4af37"/>
+
+<!-- OČI OTVORENÉ -->
+<!-- ľavé -->
+<ellipse cx="94" cy="118" rx="18" ry="20" fill="white"/>
+<ellipse cx="94" cy="120" rx="13" ry="15" fill="url(#irisF)"/>
+<ellipse cx="94" cy="122" rx="8" ry="9" fill="#111"/>
+<circle cx="99" cy="113" r="5" fill="white"/>
+<circle cx="88" cy="125" r="2.5" fill="white" opacity="0.6"/>
+<ellipse cx="95" cy="130" rx="4" ry="2" fill="white" opacity="0.35"/>
+<!-- riasy ľavé -->
+<path d="M76 100 Q85 92 94 96" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M94 94 Q100 88 106 94" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M106 96 Q114 92 120 100" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+<!-- pravé -->
+<ellipse cx="146" cy="118" rx="18" ry="20" fill="white"/>
+<ellipse cx="146" cy="120" rx="13" ry="15" fill="url(#irisF)"/>
+<ellipse cx="146" cy="122" rx="8" ry="9" fill="#111"/>
+<circle cx="151" cy="113" r="5" fill="white"/>
+<circle cx="140" cy="125" r="2.5" fill="white" opacity="0.6"/>
+<ellipse cx="147" cy="130" rx="4" ry="2" fill="white" opacity="0.35"/>
+<!-- riasy pravé -->
+<path d="M128 100 Q137 92 146 96" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M146 94 Q152 88 158 94" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M158 96 Q166 92 172 100" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+<!-- OBOČIE -->
+<path d="M74 96 Q94 87 114 96" stroke="#3a1a05" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+<path d="M126 96 Q146 87 166 96" stroke="#3a1a05" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+<!-- NOS (chibi malý) -->
+<path d="M116 148 Q120 155 124 148" stroke="#d09060" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+<!-- ÚSTA -->
+<path d="M103 165 Q120 180 137 165" stroke="#d06050" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M105 165 Q120 177 135 165 Q120 181 105 165 Z" fill="#e08878" opacity="0.5"/>
+
+<!-- LÍCA -->
+<ellipse cx="74" cy="148" rx="18" ry="12" fill="url(#cheekF)"/>
+<ellipse cx="166" cy="148" rx="18" ry="12" fill="url(#cheekF)"/>
+
+<!-- HVIEZDIČKY (energia) -->
+<text x="22" y="80" font-size="16" fill="#d4af37" opacity="0.8" filter="url(#glow)">✦</text>
+<text x="192" y="70" font-size="12" fill="#d4af37" opacity="0.6">✦</text>
+<text x="200" y="95" font-size="8" fill="#d4af37" opacity="0.4">·</text>
+</svg>

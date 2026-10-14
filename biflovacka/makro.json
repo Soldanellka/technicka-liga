@@ -1,0 +1,84 @@
+{
+  "area": "Makroekonómia",
+  "slug": "makro",
+  "schemaVersion": "1.1",
+  "zdroj": "Demo dataset Finančnej ligy – odvodené z vysvetlení otázok, obsah na odbornú kontrolu",
+  "okruhy": [
+    {
+      "id": "A1",
+      "title": "HDP a ekonomický rast",
+      "definitions": [
+        {
+          "question": "HDP",
+          "answer": "Celková hodnota tovarov a služieb vyrobených v krajine."
+        },
+        {
+          "question": "Nominálny HDP",
+          "answer": "HDP meraný v cenách platných v danom roku."
+        },
+        {
+          "question": "Reálny HDP",
+          "answer": "HDP upravený o infláciu."
+        },
+        {
+          "question": "Ekonomický rast",
+          "answer": "Rast HDP v čase."
+        },
+        {
+          "question": "Potenciálny rast",
+          "answer": "Udržateľný rast bez prehriatia ekonomiky a tlaku na infláciu."
+        },
+        {
+          "question": "ECB",
+          "answer": "Európska centrálna banka – riadi menovú politiku krajín, ktoré používajú euro."
+        },
+        {
+          "question": "Cenová stabilita",
+          "answer": "Hlavný cieľ ECB: nízka a predvídateľná inflácia."
+        },
+        {
+          "question": "Úrokové sadzby",
+          "answer": "Nástroj ECB – ovplyvňujú úvery, investície a tým aj rast ekonomiky."
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "title": "Inflácia, nezamestnanosť a ECB",
+      "definitions": [
+        {
+          "question": "Inflácia",
+          "answer": "Všeobecný rast cien; vzniká pri vysokom dopyte alebo rastúcich nákladoch."
+        },
+        {
+          "question": "Hyperinflácia",
+          "answer": "Veľmi rýchly a nekontrolovaný rast cien."
+        },
+        {
+          "question": "Nezamestnanosť",
+          "answer": "Ľudia bez práce, ktorí si prácu aktívne hľadajú."
+        },
+        {
+          "question": "Cyklická nezamestnanosť",
+          "answer": "Nezamestnanosť súvisiaca s hospodárskym cyklom – vzniká pri poklese."
+        },
+        {
+          "question": "Prirodzená miera nezamestnanosti",
+          "answer": "Nezamestnanosť existujúca aj pri plnej zamestnanosti; zahŕňa frikčnú a štrukturálnu."
+        },
+        {
+          "question": "Stagflácia",
+          "answer": "Kombinácia hospodárskeho poklesu a vysokej inflácie."
+        },
+        {
+          "question": "Kvantitatívne uvoľňovanie (QE)",
+          "answer": "Nákup aktív centrálnou bankou; zvyšuje likviditu a podporuje úvery a investície."
+        },
+        {
+          "question": "Menová politika ECB",
+          "answer": "Pri vysokej inflácii ECB zvyšuje sadzby (tlmí dopyt), nízke sadzby podporujú investície a spotrebu."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "area": "Počítačové siete",
+  "clusters": [
+    {
+      "label": "Počítačové siete",
+      "okruhy": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": 1,
+      "to": 2,
+      "note": "každá adresa patrí jednej vrstve"
+    }
+  ]
+}

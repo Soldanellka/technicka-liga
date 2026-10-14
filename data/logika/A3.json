@@ -1,0 +1,114 @@
+{
+  "id": "logika-A3",
+  "title": "Logická negácia NOT",
+  "schemaVersion": 1,
+  "tags": [
+    "logické funkcie",
+    "Booleova algebra",
+    "číslicová technika"
+  ],
+  "summary": "Logická negácia NOT: Y = Ā (A s čiarou nad). Výstup má vždy opačnú hodnotu ako vstup: z 0 urobí 1 a z 1 urobí 0.\nPravdivostná tabuľka má len dva riadky.\nV schéme má hradlo jeden vstup a krúžok na výstupe (v zošite je v obdĺžniku nápis NOT).\nKontaktová realizácia: rozpínací kontakt. Nestlačený obvod spája a žiarovka svieti; stlačený (A = 1) obvod rozpojí a žiarovka zhasne.\nLogické úrovne: log. 1 = H (high) = 5 V, log. 0 = L (low) = 0 V.",
+  "quiz": [
+    {
+      "id": "lg11",
+      "q": "Čo robí logická negácia NOT?",
+      "options": [
+        "Sčíta vstupy",
+        "Obráti hodnotu: z 0 urobí 1 a z 1 urobí 0",
+        "Vynásobí vstupy",
+        "Zopakuje vstup"
+      ],
+      "correct": 1,
+      "explanation": "Y = Ā: výstup je 1 práve vtedy, keď je vstup A = 0, a naopak."
+    },
+    {
+      "id": "lg12",
+      "q": "Aký je výstup NOT, ak A = 1?",
+      "options": [
+        "1",
+        "0",
+        "2",
+        "−1"
+      ],
+      "correct": 1,
+      "explanation": "Negácia jednotky je 0."
+    },
+    {
+      "id": "lg13",
+      "q": "Ako sa zapisuje negácia premennej A?",
+      "options": [
+        "A + 1",
+        "A·0",
+        "Ā (A s čiarou nad)",
+        "A²"
+      ],
+      "correct": 2,
+      "explanation": "Čiara nad písmenom znamená negáciu: Y = Ā."
+    },
+    {
+      "id": "lg14",
+      "q": "Akému napätiu zodpovedá log. 1 (H)?",
+      "options": [
+        "0 V",
+        "1 V",
+        "5 V",
+        "230 V"
+      ],
+      "correct": 2,
+      "explanation": "log. 1 = H (high) = 5 V a log. 0 = L (low) = 0 V."
+    },
+    {
+      "id": "lg15",
+      "q": "Ako vyzerá kontaktová realizácia NOT?",
+      "options": [
+        "Spínací kontakt",
+        "Rozpínací kontakt – pri stlačení A obvod rozpojí",
+        "Dva spínače za sebou",
+        "Dva spínače vedľa seba"
+      ],
+      "correct": 1,
+      "explanation": "Keď A = 0 (nestlačené), kontakt je spojený a žiarovka svieti; keď A = 1, kontakt sa rozpojí a žiarovka zhasne."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Logická negácia NOT",
+    "branches": [
+      {
+        "label": "Definícia NOT",
+        "leaves": [
+          "Y = Ā",
+          "obráti hodnotu",
+          "logická negácia"
+        ]
+      },
+      {
+        "label": "Tabuľka NOT",
+        "leaves": [
+          "A = 0 → Y = 1",
+          "A = 1 → Y = 0",
+          "len dva riadky"
+        ]
+      },
+      {
+        "label": "Kontakty NOT",
+        "leaves": [
+          "rozpínací kontakt",
+          "nestlačené → svieti",
+          "stlačené → zhasne"
+        ]
+      },
+      {
+        "label": "Logické úrovne",
+        "leaves": [
+          "log. 1 = H = 5 V",
+          "log. 0 = L = 0 V",
+          "H = high, L = low"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "area": "Elektrotechnika",
+  "clusters": [
+    {
+      "label": "PN prechod",
+      "okruhy": [
+        1,
+        2
+      ]
+    }
+  ],
+  "links": []
+}

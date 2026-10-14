@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8" />
+  <title>Finančná liga</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .correct { background: rgba(34,197,94,0.06); border:1px solid rgba(34,197,94,0.12); }
+    .wrong   { background: rgba(239,68,68,0.04);  border:1px solid rgba(239,68,68,0.08);  }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <span class="logo-dot" aria-hidden="true"></span>
+    <span class="logo-text">Finančná liga</span>
+
+    <div id="avatarWrap" class="avatar-wrap" title="Klikni pre výber avatara" role="button" tabindex="0">
+      <div class="avatar-stack">
+        <img id="userAvatar" src="assets/avatars/student-f-awake.svg" alt="Avatar používateľa" />
+        <!-- Vrstvy pre budúce taláre a zvieratká (samostatné zadanie) – zatiaľ skryté, bez assetov -->
+        <img id="avatarTalar" class="avatar-layer" style="display:none !important" alt="" />
+        <img id="avatarPet" class="avatar-layer avatar-pet" style="display:none !important" alt="" />
+      </div>
+    </div>
+
+    <!-- Avatar energia mini panel -->
+    <div id="avatarEnergyPanel" class="avatar-energy-panel">
+      <div class="avatar-energy-bar-wrap">
+        <div id="avatarEnergyBar" class="avatar-energy-bar" style="width:100%"></div>
+      </div>
+      <span id="avatarEnergyText" class="avatar-energy-text">⚡ 100%</span>
+      <!-- Popisok aj title dopĺňa updateAvatarUI() z ECONOMY_CONFIG.ENERGY.FEED_COST
+           (scripts/avatar.js) – cenu sem NEPÍSAŤ natvrdo, rozišla by sa s configom. -->
+      <button id="feedAvatarBtn" class="btn avatar-feed-btn" style="display:none">
+        🍖 Nakŕmiť
+      </button>
+      <!-- Paleta 🎨 (#changeAvatarBtn) bola samostatná druhá avatarová ikona
+           v lište. Zlúčená s avatarom: "Zmeniť vzhľad" je teraz položkou
+           vnútri avatarového modálu (openAvatarSelectModal v init.js), odkiaľ
+           volá ten istý openAvatarPickerModal(false). Oba modály ostávajú. -->
+    </div>
+
+    <div class="nick-box">
+      <label for="nickname">Tvoj nick</label>
+      <div class="nick-row">
+        <input id="nickname" type="text" placeholder="Zadaj nick">
+        <button id="saveNick">Uložiť</button>
+      </div>
+    </div>
+
+    <div id="playerNickDisplay" class="player-nick-display"></div>
+    <span id="facultyBadge" class="faculty-badge-mini" style="display:none" title=""></span>
+  </div>
+
+  <div class="header-right">
+
+    <!-- § Paragrafy + Získaj § v JEDNOM prvku. Badge predtým nemal žiadny
+         handler a vedľa neho stálo samostatné tlačidlo „💰 Získaj §“ –
+         teraz je zostatok aj cesta k zárobku to isté miesto: klik otvorí
+         okno Získaj § (reklama + promo kód). #parCount ostáva (plní ho
+         scripts/avatar.js). Interaktívny je len s nickom, rovnako ako
+         predtým tlačidlo. -->
+    <button type="button" class="par-badge" id="parBadge" title="Tvoje mince – klikni pre získanie ďalších">
+      <span class="par-icon">🪙</span>
+      <span id="parCount" class="par-count">0</span>
+      <span class="par-plus" aria-hidden="true">＋</span>
+    </button>
+
+    <!-- Streak -->
+    <div class="pill streak-pill" id="loginStreakDisplay"></div>
+
+    <!-- Rola -->
+    <div class="role-badge" id="roleBadge" title="Tvoja rola">
+      <span id="roleLabel">student</span>
+    </div>
+
+    <!-- Pomoc – jeden vstup namiesto dvoch ikon (👋 uvítanie + ℹ️ návod).
+         Otvára návod, v ktorom je hore aj odkaz na uvítacie okno.
+         #infoBtn si ponecháva ID (initGuideSystem naň visí). -->
+    <button class="btn icon-btn header-info-btn" id="infoBtn" title="Pomoc / O Finančnej lige">
+      ❓
+      <span class="games-hint-dot" id="infoHintDot"></span>
+    </button>
+
+    <!-- Tmavý režim -->
+    <button class="btn icon-btn" id="themeToggleBtn" title="Prepni tému">
+      <img id="themeIcon" src="assets/icons/moon.svg" width="18" height="18" alt="Prepínač témy">
+    </button>
+
+    <!-- Prihlásenie z iného zariadenia -->
+    <button class="btn btn-primary header-login-btn" id="loginDeviceBtn" title="Prihlásiť sa z iného zariadenia">
+      <span class="login-btn-full">🔑 Môj účet</span>
+      <span class="login-btn-short">🔑</span>
+    </button>
+
+  </div>
+</header>
+
+<!-- Modal: Môj účet (PIN, odhlásenie) -->
+<div id="loginCodeModal" class="avatar-modal" style="display:none">
+  <div class="avatar-panel" style="max-width:420px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <h3 style="margin:0">🔑 Môj účet</h3>
+      <button class="btn" id="closeLoginModal">✕</button>
+    </div>
+    <div id="loginModalContent">
+      <!-- Obsah sa generuje dynamicky v core.js -->
+      <p class="small muted">Načítavam...</p>
+    </div>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- PRAVÝ STĹPEC – „súťaž a komunita“ (množiny 4 a 5).
+       Pozn.: v DOM je tento blok prvý, no cez CSS `order` stojí vpravo –
+       poradie v HTML sa nemenilo, aby sa nemuseli presúvať veľké bloky. -->
+  <div class="right">
+
+    <!-- Register pojednávaní (#duelBankCard) tu STÁL – presunutý do ľavého
+         stĺpca k pojednávaniu (množina 🥊 Hraj), lebo výzvy sú pojednávania
+         od iných hráčov. Množina ⚔️ Výzvy tým zanikla; pravý stĺpec je teraz
+         Súťaž a komunita → Servis. -->
+
+    <!-- MNOŽINA – SÚŤAŽ A KOMUNITA -->
+    <div class="set-panel" id="setCommunity">
+    <h3 class="world-heading" id="worldCommunity">🏛️ Súťaž a komunita</h3>
+
+    <div class="card section-card" id="leaderboardSection">
+      <h3 style="margin:0" id="leaderboardTitle">Rebríček súbojov</h3>
+      <div class="small" id="leaderboardSubtitle">Najlepší hráči súbojov</div>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="chip lb-mode-chip active" data-lb-mode="individual">Jednotlivci</button>
+        <button class="chip lb-mode-chip" data-lb-mode="senaty">Triedy</button>
+        <button class="chip lb-mode-chip" data-lb-mode="školy">Školy</button>
+      </div>
+      <div id="individualLeaderboardBox">
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="chip">Týždeň</button>
+          <button class="chip">Mesiac</button>
+          <button class="chip">Všetko</button>
+        </div>
+        <div class="demo-data-badge">📊 ukážkové dáta</div>
+        <div id="duelLeaderboard" class="list" style="margin-top:10px">
+          <div class="small muted">Načítavam rebríček…</div>
+        </div>
+      </div>
+      <div id="senatLeaderboardBox" style="display:none;margin-top:10px">
+        <div class="demo-data-badge">📊 ukážkové dáta</div>
+        <div id="senatLeaderboard" class="list">
+          <div class="small muted">Načítavam rebríček…</div>
+        </div>
+      </div>
+      <div id="facultyFullLeaderboardBox" style="display:none;margin-top:10px">
+        <div class="demo-data-badge">📊 ukážkové dáta</div>
+        <div id="facultyFullLeaderboard" class="list">
+          <div class="small muted">Načítavam rebríček…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card highlight-senaty" id="senatyCard">
+      <h3 style="margin:0">⚖️ Triedy</h3>
+      <div class="small">Skupinová súťaž o body a odmeny</div>
+
+      <div id="senatyNoneBox" style="display:none;margin-top:10px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="foundSenatBtn">➕ Založiť triedu</button>
+          <button class="btn" id="haveInviteBtn">🔗 Mám pozvánku</button>
+        </div>
+      </div>
+
+      <div id="senatyMineBox" style="margin-top:10px"></div>
+
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border, rgba(0,0,0,0.08))">
+        <div class="small" style="font-weight:600;margin-bottom:6px">🏆 TOP 3 triedy</div>
+        <div id="senatyMiniLeaderboard" class="small muted">Načítavam…</div>
+      </div>
+    </div>
+
+    <div class="card section-card highlight-report" id="reportCard">
+      <h3 style="margin:0">⚖️ Našiel si chybu?</h3>
+      <div class="small" style="margin-bottom:12px">Našiel si chybu v otázke? Vysvetli, prečo je to zle, a pomôž nám ju opraviť.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="reportIssueBtn"
+          onclick="typeof window.openReportModal==='function' ? window.openReportModal() : alert('Načítavam...')">
+          📝 Nahlásiť chybu</button>
+        <button class="btn" id="openCourtroomBtn"
+          onclick="typeof window.openCourtroomModal==='function' ? window.openCourtroomModal() : alert('Načítavam...')">
+          🏛️ Porota</button>
+      </div>
+      <div id="sealDisplay" style="margin-top:12px;display:none">
+        <div class="small muted">Tvoje pečate:</div>
+        <div id="sealBadges" style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap"></div>
+      </div>
+    </div>
+
+    <div class="card section-card highlight-noticeboard" id="noticeboardCard">
+      <h3 style="margin:0">📋 Nástenka komunity</h3>
+      <div class="small muted" style="margin-bottom:10px">Zverejnené príspevky a odpovede</div>
+      <div id="publishedFeedbackBox">
+        <div class="small muted">Načítavam...</div>
+      </div>
+    </div>
+
+    <div class="card section-card highlight-feedback" id="feedbackCard">
+      <h3 style="margin:0">💬 Tvoj názor</h3>
+      <div class="small" style="margin-bottom:12px">Pomôž nám zlepšiť Finančnú ligu</div>
+
+      <div id="feedbackForm">
+        <div class="feedback-options">
+          <button class="feedback-type-btn active" data-type="napad">💡 Nápad</button>
+          <button class="feedback-type-btn" data-type="chyba">🐛 Chyba</button>
+          <button class="feedback-type-btn" data-type="pochvala">⭐ Pochvala</button>
+        </div>
+        <textarea id="feedbackText" class="feedback-textarea"
+          placeholder="Napíš svoju pripomienku..." maxlength="500"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <span id="feedbackCharCount" class="small muted">0 / 500</span>
+          <button class="btn btn-primary" id="sendFeedbackBtn">Odoslať</button>
+        </div>
+      </div>
+
+      <div id="feedbackSuccess" style="display:none;text-align:center;padding:16px">
+        <div style="font-size:32px;margin-bottom:8px">🙏</div>
+        <div style="font-weight:600">Ďakujeme za spätnú väzbu!</div>
+        <div class="small muted" style="margin-top:4px">Prečítame každú pripomienku.</div>
+        <button class="btn" id="feedbackAgainBtn" style="margin-top:12px">Pridať ďalšiu</button>
+      </div>
+    </div>
+
+
+    <div class="card section-card highlight-video" id="videoCard" style="display:none" data-demo-hidden="videá – demo ich nemá">
+      <h3 style="margin:0">📺 Návody & odmeny</h3>
+      <div class="small" style="margin-bottom:12px">Pozri video a získaj <strong>+12🪙</strong></div>
+
+      <!-- Tri videá robili z karty najvyšší prvok pravého stĺpca (~500 px).
+           PRVÉ ostáva viditeľné, aby nováčik vôbec vedel, že sa tu dá zarobiť
+           (3 × 12 §); zvyšné dve sú pod rozbaľovačom – rovnaký vzor ako
+           „Ďalšie oblasti“ v Bifľovačke (časť vidieť, časť zbalená).
+           Zoznam ostáva v DOM, len skrytý, takže initVideoSystem() naň
+           naviaže bez zmeny a odznaky prevzatých odmien sa doplnia aj
+           v zbalenom stave. -->
+      <div class="video-list">
+        <div class="video-item" data-video-id="v1">
+          <div class="video-thumb" onclick="openVideo('v1')">
+            <div class="video-play-btn">▶</div>
+            <div class="video-label">Ako funguje Finančná liga?</div>
+          </div>
+          <div class="video-meta">
+            <span class="small muted">Úvod do platformy • 3 min</span>
+            <span class="video-reward-badge" id="reward-v1">+12🪙</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="chip" type="button" id="moreVideosBtn" aria-expanded="false">▸ Ďalšie videá (2)</button>
+
+      <div id="videoList" class="video-list" style="display:none">
+
+        <div class="video-item" data-video-id="v2">
+          <div class="video-thumb" onclick="openVideo('v2')">
+            <div class="video-play-btn">▶</div>
+            <div class="video-label">Ako hrať súboj?</div>
+          </div>
+          <div class="video-meta">
+            <span class="small muted">Súboje krok za krokom • 2 min</span>
+            <span class="video-reward-badge" id="reward-v2">+12🪙</span>
+          </div>
+        </div>
+
+        <div class="video-item" data-video-id="v3">
+          <div class="video-thumb" onclick="openVideo('v3')">
+            <div class="video-play-btn">▶</div>
+            <div class="video-label">Ako nahlásiť chybu?</div>
+          </div>
+          <div class="video-meta">
+            <span class="small muted">Porota • 2 min</span>
+            <span class="video-reward-badge" id="reward-v3">+12🪙</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:10px;text-align:center">
+        <a href="#" class="guide-link" id="openGuideLink">📖 Kompletný návod</a>
+      </div>
+    </div>
+
+    </div><!-- /setCommunity -->
+
+    <!-- MNOŽINA – SERVIS -->
+    <div class="set-panel" id="setService">
+    <h3 class="world-heading" id="worldService">🧰 Servis</h3>
+
+    <div class="card section-card card-soon" id="shopCard" style="display:none" data-demo-hidden="obchod – v deme sa nepoužíva">
+      <h3 style="margin:0">Obchod</h3>
+      <!-- Obchod ešte nie je spustený – tlačidlá nikdy nemali handler. Do
+           spustenia sú vypnuté, aby neviedli do prázdna. Popis používa
+           existujúcu triedu .small, rovnako ako ostatné karty. -->
+      <div class="small">Pripravujeme – čoskoro</div>
+      <!-- .card-soon = stlmený stav "čoskoro" (styles.css) -->
+
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn btn-primary" id="buy20" disabled>Kúpiť +20 mincí</button>
+        <button class="btn" id="buyPremium" disabled>Kúpiť PREMIUM</button>
+        <button class="btn" id="openShop" title="Obchod sa pripravuje" type="button" disabled>
+          <img src="assets/icons/shop.svg" width="18" height="18" alt="">
+        </button>
+      </div>
+    </div>
+
+    </div><!-- /setService -->
+
+  </div>
+
+  <!-- ĽAVÝ STĹPEC – „uč sa a trénuj“ (množiny 1–3). -->
+  <div class="left">
+
+    <!-- MNOŽINA – HRAJ: jedna spojená dlaždica. Hore výber oblasti, pod ním
+         všetky akcie nad ňou (pojednávanie, kartičky, prípady, štátnica) plus
+         Progres a Štruktúra otázok, ktoré oblasť nepotrebujú. -->
+    <div class="set-panel" id="setTraining">
+    <h3 class="world-heading" id="worldArena">🥊 Hraj</h3>
+
+    <div class="card highlight-duelquiz" id="quizCard">
+      <div id="quizIntro">
+        <div class="small">Vyber si oblasť a hraj</div>
+        <h2 id="quizTitle">Vyber si oblasť a hraj</h2>
+        <div class="small">Po odohraní sa tvoja 5‑otázková výzva uloží do registra súbojov.</div>
+
+        <!-- Oblasti priamo v kvíze -->
+        <div id="areasInQuiz" style="margin-top:14px">
+          <div class="small" style="margin-bottom:8px;font-weight:600;color:var(--muted)">Vyber oblasť:</div>
+          <div id="areasList" class="areas-chips"></div>
+        </div>
+
+        <!-- AKCIE – pôvodná karta „Hry a prípady“ presunutá SEM ako sekcia.
+             #gamesSection si ponecháva ID (bottom-nav, judikatura.js), ale už
+             nie je samostatná .card – vnorená karta v karte by zdvojila
+             pozadie aj tieň. Oddelené linkou rovnako ako iné vnútorné sekcie
+             (napr. TOP 3 senáty v #senatyCard).
+             Trieda .highlight-games odstránená – v styles.css nemá žiadne
+             pravidlo, bola to len značka, takže vizuálne sa nič nestráca. -->
+        <div id="gamesSection" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--card-border, rgba(0,0,0,0.08))">
+          <div class="small" style="margin-bottom:8px;font-weight:600;color:var(--muted)">Čo chceš hrať:</div>
+
+          <!-- HLAVNÉ TRI AKCIE ako veľké kartové dlaždice (.game-tile), nie
+               pilulky: pojednávanie · štátnica · výzvy. Predchádzajúca verzia
+               ich riešila zvýraznenou pilulkou (.game-cta-btn) v jednej
+               mriežke s ostatnými – vizuálne sa strácali, preto vlastný tvar.
+
+               ⚠️ Vnútorná štruktúra dlaždice (ikona/názov/popis) sa nesmie
+               prepisovať cez textContent – app.js to pri #startQuizBtn kedysi
+               robil a zmazal by ju. Ten zápis je preto odstránený, viď
+               applyOkruhPairSelection v app.js.
+
+               ID #startQuizBtn a #openStatniceBtn ostávajú nezmenené (menia sa
+               len šaty). #openDuelBankTile je nové – vedie do registra
+               pojednávaní nižšie v tejto istej množine. -->
+          <div class="game-tiles">
+            <button class="game-tile" id="startQuizBtn" disabled>
+              <span class="game-tile-icon">🥊</span>
+              <span class="game-tile-name">Súboj</span>
+              <span class="game-tile-desc">Kvíz z vybranej oblasti</span>
+            </button>
+            <button class="game-tile" id="openStatniceBtn">
+              <span class="game-tile-icon">🏛️</span>
+              <span class="game-tile-name">AI skúška</span>
+              <span class="game-tile-desc">Ústna skúška s AI lektorom</span>
+            </button>
+            <!-- Výzvy nezávisia od výberu oblasti – register je dostupný vždy,
+                 preto sa táto dlaždica nikdy nedisabluje. -->
+            <button class="game-tile" id="openDuelBankTile">
+              <span class="game-tile-icon">⚔️</span>
+              <span class="game-tile-name">Výzvy</span>
+              <span class="game-tile-desc">Prijmi alebo pošli výzvu</span>
+            </button>
+          </div>
+
+          <!-- Menšie akcie pod dlaždicami – jednotný vzhľad .btn.btn-primary. -->
+          <div class="game-actions">
+            <button class="btn btn-primary" id="openMemoryBtn">🃏 Kartičky</button>
+            <button class="btn btn-primary" id="openCasesBtn">📋 Prípady z praxe</button>
+            <!-- Progres a Štruktúra otázok NEPOTREBUJÚ vybranú oblasť –
+                 zámerne sa nedisablujú spolu s ostatnými. -->
+            <button class="btn btn-primary" id="openDashboardBtn">📊 Môj progres</button>
+            <button class="btn btn-primary" id="openSpiderBtn">🕸️ Štruktúra otázok</button>
+            <!-- Pokladňa vedomostí – nahradila samostatnú sekciu „Študijné moduly“.
+                 Ukáže moduly k PRÁVE VYBRANEJ oblasti, finančnej aj školskej. -->
+            <button class="btn btn-primary" id="openModulesBtn">🏦 Pokladňa vedomostí</button>
+            <!-- Bifľovačka je POSLEDNÁ dlaždica a nahradila samostatnú sekciu
+                 nižšie. Existuje len pre tri finančné oblasti (MEMORY_AREAS),
+                 takže ju syncAreaTiles() skryje pri školských oblastiach, kde
+                 by klik viedol do prázdna. Pred výberom oblasti stojí – inak
+                 by o nej hráč pri prvom príchode vôbec nevedel. -->
+            <button class="btn btn-primary" id="openBiflovackaBtn">🧠 Bifľovačka</button>
+          </div>
+
+          <!-- Rozbalí sa pod dlaždicami, nie v modáli: na mobile je to o klik
+               menej a obsah ostane v kontexte vybranej oblasti. -->
+          <div id="modulesPanel" class="card section-card" style="display:none;margin-top:10px">
+            <h3 style="margin:0 0 2px" id="modulesPanelTitle">Pokladňa vedomostí</h3>
+            <div class="small" id="modulesPanelSub">Výklad a teória k vybranej oblasti.</div>
+            <div id="modulesList" class="list" style="margin-top:10px"></div>
+          </div>
+
+          <div id="gamesAreaHint" class="games-hint">
+            <span class="games-hint-dot"></span>
+            Najprv vyber oblasť vyššie – načítajú sa k nej kartičky aj prípady
+          </div>
+
+          <div class="small" style="margin-top:10px;color:var(--muted)">
+            Kartičky sú krátka pamäťová hra; prípady sú interaktívne scenáre s okamžitou spätnou väzbou.
+            <!-- Zoznam oblastí MUSÍ sedieť s AREA_CONFIG v scripts/statnice.js
+                 (toast pri nedostupnej oblasti ho vypisuje priamo odtiaľ). -->
+            AI skúška (dostupná pre Osobné financie, Investovanie a Makroekonómiu) je nácvik ústnej
+            skúšky pred komisiou.
+            Môj progres a Štruktúra otázok fungujú aj bez vybranej oblasti.
+            Pokladňa vedomostí otvorí výklad a teóriu k vybranej oblasti,
+            Bifľovačka jej definície – obe rovno, bez ďalšieho preklikávania.
+          </div>
+
+          <div style="margin-top:10px;display:flex;gap:8px">
+            <button class="btn btn-ghost" id="resetBtn">Zrušiť</button>
+            <button class="btn" id="helpBtn" type="button">
+              <img src="assets/icons/info.svg" width="18" height="18" alt="">
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="quizArea" style="display:none">
+        <div class="quiz-top-row" style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="small">Oblasť</div>
+            <h3 id="areaTitle" style="margin:6px 0 0 0"></h3>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Otázka</div>
+            <div id="qIndex" style="font-weight:700">1 / 5</div>
+          </div>
+          <button class="btn icon-btn" id="quizCancelBtn" title="Ukončiť súboj"
+            onclick="typeof window.cancelQuiz==='function' && window.cancelQuiz()">✕</button>
+        </div>
+        <div class="question-box">
+          <div class="q-text" id="qText"></div>
+          <div class="options" id="options"></div>
+          <div class="footer-row">
+            <div class="meta">Správne: <span id="correctCount">0</span> • Nesprávne: <span id="wrongCount">0</span></div>
+            <div>
+              <button class="btn btn-ghost" id="prevBtn">Predchádzajúca</button>
+              <button class="btn btn-primary" id="nextBtn">Ďalšia</button>
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <div class="small">Progres</div>
+            <div class="progress"><i id="progBar"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register pojednávaní – presunutý sem z pravého stĺpca (2026-08).
+         Výzvy sú pojednávania od iných hráčov, patria teda k hernej dlaždici,
+         nie do samostatnej množiny vpravo. Stojí ZA #quizCard zámerne: hlavný
+         tok je „vyber oblasť → hraj“ a ten musí ostať prvý; register je to,
+         čo si hráč pozrie potom. „Prijmem výzvu → scroll na kvíz“ je teraz
+         v rámci jedného stĺpca (quizArea.scrollIntoView v quiz.js). -->
+    <div class="card highlight-bank" id="duelBankCard">
+      <h3 style="margin:0">Register súbojov</h3>
+      <div class="small">Balíky otázok a uložené výzvy na súboj</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn" id="toggleDuelBankBtn">Uložené výzvy</button>
+      </div>
+      <div id="duelBank" class="list" style="margin-top:10px; display:none;"></div>
+    </div>
+
+    </div><!-- /setTraining -->
+
+    <!-- MNOŽINA – UČ SA: veci s vlastným výberom, nezávislé od oblasti
+         zvolenej vyššie. Judikatúra sa sem pripája JS-kom za Bifľovačku
+         (judikatura.js), takže stojí ako posledná v stĺpci. -->
+    <!-- Po presune Bifľovačky medzi dlaždice ostala množina v DEME prázdna:
+         Nočný výcuc je skrytý nižšie a Judikatúra sa vôbec nenačítava.
+         Samotný nadpis bez obsahu je horší než žiadna sekcia, preto je
+         skrytá celá. ⚠️ Pri odkrytí Nočného výcucu alebo pri zapnutí
+         scriptu judikatura.js treba display:none zmazať aj tu. -->
+    <div class="set-panel" id="setStudy" style="display:none" data-demo-hidden="uč sa – v deme prázdna (nočný výcuc skrytý, judikatúra odpojená)">
+    <h3 class="world-heading" id="worldStudy">📚 Uč sa</h3>
+
+    <!-- Sekcia „Študijné moduly“ zanikla – moduly sú po novom pod dlaždicou
+         🏦 Pokladňa vedomostí v sekcii „Vyber si oblasť a hraj“, kde sa
+         ukážu rovno pre zvolenú oblasť. -->
+
+    <!-- NOČNÝ VÝCUC – audio opakovanie pred spaním (scripts/nightRecap.js).
+         Po zrušení sekcie Bifľovačky je prvý v množine „Uč sa“; Judikatúra
+         sa vkladá do #judikaturaHost hneď za ním, takže výsledné poradie po
+         načítaní je: Nočný výcuc → Judikatúra. Cena sa dopĺňa cez
+         data-econ (fillStaticEconomyValues v init.js), telo renderuje modul. -->
+    <div class="card section-card highlight-nightrecap" id="nightRecapCard" style="display:none" data-demo-hidden="nočný výcuc – demo ho nemá">
+      <h3 style="margin:0">🌙 Nočný výcuc</h3>
+      <div class="small">Audio zhrnutia okruhov na počúvanie pred spaním – zopakuj si, čo si sa dnes učil.
+        Odomknutie celej oblasti na 24 h stojí <b>⚡ <span data-econ="ENERGY.NIGHT_RECAP">—</span> energie</b> – nie 🪙.</div>
+      <div id="nightRecapBody" style="margin-top:10px"></div>
+      <audio id="nightRecapPlayer" playsinline preload="none"></audio>
+    </div>
+
+    <!-- Sekcia „Bifľovačka“ zanikla – je to po novom dlaždica v sekcii
+         „Vyber si oblasť a hraj“, ktorá otvorí rovno zvolenú oblasť.
+         #judikaturaHost drží jej miesto: judikatura.js ho uprednostňuje
+         pred kotvou #biflovackaCard, takže Judikatúra ostáva posledná
+         v množine „Uč sa“ presne ako predtým. -->
+    <div id="judikaturaHost"></div>
+
+    </div><!-- /setStudy -->
+
+    <!-- MNOŽINA – SPRÁVA: admin/garant panel na úplnom konci ľavého stĺpca.
+         Stojí ZA množinou setStudy, nie v nej – Judikatúra sa vkladá do
+         #judikaturaHost vnútri setStudy, takže admin panel vyjde posledný
+         aj po jej mounte.
+         Gating sa nemenil – obsah rieši renderAdminPanel podľa view roly,
+         študent vidí výzvu prepnúť rolu. -->
+    <div class="set-panel" id="setAdmin">
+    <h3 class="world-heading" id="worldAdmin">🔐 Správa</h3>
+
+    <div class="card section-card" id="adminCard">
+      <h3 style="margin:0">Admin a garant panel</h3>
+      <div id="adminPanel" class="small">Pre zobrazenie prepni rolu na garant.</div>
+    </div>
+
+    </div><!-- /setAdmin -->
+
+  </div>
+
+</main>
+
+<!-- Video modal -->
+<div id="videoModal" class="avatar-modal" style="display:none">
+  <div class="avatar-panel video-modal-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 id="videoModalTitle" style="margin:0">Návod</h3>
+      <button class="btn" id="closeVideoModal">✕</button>
+    </div>
+    <div id="videoPlayerWrap" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000;margin-bottom:16px">
+      <iframe id="videoPlayer" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"
+        allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div id="videoRewardInfo" style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(47,158,143,0.08);border-radius:12px;border:1px solid rgba(47,158,143,0.2)">
+      <span class="small">Dohraj video a získaj odmenu</span>
+      <span style="font-weight:700;color:var(--accent-3)">+12🪙</span>
+    </div>
+    <button id="claimVideoRewardBtn" class="btn btn-primary" style="width:100%;margin-top:12px;display:none">
+      🎉 Prevziať odmenu (+12🪙)
+    </button>
+    <div id="videoAlreadyClaimed" style="display:none;text-align:center;padding:8px;color:var(--muted)" class="small">
+      ✓ Odmena za toto video už bola prevzatá
+    </div>
+  </div>
+</div>
+
+<!-- Modály -->
+<div id="memoryModal" class="avatar-modal" aria-hidden="true" style="display:none;">
+  <div class="avatar-panel game-panel">
+    <div class="game-panel-header">
+      <h3 id="memoryTitle">🃏 Kartičky – spoj pojem s definíciou</h3>
+      <button class="btn" id="closeMemory">Zavrieť</button>
+    </div>
+    <div id="memoryBoard"></div>
+    <div style="margin-top:14px"><button class="btn btn-primary" id="restartMemory">🔄 Zamiešať znova</button></div>
+  </div>
+</div>
+
+<div id="casesModal" class="avatar-modal" aria-hidden="true" style="display:none;">
+  <div class="avatar-panel game-panel">
+    <div class="game-panel-header">
+      <h3 id="casesTitle">📋 Prípady z praxe</h3>
+      <button class="btn" id="closeCases">Zavrieť</button>
+    </div>
+    <div id="caseContainer" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<div id="dashboardModal" class="avatar-modal" aria-hidden="true" style="display:none;">
+  <div class="avatar-panel game-panel">
+    <div class="game-panel-header">
+      <h3>📊 Môj progres</h3>
+      <button class="btn" id="closeDashboard">Zavrieť</button>
+    </div>
+    <div class="small muted" style="margin-top:4px">
+      Súkromný prehľad – vidíš len ty. Počíta sa od 17. 7. 2026: staršia aktivita sa nezapočítava,
+      takže aj témy, ktoré už dávno vieš, tu môžu ukazovať 0 %, kým si ich znovu neprejdeš.
+    </div>
+    <div id="dashboardAreaTabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px"></div>
+    <div id="dashboardBody" style="margin-top:12px">Načítavam…</div>
+    <div id="dashboardStatniceSection" style="margin-top:18px;padding-top:14px;border-top:1px solid var(--card-border, rgba(0,0,0,0.08))">
+      <h4 class="dashboard-collapsible-header" style="margin:0 0 8px 0">⚖️ Skúšky (AI skúška)</h4>
+      <div class="dashboard-collapsible-body">
+        <div id="dashboardStatniceList" style="margin-top:8px">Načítavam…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="welcomeModal" class="avatar-modal" aria-hidden="true" style="display:none;">
+  <div class="avatar-panel welcome-panel">
+    <div class="game-panel-header">
+      <h3>👋 Vitaj vo Finančnej lige</h3>
+    </div>
+
+    <!-- Uvítacie okno je prvá vec, ktorú nový návštevník vidí. Predtým to bolo
+         päť odstavcov textu zakončených „Rozumiem“ – teda súhlas, nie pozvánka.
+         Teraz: jednovetový sľub, tri veci, ktoré appka vie, a akčné CTA.
+         Testovacia fáza, súkromie a disclaimer ostávajú – len zbalené nižšie,
+         nech neprekryjú prvý dojem. -->
+    <div class="welcome-body">
+      <p style="font-size:16px"><strong>Priprav sa na skúšky hravo.</strong> Skúšaj si ich nanečisto
+      pred komisiou, súťaž so spolužiakmi a zbieraj mince 🪙.</p>
+
+      <div class="welcome-highlights">
+        <div><span class="welcome-hl-icon">🏛️</span><strong>AI skúška</strong><br>
+          <span class="small muted">Ústna skúška nanečisto so známkou a spätnou väzbou.</span></div>
+        <div><span class="welcome-hl-icon">⚔️</span><strong>Súboj</strong><br>
+          <span class="small muted">5 otázok proti spolužiakovi — výzvu pošleš linkom.</span></div>
+        <div><span class="welcome-hl-icon">🧠</span><strong>Bifľovačka</strong><br>
+          <span class="small muted">Definície nahlas alebo písomne, aj cestou.</span></div>
+      </div>
+
+      <details class="guide-section" style="margin-top:14px">
+        <summary>🧪 Testovacia fáza, súkromie a upozornenie</summary>
+        <div class="guide-content">
+          <p>Sme v testovacej fáze, všetky funkcie sú zatiaľ bezplatné. Za aktivitu
+          zbieraš mince 🪙 — ak ti dôjdu a avatar zaspí, napíš nám cez nástenku
+          a radi ti nejaké pridáme.</p>
+
+          <p>🙏 Ďakujeme za každý príspevok — či už nahlásiš chybu, alebo
+          napíšeš pripomienku. Pomáhaš tým zlepšovať obsah pre všetkých.</p>
+
+          <p>🔒 Súkromie: Na používanie stačí prezývka — nezbierame e-mail, meno ani iné
+          osobné údaje. Odporúčame nepoužívať ako prezývku svoje pravé meno, nech
+          zostaneš anonymný/á. (Ak sa pripojíš ku skupine vyučujúceho a napíšeš zadaný
+          test, tvoj výsledok uvidí daný vyučujúci — tvoj bežný tréning ostáva súkromný.)</p>
+
+          <p class="small muted">Finančná liga je študijná pomôcka, nie finančné poradenstvo —
+          kľúčové informácie si vždy over u svojej banky alebo poisťovne.</p>
+        </div>
+      </details>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:flex-end">
+      <button class="btn" id="welcomeNoticeboardBtn">📋 Otvoriť nástenku</button>
+      <!-- ID nemenené – je to JEDINÉ miesto, ktoré nastavuje „videl som“ flag. -->
+      <button class="btn btn-primary" id="welcomeUnderstoodBtn">Začni hrať →</button>
+    </div>
+  </div>
+</div>
+
+<div id="guideModal" class="avatar-modal" aria-hidden="true" style="display:none;">
+  <div class="avatar-panel game-panel guide-panel">
+    <div class="game-panel-header">
+      <h3>📖 Ako funguje Finančná liga</h3>
+      <button class="btn" id="closeGuide">Zavrieť</button>
+    </div>
+
+    <!-- Uvítacie okno stratilo vlastnú ikonu v lište (👋 a ℹ️ sú zlúčené),
+         odtiaľ sa dá znovu otvoriť. -->
+    <div style="margin-bottom:12px">
+      <button class="chip" type="button" id="openWelcomeFromGuide">👋 Vitaj vo Finančnej lige</button>
+    </div>
+
+    <div class="guide-accordion">
+
+      <details class="guide-section" open>
+        <summary>🎯 Čo je Finančná liga</summary>
+        <div class="guide-content">
+          <p>Finančná liga je študijná aréna pre študentov práva. Precvičuješ skúšobné okruhy
+          z pracovného, trestného, občianskeho a európskeho práva formou súbojov, kartičiek, prípadov
+          z praxe a bifľovačky – a za aktivitu zbieraš mince 🪙, našu hernú menu.</p>
+          <p><strong>Dôležité – obsah tvoríme spoločne:</strong> Otázky a definície pripravujeme s odbornou
+          starostlivosťou, no kvalita obsahu je v rukách celej komunity. Každý hráč sa
+          spolupodieľa na tvorbe a kontrole obsahu nahlasovaním chýb v obsahu –
+          tie posudzujú garanti a admin v Porote. Otázky, ktoré prešli auditom,
+          spoznáš podľa pečate. Finančná liga je študijná pomôcka, nie finančné poradenstvo:
+          kľúčové informácie si pred skúškou vždy over v aktuálnom znení predpisov
+          u svojej banky alebo poisťovne.</p>
+        </div>
+      </details>
+
+      <!-- Výber oblasti je vstupná brána do celého loopu, ale v návode dosiaľ
+           vôbec nebol vysvetlený – rovnako ako Moduly, Judikatúra, Senáty
+           a Môj progres nižšie. Doplnené 2026-08. -->
+      <details class="guide-section">
+        <summary>🎯 Výber oblasti a tri režimy</summary>
+        <div class="guide-content">
+          <p>Všetko sa začína výberom oblasti v dlaždici <strong>Hraj</strong>. Kliknutím na oblasť
+          si appka pripraví <strong>dvojicu okruhov</strong> – a tú istú dvojicu potom používa
+          súboj, kartičky, prípady aj AI skúška. Nemusíš teda vyberať
+          štyrikrát; vyberieš raz a hráš, čo chceš.</p>
+          <p>Pri trestnom a občianskom práve dostaneš jeden okruh z hmotného a jeden
+          z procesného práva, pri pracovnom a európskom dvojicu z tej istej banky.</p>
+          <p>Pod oblasťami sú tri režimy, ktorými ovplyvníš, ktoré okruhy sa vyberú:</p>
+          <table class="guide-table">
+            <tr><th>Režim</th><th>Čo vyberie</th></tr>
+            <tr><td>🎲 Náhodne</td><td>Ľubovoľnú dvojicu z celej oblasti (predvolené)</td></tr>
+            <tr><td>📗 Preštudované</td><td>Len okruhy, kde už máš z kvízu aspoň 60 %</td></tr>
+            <tr><td>📕 Na precvičenie</td><td>Tvoje najslabšie okruhy – appka ti vyberie, čo ti nejde</td></tr>
+          </table>
+          <p class="small muted">Ak pre zvolený režim niet z čoho vyberať (napr. ešte nemáš nič
+          preštudované), appka potichu vyberie náhodne a napíše ti to pod dlaždicou.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>⚔️ Súboj</summary>
+        <div class="guide-content">
+          <p>Vyber si oblasť a vyzvi spolužiaka. Súboj má 5 otázok z vybranej oblasti,
+          náhodne vybraných z celej jej banky otázok naprieč okruhmi.
+          Súper odpovedá na tie isté otázky.</p>
+          <p>Svoje odohrané súboj nájdeš v registri súbojov – tlačidlom „📤 Poslať" vygeneruješ
+          link na výzvu a pošleš ho komukoľvek. Kto výzvu prijme, hrá proti tebe tie
+          isté otázky.</p>
+          <table class="guide-table">
+            <tr><th>Výsledok</th><th>Odmena</th></tr>
+            <tr><td>Výhra</td><td>+<span data-econ="REWARDS.DUEL_WIN"></span>🪙</td></tr>
+            <tr><td>Remíza</td><td>+<span data-econ="REWARDS.DUEL_DRAW"></span>🪙</td></tr>
+            <tr><td>Prehra</td><td><span data-econ="REWARDS.DUEL_LOSS"></span>🪙</td></tr>
+            <tr><td>Prijatie výzvy linkom – nový hráč</td><td>+<span data-econ="REWARDS.CHALLENGE_NEW"></span>🪙</td></tr>
+            <tr><td>Prijatie výzvy linkom – registrovaný</td><td>+<span data-econ="REWARDS.CHALLENGE_EXISTING"></span>🪙</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>🃏 Kartičky a 📋 Prípady z praxe</summary>
+        <div class="guide-content">
+          <p>Po výbere oblasti sa ti sprístupnia kartičky (spájanie pojmov s definíciami)
+          a viackrokové prípady z praxe – reálne situácie, ktoré riešiš otázku po otázke.</p>
+          <table class="guide-table">
+            <tr><th>Aktivita</th><th>Odmena</th></tr>
+            <tr><td>Kartičky – sada bez jedinej chyby</td><td>+<span data-econ="REWARDS.MEMORY_PERFECT"></span>🪙</td></tr>
+            <tr><td>Prípady – dokončená sada</td><td>+<span data-econ="REWARDS.CASES_SET"></span>🪙</td></tr>
+            <tr><td>Prípady – sada na 100 %</td><td>+<span data-econ="REWARDS.CASES_PERFECT"></span>🪙</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>🏛️ AI skúška</summary>
+        <div class="guide-content">
+          <p>Nácvik ústnej skúšky pred trojčlennou komisiou – zatiaľ pre
+          <strong>Osobné financie</strong>, <strong>Investovanie</strong> a <strong>Makroekonómiu</strong>.
+          Po vstupe dostaneš jednu tému z vybranej oblasti a 5 minút na prípravu. Odpovedáš nahlas
+          (rozpoznávanie reči) alebo píšeš – komisia ťa vypočuje, prípadne položí
+          doplňujúcu otázku, a na konci ohodnotí pokrytie tvojej odpovede voči zhrnutiu
+          okruhu známkou 1 – 4 so spätnou väzbou.</p>
+          <table class="guide-table">
+            <tr><th>Položka</th><th>Cena / odmena</th></tr>
+            <tr><td>Známka 1</td><td>+<span data-econ="STATNICE.EXAM_REWARD.1"></span>🪙</td></tr>
+            <tr><td>Známka 2</td><td>+<span data-econ="STATNICE.EXAM_REWARD.2"></span>🪙</td></tr>
+            <tr><td>Známka 3</td><td>+<span data-econ="STATNICE.EXAM_REWARD.3"></span>🪙</td></tr>
+            <tr><td>Známka 4</td><td>+<span data-econ="STATNICE.EXAM_REWARD.4"></span>🪙</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>📚 Bifľovačka</summary>
+        <div class="guide-content">
+          <p>Tréning definícií na skúšky: zobrazí sa ti definícia, zapamätáš si ju, a potom
+          ju povieš alebo napíšeš vlastnými slovami. Pri zhode aspoň 50 % postupuješ ďalej.
+          Definície ti vie prečítať aj počítač – ideálne na učenie počas cesty.</p>
+          <table class="guide-table">
+            <tr><th>Aktivita</th><th>Odmena</th></tr>
+            <tr><td>Dokončený okruh (úspešnosť ≥ 80 %)</td><td>+<span data-econ="REWARDS.BIFLOVACKA_OKRUH"></span>🪙</td></tr>
+            <tr><td>100 % celej oblasti</td><td>+<span data-econ="REWARDS.BIFLOVACKA_AREA"></span>🪙</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <!-- Etapa 2 – pavúkové hry. Čísla odmien sa plnia z ECONOMY_CONFIG.SPIDER_GAMES
+           cez data-econ (fillGuideEconomyValues v init.js) – cesty data-econ NEMENIŤ. -->
+      <details class="guide-section">
+        <summary>🕸️ Pavúkové hry na mape</summary>
+        <div class="guide-content">
+          <p>V mape štruktúry otázok nájdeš päť hier na precvičenie. Tri z nich – Kukučka, Rozpárovanie a Kde som? – ti za dobré skóre pripíšu 🪙. Recall a Blesk sú čisto tréningové, bez odmeny.</p>
+          <table class="guide-table">
+            <tr><th>Hra – výsledok sedenia</th><th>Odmena</th></tr>
+            <tr><td>🐦 Kukučka – 5/5</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.kukucka.0.sg"></span>🪙</td></tr>
+            <tr><td>🐦 Kukučka – 4/5</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.kukucka.1.sg"></span>🪙</td></tr>
+            <tr><td>🧩 Rozpárovanie – 5/5</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.rozparovanie.0.sg"></span>🪙</td></tr>
+            <tr><td>🧩 Rozpárovanie – 4/5</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.rozparovanie.1.sg"></span>🪙</td></tr>
+            <tr><td>🧭 Kde som? – 10/10</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.kdesom.0.sg"></span>🪙</td></tr>
+            <tr><td>🧭 Kde som? – 8–9/10</td><td>+<span data-econ="SPIDER_GAMES.REWARDS.kdesom.1.sg"></span>🪙</td></tr>
+          </table>
+          <p class="small muted">Max <span data-econ="SPIDER_GAMES.DAILY_MAX_SESSIONS"></span> odmenené sedenia denne (spoločne za všetky tri hry), ten istý okruh raz denne.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>📊 Môj progres</summary>
+        <div class="guide-content">
+          <p>Súkromný prehľad – vidíš ho len ty. Pri každej téme ukazuje percento
+          zvládnutia spočítané zo všetkého, čo si v nej odohral (kvíz, kartičky,
+          prípady, bifľovačka, skúška). Zbaliteľná časť <strong>„Čo dobrať“</strong> ti
+          rovno povie, ktoré témy sú pod 80 % a čo v nich chýba, a v sekcii Skúšky
+          nájdeš históriu skúšobných známok.</p>
+          <p>Za priebežný postup dostávaš jednorazové odmeny:</p>
+          <table class="guide-table">
+            <tr><th>Míľnik</th><th>Odmena</th></tr>
+            <tr><td>Téma na 30 %</td><td>+<span data-econ="DASHBOARD.TEMA_30"></span>🪙</td></tr>
+            <tr><td>Téma na 50 %</td><td>+<span data-econ="DASHBOARD.TEMA_50"></span>🪙</td></tr>
+            <tr><td>Téma na 80 %</td><td>+<span data-econ="DASHBOARD.TEMA_80"></span>🪙</td></tr>
+            <tr><td>Celá oblasť na 100 %</td><td>+<span data-econ="DASHBOARD.OBLAST_100"></span>🪙</td></tr>
+          </table>
+          <p class="small muted">Počíta sa od 17. 7. 2026 – staršia aktivita sa nezapočítava,
+          takže aj téma, ktorú dávno vieš, môže ukazovať 0 %, kým si ju znovu neprejdeš.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>📁 Študijné moduly</summary>
+        <div class="guide-content">
+          <p>Samostatné appky na pokojné štúdium – bez energie, bez časového tlaku
+          a s neobmedzeným opakovaním. Pri každom okruhu nájdeš teóriu so zdrojom,
+          mapu štruktúry otázok a kvíz; po jeho dokončení sa odomknú aj kartičky
+          a prípady k tomu istému okruhu.</p>
+          <p>Okruh sa označí za zvládnutý pri kvíze na <strong>60 %</strong> a výsledok sa
+          započíta do Môjho progresu. Pod dlaždicou <strong>„Ďalší obsah“</strong> sú staršie
+          samostatné appky (veľké kvízy, spájačka) – tie fungujú mimo tvojho účtu,
+          takže sa z nich progres ani 🪙 nezapisujú.</p>
+        </div>
+      </details>
+
+
+      <details class="guide-section">
+        <summary>🏛️ Triedy</summary>
+        <div class="guide-content">
+          <p>Trieda je tím 3 – 5 hráčov. Založíš ju a pošleš spolužiakom pozývací link;
+          keď vás budú traja, trieda sa stane súťažnou a odmeny dostanú všetci.</p>
+          <p>Kapitán potom môže vyzvať inú triedu na <strong>zápas tried</strong>: všetci členovia
+          do 48 hodín odohrajú tie isté otázky a počíta sa priemer za celý tím
+          (kto nehral, má nulu). Body zo zápasov sa zbierajú v rebríčku tried.</p>
+          <table class="guide-table">
+            <tr><th>Udalosť</th><th>Odmena</th></tr>
+            <tr><td>Trieda dosiahla 3 členov (kapitánovi)</td><td>+<span data-econ="SENATY.FOUND_COMPLETE"></span>🪙</td></tr>
+            <tr><td>Za každého pozvaného člena</td><td>+<span data-econ="SENATY.RECRUIT"></span>🪙</td></tr>
+            <tr><td>Výhra v zápase (každému členovi)</td><td>+<span data-econ="SENATY.SPOR_WIN"></span>🪙</td></tr>
+            <tr><td>Remíza / prehra</td><td>+<span data-econ="SENATY.SPOR_DRAW"></span>🪙 / +<span data-econ="SENATY.SPOR_LOSS"></span>🪙</td></tr>
+          </table>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>⚡ Energia a avatar</summary>
+        <div class="guide-content">
+          <p><strong>V tejto demo verzii energia nič neobmedzuje</strong> – hraj koľko chceš. Avatar ostáva stále plný a nezaspí.</p>
+          <p>V plnej verzii je energia <strong>denná porcia</strong>, ktorú hranie spotrebúva a ktorá sa každý deň obnoví;
+          pri nule avatar zaspí a dá sa nakŕmiť za 🪙. V deme sú ceny nastavené na nulu, takže sa energia nemíňa
+          a avatar ostáva stále plný elánu.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>🔥 Denný streak</summary>
+        <div class="guide-content">
+          <p>Za každý deň, keď si vo Finančnej lige, rastie tvoja séria:</p>
+          <table class="guide-table">
+            <tr><th>Streak</th><th>Odmena</th></tr>
+            <tr><td>Deň 1 – 7</td><td>+<span data-econ="STREAK.BASE.0"></span>🪙 až +<span data-econ="STREAK.BASE.6"></span>🪙 (rastie každý deň)</td></tr>
+            <tr><td>Deň 8 a ďalej</td><td>+<span data-econ="STREAK.AFTER"></span>🪙 / deň</td></tr>
+            <tr><td>Míľnik – deň 7</td><td>+<span data-econ="STREAK.MILESTONES.7"></span>🪙 bonus</td></tr>
+            <tr><td>Míľnik – deň 30</td><td>+<span data-econ="STREAK.MILESTONES.30"></span>🪙 bonus</td></tr>
+          </table>
+          <p>Vynechaný deň sériu preruší a začínaš odznova.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>🏆 Rebríčky</summary>
+        <div class="guide-content">
+          <p>Body z súbojov ťa posúvajú v rebríčku. Vyhodnocuje sa automaticky:</p>
+          <table class="guide-table">
+            <tr><th>Rebríček</th><th>1. miesto</th><th>2. miesto</th><th>3. miesto</th></tr>
+            <tr><td>Týždenný (nedeľa polnoc)</td><td>+<span data-econ="LEADERBOARD.WEEKLY.0"></span>🪙</td><td>+<span data-econ="LEADERBOARD.WEEKLY.1"></span>🪙</td><td>+<span data-econ="LEADERBOARD.WEEKLY.2"></span>🪙</td></tr>
+            <tr><td>Mesačný (koniec mesiaca)</td><td>+<span data-econ="LEADERBOARD.MONTHLY.0"></span>🪙</td><td>+<span data-econ="LEADERBOARD.MONTHLY.1"></span>🪙</td><td>+<span data-econ="LEADERBOARD.MONTHLY.2"></span>🪙</td></tr>
+          </table>
+          <p>Ak sa umiestniš, Finančná liga ti to oznámi pri najbližšej návšteve.</p>
+          <!-- Zoznam výnimiek MUSÍ sedieť s LIMITS v scripts/economyConfig.js
+               a so skipCap volaniami v scripts/economy.js. Od ekonomiky v1 sú
+               videá aj reklama V STROPE – netvrď o nich opak. -->
+          <p class="small muted">Denný strop zárobku z herných aktivít je <span data-econ="LIMITS.DAILY_EARN_CAP"></span>🪙. Nepočítajú
+          sa doň len streak za prihlásenie, rebríčkové odmeny a AI skúška – všetko ostatné vrátane
+          videí a reklám doň patrí. Ak strop vyčerpáš, jednorazové odmeny (video, míľnik) o nič neprídeš,
+          vyzdvihneš si ich na druhý deň.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>⚖️ Porota a pečate</summary>
+        <div class="guide-content">
+          <p>Našiel si chybu v otázke? Tlačidlo na nahlásenie nájdeš pri
+          každej otázke v kvíze, pod zhrnutím okruhu aj pri krokoch prípadov z praxe –
+          navrhneš správne znenie a vecne ho zdôvodníš. Nahlásenie
+          putuje do Poroty, kde môžu ostatní hlasovať a komentovať. Verdikt vydá
+          garant (podpísaný, s odôvodnením) alebo admin (bez podpisu, len výsledok).</p>
+          <p>Za schválené nahlásenia zbieraš pečate:</p>
+          <table class="guide-table">
+            <tr><th>Pečať</th><th>Podmienka</th></tr>
+            <!-- Čísla dopĺňa fillGuideSealValues() z scripts/seals.js (rovnaký
+                 zdroj, z akého sa pečate udeľujú) – nikdy ich sem nepíš ručne. -->
+            <tr><td>🥉 Bronzová</td><td><span data-seal="bronze.min"></span>. schválené nahlásenie</td></tr>
+            <tr><td>🥈 Strieborná</td><td><span data-seal="silver.min"></span> schválených</td></tr>
+            <tr><td>🥇 Zlatá</td><td><span data-seal="gold.min"></span> schválených</td></tr>
+            <tr><td>🎓 Akademická</td><td>garant (automaticky)</td></tr>
+          </table>
+          <p>Pečať sa zobrazuje aj pri auditovanej otázke – vieš, že prešla kontrolou
+          a kým. Takto spoločne držíme obsah Finančnej ligy presný a aktuálny.</p>
+          <p>Za každé schválené nahlásenie získaš aj +<span data-econ="REWARDS.REPORT_APPROVED"></span>🪙.</p>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>💰 Ako získať ďalšie 🪙</summary>
+        <div class="guide-content">
+          <ul class="guide-list">
+            <li>📺 <strong>Náukové videá</strong> – za každé z troch videí v sekcii Návody & odmeny +<span data-econ="REWARDS.VIDEO"></span>🪙
+            (jednorazovo).</li>
+            <li>💰 <strong>Získaj 🪙</strong> v hornej lište – pozri krátke video (+<span data-econ="ADS.REWARD"></span>🪙, max <span data-econ="ADS.DAILY_MAX"></span>× denne)
+            alebo zadaj promo kód od našich partnerov.</li>
+            <li>🎁 Sleduj naše sociálne siete – promo kódy rozdávame pri kampaniach.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="guide-section">
+        <summary>👥 Roly v komunite</summary>
+        <div class="guide-content">
+          <ul class="guide-list">
+            <li><strong>Študent</strong> – hráč; hrá, učí sa, nahlasuje chyby, zbiera pečate.</li>
+            <li><strong>Garant</strong> – odborný audítor; posudzuje nahlásenia, vydáva verdikty, nesie
+            akademickú pečať 🎓.</li>
+            <li><strong>Admin</strong> – správca Finančnej ligy; udeľuje role, plášte a odmeny, spravuje obsah.</li>
+          </ul>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</div>
+
+<!-- KONFIGURÁCIA OTÁZOK -->
+<script>
+    window.LEX_QUESTION_RANGES = {
+    "Osobné financie": { start: 1, end: 2 },
+    "Investovanie": { start: 1, end: 2 },
+    "Makroekonómia": { start: 1, end: 2 }
+  };
+</script>
+
+<!-- DATA + FIREBASE (pred všetkým ostatným) -->
+<script type="module" src="data.js"></script>
+<script type="module" src="firebase.js"></script>
+
+<!-- CORE MODULES -->
+<script type="module" src="core.js"></script>
+<script type="module" src="state.js"></script>
+<script type="module" src="ui.js"></script>
+<script type="module" src="theme.js"></script>
+<script type="module" src="audio.js"></script>
+<script type="module" src="avatars.js"></script>
+<script type="module" src="areas.js"></script>
+<script type="module" src="admin.js"></script>
+<script type="module" src="reports.js"></script>
+<script type="module" src="memory.js"></script>
+<script type="module" src="cases.js"></script>
+<script type="module" src="app.js"></script>
+
+<!-- Dlaždice Bifľovačky na dashboarde zanikli spolu so sekciou –
+     renderMemoryTiles() ostáva pre memory-trainer.html, kde je zoznam
+     oblastí na mieste. -->
+
+<!-- REPORTS SYSTEM – inline pre spoľahlivé načítanie -->
+<script type="module">
+import { renderSource } from './scripts/sourceUtil.js';
+import { SEAL_EMOJI, getSealType } from './scripts/seals.js';
+
+function getDb() { return window.db || null; }
+function getNick() { return localStorage.getItem('playerNick') || null; }
+
+async function fbImport() {
+  return await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js");
+}
+
+/* ── PEČATE ──
+   Prahy aj getSealType() sa presunuli do scripts/seals.js, aby ich mohol
+   importovať aj návod (tabuľka prahov sa odtiaľ vypĺňa za behu) a čísla
+   sa nemali kde rozísť. Správanie sa presunom nemení. */
+
+/* Skutočná rola (Firebase), nie lokálny "view" prepínač – ten sa dá zmeniť
+   v UI len na náhľad iných rolí a nesmie ovplyvniť schvaľovacie práva. */
+async function getRealRole(nick) {
+  const db = getDb();
+  if (!db || !nick) return 'student';
+  try {
+    const { ref, get } = await fbImport();
+    const snap = await get(ref(db, `users/${nick}/role`));
+    return snap.exists() ? snap.val() : 'student';
+  } catch (e) {
+    return 'student';
+  }
+}
+
+/* ── NAHLÁSENIE ── */
+window.openReportModal = function(prefill = {}) {
+  let modal = document.getElementById('reportModalNew');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'reportModalNew';
+    modal.className = 'avatar-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px;box-sizing:border-box;overflow-y:auto;';
+    modal.innerHTML = `
+      <div class="avatar-panel report-panel" style="background:var(--surface,#fff);border-radius:20px;padding:28px;max-width:620px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <h3 style="margin:0">⚖️ Nahlásiť chybu</h3>
+            <div class="small muted">Vysvetli, prečo je to zle, a navrhni správne znenie</div>
+          </div>
+          <button class="btn" id="rCloseBtn">✕</button>
+        </div>
+        <div id="rForm">
+          <div style="margin-bottom:12px">
+            <label class="form-label">Oblasť práva *</label>
+            <select id="rArea" class="form-input">
+              <option value="">– Vyber –</option>
+              <option>Osobné financie</option>
+              <option>Investovanie</option>
+              <option>Makroekonómia</option>
+            </select>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">Číslo / identifikátor otázky * <span class="small muted">(napr. A23 / otázka 3)</span></label>
+            <input id="rQid" class="form-input" type="text" placeholder="napr. A23 / otázka 3" maxlength="100"/>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">Text otázky (voliteľné)</label>
+            <textarea id="rQtext" class="feedback-textarea" rows="2" placeholder="Skopíruj text otázky..." maxlength="500"></textarea>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">Typ chyby *</label>
+            <div style="display:flex;gap:6px;flex-wrap:wrap" id="rTypes">
+              <button class="report-type-btn active" data-t="wrong_answer">❌ Nesprávna odpoveď</button>
+              <button class="report-type-btn" data-t="outdated">📅 Zastaraná info</button>
+              <button class="report-type-btn" data-t="unclear">❓ Nejasné znenie</button>
+              <button class="report-type-btn" data-t="other">📝 Iné</button>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">Vysvetlenie, prečo je to zle * <span class="small muted">(min. 50 znakov)</span></label>
+            <textarea id="rArg" class="feedback-textarea" rows="5"
+              placeholder="Napr.: Odporúčaná rezerva je 3–6 mesiacov výdavkov, nie 1 mesiac – viď zhrnutie okruhu a metodika NBS k finančnej gramotnosti."
+              maxlength="2000"></textarea>
+            <div style="text-align:right"><span id="rArgCount" class="small muted">0 / 2000</span></div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">Zdroj <span class="small muted">(voliteľné – odkaz alebo publikácia)</span></label>
+            <input id="rSrc" class="form-input" type="text" placeholder="napr. NBS, učebnica, článok…" maxlength="200"/>
+          </div>
+          <div style="margin-bottom:12px">
+            <label class="form-label">URL zdroja <span class="small muted">(voliteľné)</span></label>
+            <input id="rSrcUrl" class="form-input" type="text" placeholder="https://…" maxlength="300"/>
+          </div>
+          <div style="margin-bottom:16px" id="rSrcAccessedRow">
+            <label class="form-label">Mesiac prístupu <span class="small muted">(ak si uviedol/la URL)</span></label>
+            <input id="rSrcAccessed" class="form-input" type="month"/>
+          </div>
+          <div id="rError" style="display:none;color:#dc2626;font-size:13px;margin-bottom:8px"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-primary" id="rSubmit" style="flex:1">⚖️ Odoslať do Poroty</button>
+            <button class="btn" id="rCancel">Zrušiť</button>
+          </div>
+        </div>
+        <div id="rSuccess" style="display:none;text-align:center;padding:24px">
+          <div style="font-size:48px">⚖️</div>
+          <h3>Nahlásené!</h3>
+          <p class="small muted">Presunuté do Poroty. Ostatní hráči sa môžu vyjadriť.</p>
+          <button class="btn" id="rDone" style="margin-top:12px">Zavrieť</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+
+    let selType = 'wrong_answer';
+    modal.querySelectorAll('.report-type-btn').forEach(b => {
+      b.onclick = () => {
+        modal.querySelectorAll('.report-type-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); selType = b.dataset.t;
+      };
+    });
+
+    modal.querySelector('#rArg').oninput = function() {
+      modal.querySelector('#rArgCount').textContent = this.value.length + ' / 2000';
+    };
+
+    const close = () => { modal.style.display = 'none'; };
+    modal.querySelector('#rCloseBtn').onclick = close;
+    modal.querySelector('#rCancel').onclick = close;
+    modal.querySelector('#rDone').onclick = close;
+    modal.onclick = e => { if (e.target === modal) close(); };
+
+    modal.querySelector('#rSubmit').onclick = async () => {
+      const area = modal.querySelector('#rArea').value;
+      const qid  = modal.querySelector('#rQid').value.trim();
+      const arg  = modal.querySelector('#rArg').value.trim();
+      const srcCitation = modal.querySelector('#rSrc').value.trim();
+      const srcUrl = modal.querySelector('#rSrcUrl').value.trim();
+      const srcAccessed = modal.querySelector('#rSrcAccessed').value.trim();
+      const errEl = modal.querySelector('#rError');
+
+      if (!area) { errEl.textContent='Vyber oblasť.'; errEl.style.display='block'; return; }
+      if (!qid)  { errEl.textContent='Zadaj číslo otázky.'; errEl.style.display='block'; return; }
+      if (arg.length < 50) { errEl.textContent='Argumentácia musí mať aspoň 50 znakov.'; errEl.style.display='block'; return; }
+      if (srcUrl && !srcAccessed) { errEl.textContent='Pri URL zdroji zadaj aj mesiac prístupu.'; errEl.style.display='block'; return; }
+      errEl.style.display = 'none';
+
+      /* Zdroj je voliteľný: bez citácie sa objekt nezostavuje vôbec
+         a renderSource() zobrazí „Zdroj: doplní sa“. */
+      let zdroj = null;
+      if (srcCitation) {
+        zdroj = { type: srcUrl ? 'web' : 'ucebnica', citation: srcCitation };
+        if (srcUrl) { zdroj.url = srcUrl; zdroj.accessed = srcAccessed; }
+      }
+
+      const btn = modal.querySelector('#rSubmit');
+      btn.disabled = true; btn.textContent = 'Odosielam...';
+
+      try {
+        // Počkaj kým je Firebase inicializovaná
+        let db = getDb();
+        let attempts = 0;
+        while (!db && attempts < 30) {
+          await new Promise(r => setTimeout(r, 100));
+          db = getDb();
+          attempts++;
+        }
+        if (db) {
+          const { ref, push, update } = await fbImport();
+          const r = await push(ref(db, 'reports'), {
+            nick: getNick() || 'Anonymous',
+            area, questionId: qid,
+            questionText: modal.querySelector('#rQtext').value.trim(),
+            type: selType,
+            argument: arg,
+            source: srcCitation,
+            zdroj,
+            status: 'in_court',
+            createdAt: Date.now(),
+            votes: { for: 0, against: 0 }
+          });
+          await update(ref(db, `courtroom/${r.key}`), { reportId: r.key, createdAt: Date.now() });
+        }
+        modal.querySelector('#rForm').style.display = 'none';
+        modal.querySelector('#rSuccess').style.display = 'block';
+      } catch(e) {
+        errEl.textContent = 'Chyba: ' + e.message;
+        errEl.style.display = 'block';
+      } finally {
+        btn.disabled = false; btn.textContent = '⚖️ Odoslať do Poroty';
+      }
+    };
+  }
+
+  // Predvyplnenie
+  if (prefill.area) modal.querySelector('#rArea').value = prefill.area;
+  if (prefill.questionId) modal.querySelector('#rQid').value = prefill.questionId;
+  if (prefill.questionText) modal.querySelector('#rQtext').value = prefill.questionText;
+
+  // Reset
+  modal.querySelector('#rForm').style.display = 'block';
+  modal.querySelector('#rSuccess').style.display = 'none';
+  modal.style.display = 'flex';
+  console.log('✅ openReportModal otvorené');
+};
+
+/* ── SÚDNA SIEŇ ── */
+window.openCourtroomModal = async function() {
+  console.log('🏛️ openCourtroomModal zavolaná');
+  try {
+  let modal = document.getElementById('courtroomModalNew');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'courtroomModalNew';
+    modal.className = 'avatar-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px;box-sizing:border-box;overflow-y:auto;';
+    modal.innerHTML = `
+      <div class="avatar-panel courtroom-panel" style="background:var(--surface,#fff);border-radius:20px;padding:28px;max-width:720px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div>
+            <h3 style="margin:0">🏛️ Porota</h3>
+            <div class="small muted">Nahlásené otázky čakajúce na posúdenie</div>
+          </div>
+          <button class="btn" id="cClose">✕</button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" id="cFilters">
+          <button class="chip active" data-s="in_court">⏳ Čakajúce</button>
+          <button class="chip" data-s="approved">✅ Schválené</button>
+          <button class="chip" data-s="rejected">❌ Zamietnuté</button>
+        </div>
+        <div id="cList" style="max-height:60vh;overflow-y:auto">
+          <div class="small muted" style="text-align:center;padding:20px">Načítavam...</div>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+
+    modal.querySelector('#cClose').onclick = () => { modal.style.display = 'none'; };
+    modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+
+    modal.querySelectorAll('#cFilters .chip').forEach(b => {
+      b.onclick = () => {
+        modal.querySelectorAll('#cFilters .chip').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        loadCList(b.dataset.s);
+      };
+    });
+  }
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px;box-sizing:border-box;overflow-y:auto;';
+  console.log('🏛️ Volám loadCList...');
+  await loadCList('in_court');
+
+  async function loadCList(status) {
+    const list = modal.querySelector('#cList');
+    list.innerHTML = '<div class="small muted" style="text-align:center;padding:20px">Načítavam...</div>';
+    const db = getDb();
+    if (!db) { list.innerHTML = '<div class="small muted" style="text-align:center;padding:20px">Firebase nie je dostupná.</div>'; return; }
+
+    const { ref, get } = await fbImport();
+    const snap = await get(ref(db, 'reports'));
+    const data = snap.val() || {};
+    const nick = getNick();
+    const role = await getRealRole(nick);
+
+    const items = Object.entries(data)
+      .filter(([,r]) => r.status === status)
+      .sort(([,a],[,b]) => b.createdAt - a.createdAt);
+
+    if (!items.length) {
+      list.innerHTML = '<div class="small muted" style="text-align:center;padding:20px">Žiadne nahlásenia.</div>';
+      return;
+    }
+
+    const typeLabel = { wrong_answer:'❌ Nesprávna odpoveď', outdated:'📅 Zastaraná info', unclear:'❓ Nejasné znenie', other:'📝 Iné' };
+    const fmtDate = ts => { const d=new Date(ts); return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); };
+
+    list.innerHTML = items.map(([id,r]) => {
+      const canModerate = role === 'admin' || (role === 'garant' && r.nick !== nick);
+      const isOwnAsGarant = role === 'garant' && r.nick === nick;
+      const sealBadge = r.seal ? ` ${SEAL_EMOJI[r.seal.type] || ''}` : '';
+
+      let verdictHtml = '';
+      if (r.verdict) {
+        /* Admin schvaľuje NEVIDITEĽNE: že zásah spravil admin, vidí len admin.
+           Garantove verdikty vidia všetci aj s podpisom – garant zaň ručí menom
+           a nesie akademickú pečať.
+
+           Pri adminovi sa skrýva CELÝ riadok okrem holého faktu – teda aj
+           KOMENTÁR, nielen atribúcia. Pôvodne sa odôvodnenie nechávalo
+           viditeľné, ale z formulácie sa dá autor odvodiť (štýl, obraty,
+           znalosti), takže skrytý podpis by bol iba zdanlivý. Ostáva preto
+           len „📜 Schválené“ / „📜 Zamietnuté“.
+
+           `role` je SKUTOČNÁ rola prezerajúceho z Firebase (getRealRole vyššie),
+           nie náhľadový prepínač z localStorage – admin v režime „garant“ teda
+           podpis aj komentár stále uvidí a študent ich neuvidí nikdy.
+
+           Ukladanie sa NEMENÍ: verdict.by / verdict.role / decidedBy / comment
+           sa naďalej zapisujú do Firebase ako audit stopa, len sa verejne
+           nerenderujú. Platí spätne aj na staršie záznamy: vykresľujú sa tým
+           istým kódom, takže netreba žiadna migrácia dát. */
+        const skryAtribuciu = r.verdict.role === 'admin' && role !== 'admin';
+
+        if (skryAtribuciu) {
+          verdictHtml = `<div class="courtroom-verdict">📜 ${status === 'approved' ? 'Schválené' : 'Zamietnuté'}</div>`;
+        } else {
+          const roleIcon = r.verdict.role === 'garant' ? '🎓' : '⚖️';
+          const roleLabel = r.verdict.role === 'garant' ? 'garant' : 'admin';
+          verdictHtml = r.verdict.comment
+            ? `<div class="courtroom-verdict">📜 Verdikt (${roleLabel} ${roleIcon} ${r.verdict.by}): ${r.verdict.comment}</div>`
+            : `<div class="courtroom-verdict">📜 ${status === 'approved' ? 'Schválené' : 'Zamietnuté'} – ${roleLabel} ${roleIcon} ${r.verdict.by}</div>`;
+        }
+      }
+
+      return `
+      <div class="courtroom-item">
+        <div class="courtroom-item-header">
+          <div><span class="report-type-badge type-${r.type}">${typeLabel[r.type]||r.type}</span>
+          <strong>${r.area}</strong> · <code>${r.questionId}</code></div>
+          <div class="small muted">${fmtDate(r.createdAt)} · ${r.nick}${sealBadge}</div>
+        </div>
+        ${r.questionText ? `<div class="courtroom-question-text small">"${r.questionText}"</div>` : ''}
+        <div class="courtroom-argument">${r.argument}</div>
+        ${r.zdroj ? renderSource(r.zdroj) : (r.source ? `<div class="small muted" style="margin-top:4px">📚 ${r.source}</div>` : '')}
+        ${verdictHtml}
+        <div class="courtroom-actions">
+          <div style="display:flex;gap:6px">
+            <button class="btn courtroom-vote-btn vote-for" data-id="${id}" data-v="for">👍 Za (${r.votes?.for||0})</button>
+            <button class="btn courtroom-vote-btn vote-against" data-id="${id}" data-v="against">👎 Proti (${r.votes?.against||0})</button>
+          </div>
+          ${canModerate ? `
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-primary admin-ap" data-id="${id}" data-nick="${r.nick}">✅ Schváliť</button>
+            <button class="btn admin-rj" data-id="${id}" data-nick="${r.nick}">❌ Zamietnuť</button>
+          </div>` : (isOwnAsGarant ? '<div class="small muted">Vlastné nahlásenie posúdi iný garant alebo admin.</div>' : '')}
+        </div>
+      </div>`;
+    }).join('');
+
+    list.querySelectorAll('.courtroom-vote-btn').forEach(b => {
+      b.onclick = async () => {
+        const key = 'voted_'+b.dataset.id;
+        if (localStorage.getItem(key)) { alert('Už si hlasoval/a.'); return; }
+        const { ref, get, update } = await fbImport();
+        const snap2 = await get(ref(db, `reports/${b.dataset.id}/votes`));
+        const v = snap2.val() || {for:0,against:0};
+        v[b.dataset.v] = (v[b.dataset.v]||0)+1;
+        await update(ref(db, `reports/${b.dataset.id}/votes`), v);
+        localStorage.setItem(key, b.dataset.v);
+        loadCList(status);
+      };
+    });
+
+    list.querySelectorAll('.admin-ap').forEach(b => {
+      b.onclick = () => openVerdictModal({
+        id: b.dataset.id, reporterNick: b.dataset.nick, decision: 'approved',
+        role, nick, db, onDone: () => loadCList(status)
+      });
+    });
+
+    list.querySelectorAll('.admin-rj').forEach(b => {
+      b.onclick = () => openVerdictModal({
+        id: b.dataset.id, reporterNick: b.dataset.nick, decision: 'rejected',
+        role, nick, db, onDone: () => loadCList(status)
+      });
+    });
+  }
+  } catch(err) {
+    console.error('❌ openCourtroomModal chyba:', err);
+    alert('Chyba: ' + err.message);
+  }
+};
+
+/* ── VERDIKT S KOMENTÁROM ──
+   Mini-modal pred schválením/zamietnutím – komentár je voliteľný,
+   verdikt (rola, autor, komentár, čas) sa uloží verejne k reportu. */
+function openVerdictModal({ id, reporterNick, decision, role, nick, db, onDone }) {
+  const existing = document.getElementById('verdictModal');
+  if (existing) existing.remove();
+
+  const vModal = document.createElement('div');
+  vModal.id = 'verdictModal';
+  vModal.className = 'avatar-modal';
+  vModal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;padding:16px;box-sizing:border-box;';
+
+  const actionLabel = decision === 'approved' ? '✅ Schváliť a zverejniť verdikt' : '❌ Zamietnuť a zverejniť verdikt';
+
+  vModal.innerHTML = `
+    <div class="avatar-panel" style="background:var(--surface,#fff);border-radius:20px;padding:24px;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
+      <h3 style="margin:0 0 12px 0">${decision === 'approved' ? '✅ Schváliť nahlásenie' : '❌ Zamietnuť nahlásenie'}</h3>
+      <label class="form-label">Komentár k verdiktu (voliteľné)</label>
+      <textarea id="vComment" class="feedback-textarea" rows="3" maxlength="500"
+        placeholder="Zdôvodnenie rozhodnutia pre hráčov..."></textarea>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="btn btn-primary" id="vConfirm" style="flex:1">${actionLabel}</button>
+        <button class="btn" id="vCancel">Zrušiť</button>
+      </div>
+    </div>`;
+  document.body.appendChild(vModal);
+
+  const close = () => vModal.remove();
+  vModal.querySelector('#vCancel').onclick = close;
+  vModal.onclick = e => { if (e.target === vModal) close(); };
+
+  vModal.querySelector('#vConfirm').onclick = async () => {
+    const confirmBtn = vModal.querySelector('#vConfirm');
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Ukladám...';
+
+    const comment = vModal.querySelector('#vComment').value.trim();
+    const { ref, get, update } = await fbImport();
+
+    const verdict = { by: nick, role: role === 'garant' ? 'garant' : 'admin', decision, comment, ts: Date.now() };
+    await update(ref(db, `reports/${id}`), { status: decision, decidedAt: Date.now(), decidedBy: nick, verdict });
+
+    if (decision === 'approved' && reporterNick) {
+      const uSnap = await get(ref(db, `users/${reporterNick}`));
+      const ud = uSnap.val() || {};
+      const cnt = (ud.approvedReports || 0) + 1;
+      const reporterRole = await getRealRole(reporterNick);
+      const sealType = getSealType(cnt, reporterRole);
+
+      await update(ref(db, `users/${reporterNick}`), { approvedReports: cnt });
+      if (sealType) {
+        await update(ref(db, `reports/${id}`), { seal: { nick: reporterNick, type: sealType } });
+        await update(ref(db, `users/${reporterNick}/seals`), {
+          [sealType]: ((ud.seals && ud.seals[sealType]) || 0) + 1
+        });
+      }
+
+      // § odmena reportérovi za schválené nahlásenie – cez jednotnú Firebase bránu,
+      // BEZ skipCap (počíta sa do denného stropu). Fail-soft: prípadná chyba odmeny
+      // nesmie zhodiť verdikt (status/seal sú už zapísané vyššie).
+      try {
+        if (window.econAward && window.ECONOMY_CONFIG) {
+          await window.econAward(reporterNick, window.ECONOMY_CONFIG.REWARDS.REPORT_APPROVED, 'schválený report otázky');
+        }
+      } catch (e) {
+        console.warn('econAward reportérovi zlyhal (verdikt ostáva platný):', e);
+      }
+    }
+
+    close();
+    onDone();
+  };
+}
+
+console.log('✅ Reports system inline načítaný');
+</script>
+
+<!-- DUEL ENGINE -->
+<script type="module" src="scripts/duels.js"></script>
+<script type="module" src="scripts/leaderboard.js"></script>
+
+<!-- OSOBNÝ PREHĽAD PROGRESU (Fáza 3) -->
+<script type="module" src="scripts/dashboardUI.js"></script>
+
+<!-- REŠERŠ JUDIKATÚRY NS SR – plávajúci panel vpravo dole -->
+<!-- Judikatúra je v deme odpojená – modul ostáva v repe, len sa nenačítava.
+     Vlastnú kartu v index.html nemá, mountuje si ju judikatura.js sama,
+     takže nenačítanie scriptu ju odstráni celú. Zapnutie = odkomentovať.
+<script type="module" src="scripts/judikatura.js"></script> -->
+
+<!-- NOČNÝ VÝCUC – audio opakovanie pred spaním -->
+<script type="module" src="scripts/nightRecap.js"></script>
+
+<!-- QUIZ ENGINE -->
+<script type="module" src="quiz.js"></script>
+
+<!-- INIT (posledný – spúšťa všetko vrátane avatara) -->
+<script type="module" src="init.js"></script>
+
+<!-- PIN + prenos účtu -->
+<script type="module">
+  import { transferAccount, loginWithPin } from "./core.js";
+  const transferBtn = document.getElementById("transferAccountBtn");
+  const loginPinBtn = document.getElementById("loginPinBtn");
+  if (transferBtn) transferBtn.onclick = () => transferAccount();
+  if (loginPinBtn) loginPinBtn.onclick = () => {
+    const pin = prompt("Zadaj PIN:");
+    if (pin) loginWithPin(pin);
+  };
+</script>
+
+<!-- Spodná navigácia (len mobil) -->
+<nav class="bottom-nav" aria-label="Rýchla navigácia">
+  <button data-target="top">🏠<span>Domov</span></button>
+  <!-- #gamesSection je po zlúčení VNÚTRI #quizCard, takže samostatný cieľ
+       „Hry“ by viedol na to isté miesto – nahradený Bifľovačkou. -->
+  <button data-target="quizCard">⚔️<span>Hraj</span></button>
+  <!-- Bifľovačka tu STÁLA. Po presune medzi dlaždice v #quizCard by cieľ
+       viedol na to isté miesto ako „Hraj“ a množina „Uč sa“ je v deme
+       prázdna, takže lišta má o položku menej (šírku rieši grid v CSS). -->
+  <button data-target="leaderboardSection">🏆<span>Rebríček</span></button>
+  <button data-target="profile">👤<span>Profil</span></button>
+</nav>
+<script type="module" src="mobile-nav.js"></script>
+
+</body>
+</html>

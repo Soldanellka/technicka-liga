@@ -1,0 +1,114 @@
+{
+  "id": "fyzika-A1",
+  "title": "Skalárne a vektorové veličiny",
+  "schemaVersion": 1,
+  "tags": [
+    "fyzika",
+    "vektory",
+    "sily"
+  ],
+  "summary": "Skalárna veličina je určená len veľkosťou a jednotkou: dráha s [m, km], čas t [s, min, h].\nVektorová veličina má aj smer a orientáciu: rýchlosť v [m/s, km/h], sila F [N].\nVektor (napríklad sila) je určený pôsobiskom, veľkosťou, smerom a orientáciou.\nVeľkosť vektora sa zapisuje |a|. V súradnicovej sústave má vektor súradnice [x; y]; vektor [0; 0] je nulový.\nV appke píšeme vektory bez šípky; veľkosť vektora a je |a|.",
+  "quiz": [
+    {
+      "id": "fy01",
+      "q": "Ktorá veličina je vektorová?",
+      "options": [
+        "Dráha s",
+        "Čas t",
+        "Rýchlosť v",
+        "Hmotnosť m"
+      ],
+      "correct": 2,
+      "explanation": "Rýchlosť má veľkosť aj smer a orientáciu; dráha a čas sú skalárne – len číslo s jednotkou."
+    },
+    {
+      "id": "fy02",
+      "q": "Čo má vektor navyše oproti skaláru?",
+      "options": [
+        "Jednotku",
+        "Smer a orientáciu",
+        "Vždy väčšie číslo",
+        "Nič"
+      ],
+      "correct": 1,
+      "explanation": "Skalár má len veľkosť a jednotku; vektor má navyše smer a orientáciu (a sila aj pôsobisko)."
+    },
+    {
+      "id": "fy03",
+      "q": "Ktorá dvojica obsahuje dve skalárne veličiny?",
+      "options": [
+        "Dráha a čas",
+        "Sila a rýchlosť",
+        "Rýchlosť a čas",
+        "Sila a dráha"
+      ],
+      "correct": 0,
+      "explanation": "Dráha s a čas t sú skalárne; rýchlosť a sila sú vektorové."
+    },
+    {
+      "id": "fy04",
+      "q": "V akých jednotkách sa meria rýchlosť?",
+      "options": [
+        "m alebo km",
+        "s alebo h",
+        "m/s alebo km/h",
+        "N"
+      ],
+      "correct": 2,
+      "explanation": "Rýchlosť sa meria v m/s alebo km/h; m a km sú jednotky dráhy, s a h času, N sily."
+    },
+    {
+      "id": "fy05",
+      "q": "Čo je pôsobisko sily?",
+      "options": [
+        "Bod, v ktorom sila pôsobí na teleso",
+        "Veľkosť sily",
+        "Jednotka sily",
+        "Smer pohybu"
+      ],
+      "correct": 0,
+      "explanation": "Vektor sily určuje pôsobisko (kde pôsobí), veľkosť, smer a orientácia."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Skalárne a vektorové veličiny",
+    "branches": [
+      {
+        "label": "Skalárne veličiny",
+        "leaves": [
+          "dráha s [m, km]",
+          "čas t [s, min, h]",
+          "len veľkosť a jednotka"
+        ]
+      },
+      {
+        "label": "Vektorové veličiny",
+        "leaves": [
+          "rýchlosť v [m/s, km/h]",
+          "sila F [N]",
+          "majú aj smer a orientáciu"
+        ]
+      },
+      {
+        "label": "Čím je určený vektor",
+        "leaves": [
+          "pôsobisko",
+          "veľkosť",
+          "smer a orientácia"
+        ]
+      },
+      {
+        "label": "Zápis vektora",
+        "leaves": [
+          "v appke bez šípky",
+          "|a| je veľkosť",
+          "súradnice [x; y]"
+        ]
+      }
+    ]
+  }
+}

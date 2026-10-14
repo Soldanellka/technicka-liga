@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+<defs>
+  <radialGradient id="skinMS" cx="45%" cy="35%" r="65%">
+    <stop offset="0%" stop-color="#fde0c5"/>
+    <stop offset="100%" stop-color="#e8a878"/>
+  </radialGradient>
+  <radialGradient id="hairMS" cx="50%" cy="0%" r="80%">
+    <stop offset="0%" stop-color="#8a5020"/>
+    <stop offset="100%" stop-color="#3a1a05"/>
+  </radialGradient>
+  <linearGradient id="suiteMS" x1="0%" y1="0%" x2="10%" y2="100%">
+    <stop offset="0%" stop-color="#1a2a4a"/>
+    <stop offset="100%" stop-color="#0d1528"/>
+  </linearGradient>
+  <radialGradient id="cheekMS" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#ffb0a0" stop-opacity="0.55"/>
+    <stop offset="100%" stop-color="#ff8888" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="shMS"><feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.25)"/></filter>
+  <filter id="dreamMS"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- ZZZ oblak -->
+<ellipse cx="178" cy="85" rx="36" ry="26" fill="white" opacity="0.92" filter="url(#shMS)"/>
+<ellipse cx="165" cy="95" rx="22" ry="16" fill="white" opacity="0.92"/>
+<ellipse cx="192" cy="95" rx="22" ry="16" fill="white" opacity="0.92"/>
+<text x="163" y="96" font-family="Arial Black" font-size="12" fill="#6060a8" font-weight="900">z</text>
+<text x="174" y="83" font-family="Arial Black" font-size="16" fill="#5050a0" font-weight="900">z</text>
+<text x="186" y="70" font-family="Arial Black" font-size="20" fill="#4040a0" font-weight="900">Z</text>
+
+<!-- TELO -->
+<g transform="rotate(-10, 120, 220)">
+  <ellipse cx="120" cy="240" rx="65" ry="58" fill="url(#suiteMS)" filter="url(#shMS)"/>
+  <path d="M95 185 Q120 200 145 185 L140 205 Q120 215 100 205 Z" fill="#0d1e38"/>
+  <path d="M105 185 Q120 196 135 185 L132 202 Q120 210 108 202 Z" fill="#f5f5ff"/>
+  <path d="M116 185 L120 185 L122 195 L120 240 L118 195 Z" fill="#cc1122" opacity="0.8"/>
+  <path d="M115 185 L120 192 L125 185 Z" fill="#cc1122" opacity="0.8"/>
+</g>
+
+<!-- VLASY -->
+<ellipse cx="120" cy="88" rx="68" ry="60" fill="url(#hairMS)"/>
+<path d="M78 60 Q72 40 82 38 Q85 50 88 58 Z" fill="url(#hairMS)"/>
+<path d="M100 55 Q96 32 108 30 Q110 45 112 55 Z" fill="url(#hairMS)"/>
+<path d="M122 52 Q120 30 132 28 Q134 44 134 54 Z" fill="url(#hairMS)"/>
+<path d="M142 56 Q144 36 154 38 Q152 52 150 60 Z" fill="url(#hairMS)"/>
+<path d="M52 100 Q38 125 44 160 Q56 150 58 130 Q55 112 54 100 Z" fill="url(#hairMS)"/>
+<path d="M188 100 Q202 125 196 160 Q184 150 182 130 Q185 112 186 100 Z" fill="url(#hairMS)"/>
+
+<!-- HLAVA (nakloná na iný bok) -->
+<g transform="rotate(-14, 120, 118)">
+  <ellipse cx="120" cy="118" rx="62" ry="64" fill="url(#skinMS)" filter="url(#shMS)"/>
+
+  <!-- UŠI -->
+  <ellipse cx="58" cy="120" rx="12" ry="14" fill="url(#skinMS)"/>
+  <ellipse cx="58" cy="120" rx="8" ry="10" fill="#e8b080"/>
+  <ellipse cx="182" cy="120" rx="12" ry="14" fill="url(#skinMS)"/>
+  <ellipse cx="182" cy="120" rx="8" ry="10" fill="#e8b080"/>
+
+  <!-- OČI ZATVORENÉ -->
+  <path d="M76 116 Q94 130 112 116" stroke="#2a1a0a" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M76 116 Q83 108 90 112" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M94 110 Q100 104 106 110" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M108 112 Q114 108 114 116" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <path d="M128 116 Q146 130 164 116" stroke="#2a1a0a" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M128 116 Q135 108 142 112" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M146 110 Q152 104 158 110" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M160 112 Q166 108 166 116" stroke="#1a0a05" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+  <!-- OBOČIE -->
+  <path d="M74 94 Q94 87 114 94" stroke="#3a1a05" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M126 94 Q146 87 166 94" stroke="#3a1a05" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+  <!-- NOS -->
+  <path d="M116 146 Q120 154 124 146" stroke="#c08060" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+  <!-- ÚSTA pootvorené -->
+  <ellipse cx="120" cy="162" rx="10" ry="7" fill="#d07070" opacity="0.55"/>
+
+  <!-- LÍCA -->
+  <ellipse cx="72" cy="146" rx="20" ry="13" fill="url(#cheekMS)"/>
+  <ellipse cx="168" cy="146" rx="20" ry="13" fill="url(#cheekMS)"/>
+</g>
+
+<!-- RUKA pod hlavou -->
+<ellipse cx="192" cy="195" rx="26" ry="16" fill="url(#skinMS)" filter="url(#shMS)"/>
+<ellipse cx="202" cy="185" rx="10" ry="9" fill="url(#skinMS)"/>
+<ellipse cx="210" cy="195" rx="9" ry="8" fill="url(#skinMS)"/>
+<ellipse cx="205" cy="206" rx="9" ry="8" fill="url(#skinMS)"/>
+
+<!-- Mesiačik -->
+<path d="M18 50 Q28 33 42 37 Q30 45 28 57 Q23 65 12 62 Q13 56 18 50 Z" fill="#f0e050" opacity="0.6" filter="url(#dreamMS)"/>
+<circle cx="25" cy="38" r="2" fill="#c0b0e0" opacity="0.6"/>
+<circle cx="38" cy="28" r="1.5" fill="#c0b0e0" opacity="0.5"/>
+</svg>

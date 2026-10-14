@@ -1,0 +1,113 @@
+{
+  "id": "ciselne-A1",
+  "title": "Pozičná váha",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "pozičná váha"
+  ],
+  "summary": "Pozičná váha: tá istá číslica má inú hodnotu podľa miesta. 7438 = 7·1000 + 4·100 + 3·10 + 8·1. Pozície číslujeme sprava od 0, čokoľvek na nultú = 1. Sústava so základom z má číslice 0 až z − 1.",
+  "quiz": [
+    {
+      "id": "cs01",
+      "q": "Čo je pozičná váha číslice?",
+      "options": [
+        "Počet číslic v čísle",
+        "Hodnota, ktorou sa číslica násobí podľa svojej pozície",
+        "Najväčšia číslica sústavy",
+        "Súčet všetkých číslic"
+      ],
+      "correct": 1,
+      "explanation": "V čísle 7438 má sedmička váhu 10³ = 1000, preto znamená 7000."
+    },
+    {
+      "id": "cs02",
+      "q": "Ktoré číslice používa dvojková sústava?",
+      "options": [
+        "0–9",
+        "1 a 2",
+        "0 a 1",
+        "0–7"
+      ],
+      "correct": 2,
+      "explanation": "Sústava so základom z má číslice 0 až z − 1, dvojková teda 0 a 1."
+    },
+    {
+      "id": "cs17",
+      "q": "Koľko je 5⁰?",
+      "options": [
+        "0",
+        "5",
+        "1",
+        "Nedá sa vypočítať"
+      ],
+      "correct": 2,
+      "explanation": "Akékoľvek číslo (okrem nuly) na nultú je 1."
+    },
+    {
+      "id": "cs18",
+      "q": "Ktorá číslica v osmičkovej sústave neexistuje?",
+      "options": [
+        "0",
+        "7",
+        "8",
+        "1"
+      ],
+      "correct": 2,
+      "explanation": "Osmičková sústava má číslice 0 až 7, teda 8 číslic."
+    },
+    {
+      "id": "cs19",
+      "q": "V čísle 365₁₀ má šestka hodnotu:",
+      "options": [
+        "6",
+        "60",
+        "600",
+        "36"
+      ],
+      "correct": 1,
+      "explanation": "Šestka je na pozícii 1 s váhou 10¹ = 10, teda 6·10 = 60."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Pozičná váha",
+    "branches": [
+      {
+        "label": "Pozičná váha",
+        "leaves": [
+          "hodnota podľa pozície",
+          "7 v čísle 7438 = 7000",
+          "váha = základ na pozíciu"
+        ]
+      },
+      {
+        "label": "Číslovanie pozícií",
+        "leaves": [
+          "sprava",
+          "od nuly",
+          "čokoľvek na nultú = 1"
+        ]
+      },
+      {
+        "label": "Zápis základu",
+        "leaves": [
+          "píše sa vpravo dolu",
+          "365₁₀ je desiatkové",
+          "1D8E₁₆ je šestnástkové"
+        ]
+      },
+      {
+        "label": "Číslice sústavy",
+        "leaves": [
+          "0 až z − 1",
+          "dvojková má len 0 a 1",
+          "osmičková nemá číslicu 8"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,3603 @@
+
+/* ============================================================
+   MODALY – základný overlay systém
+============================================================ */
+
+.avatar-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.avatar-panel {
+  background: var(--surface, #fff);
+  border-radius: 20px;
+  padding: 28px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+@media (max-width: 640px) {
+  .avatar-panel {
+    padding: 20px 16px;
+    border-radius: 16px;
+    max-height: 95vh;
+  }
+}
+
+/* styles.css – púdrovo‑ružová + tmavá šedo‑modrá téma */
+/* ⚠️ ŽIADNE externé písmo. Google Fonts bola jediná blokujúca závislosť
+   na cudzom serveri – na zlej Wi-Fi brzdila prvé vykreslenie textu.
+   Namiesto nej systémový stack: načíta sa okamžite a offline. */
+
+:root {
+  --bg: #f5faf9;
+  --surface: #ffffff;
+  --muted: #54706b;
+  --accent-1: #bfe3dc;
+  --accent-2: #17806f;
+  --accent-3: #0f6ea8;
+  --success: #16a34a;
+  --danger: #ef4444;
+  --card-border: rgba(16,16,16,0.04);
+  --shadow: 0 6px 18px rgba(16,16,16,0.06);
+  --radius: 12px;
+  --text: #14262c;
+  --glass: rgba(47,158,143,0.35);
+  /* prstenec zvýraznenej akcie (AI skúška) – odvodený z --accent-3 */
+  --statnice-ring: rgba(15,110,168,0.45);
+  /* Hlavné dlaždice (.game-tile) – trojfarebný prechod v tóne appky.
+     Rozpätie je zámerne širšie než pri .btn-primary: dvojica #0f6ea8→#0d5c8c
+     pôsobila na veľkej ploche plocho, preto svetlejší začiatok aj tmavší
+     koniec a stredný odtieň medzi nimi. */
+  --cta-from: #0f7a68;
+  --cta-mid: #0e6f7d;
+  --cta-to: #14618a;
+  --cta-shadow: rgba(20,97,138,0.42);
+}
+
+/* 🌙 DARK THEME */
+:root[data-theme="dark"] {
+  --bg: #0b1220;
+  --surface: #0f1724;
+  --muted: #9aa6b2;
+  --accent-1: #2b6ea3;
+  --accent-2: #1f4f7a;
+  --accent-3: #0f3a5a;
+  --success: #16a34a;
+  --danger: #ef4444;
+  --card-border: rgba(255,255,255,0.04);
+  --shadow: 0 8px 28px rgba(2,6,23,0.6);
+  --text: #e6eef6;
+  --glass: rgba(20,40,60,0.28);
+  /* v tmavej téme je paleta modrá – prstenec odvodený z --accent-1 */
+  --statnice-ring: rgba(43,110,163,0.6);
+  /* Tmavá téma: .btn-primary tu ide accent-2→accent-3, čo sú tmavé modré a
+     na tmavom pozadí splývajú. Dlaždice preto berú svetlejší koniec palety
+     a rovnako ako v svetlej téme majú tri zastávky, nech prechod vidno. */
+  --cta-from: #249a80;
+  --cta-mid: #2f9ec0;
+  --cta-to: #17456b;
+  --cta-shadow: rgba(47,158,192,0.45);
+}
+
+/* ----------------------------------------------------------
+   GLOBAL
+---------------------------------------------------------- */
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+/* 🔥 OPRAVA: bráni horizontálnemu scrollu celej stránky,
+   keby aj napriek ostatným opravám niečo pretieklo */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(255,255,255,0.02) 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+  transition: background .22s ease, color .22s ease;
+}
+
+/* ----------------------------------------------------------
+   HEADER
+---------------------------------------------------------- */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 16px;
+  height: 46px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+:root[data-theme="dark"] .header {
+  background: rgba(12,18,30,0.55);
+  border-bottom-color: rgba(255,255,255,0.04);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.55);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--accent-3);
+}
+
+.brand .logo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-3));
+  box-shadow: 0 2px 6px rgba(47,158,143,0.18);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 🧑‍⚖️ Avatar – fix veľkosti a pozície
+   40px (nie 32px) – bust portrét potrebuje trochu viac miesta ako predošlé
+   celopostavové SVG, inak je aj portrét v malom kruhu nečitateľný. */
+#avatarWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#avatarWrap img,
+#userAvatar {
+  width: 40px !important;
+  height: 40px !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  display: block !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* Vrstvenie pre budúce taláre a zvieratká (príprava, bez UI zatiaľ) */
+.avatar-stack {
+  position: relative;
+}
+
+.avatar-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.avatar-pet {
+  pointer-events: none;
+}
+
+/* Malý avatar hráča (spiaci/unavený/čerstvý) v odznaku Osobného prehľadu
+   progresu – scripts/dashboardUI.js moodAvatarImgHtml(). Talár (ak si ho
+   hráč kúpil a nosí) je súčasťou tohto obrázka automaticky, viď
+   getAvatarBustSrcForState v scripts/avatar.js. */
+.dashboard-mood-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Farba riadku témy podľa % v Osobnom prehľade progresu – ROVNAKÉ prahy ako
+   moodBadge()/avatar stavy (scripts/dashboardUI.js): <30 spiaci/červená,
+   30–80 unavený/žltá, >80 čerstvý/zelená. Jemné (priehľadné) odtiene – appka
+   je študijná, nie krikľavá. Rovnaké rgba tóny ako existujúce .correct/
+   .wrong (kvízová spätná väzba, index.html <style>) pre vizuálnu zhodu. */
+.dashboard-tema-row {
+  border-left: 3px solid transparent;
+  padding-left: 6px;
+  border-radius: 4px;
+}
+
+.dashboard-tema-row.mood-sleep {
+  background: rgba(239, 68, 68, 0.05);
+  border-left-color: rgba(239, 68, 68, 0.4);
+}
+
+.dashboard-tema-row.mood-tired {
+  background: rgba(245, 158, 11, 0.06);
+  border-left-color: rgba(245, 158, 11, 0.4);
+}
+
+.dashboard-tema-row.mood-full {
+  background: rgba(34, 197, 94, 0.06);
+  border-left-color: rgba(34, 197, 94, 0.4);
+}
+
+/* ----------------------------------------------------------
+   BUTTONS
+---------------------------------------------------------- */
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: transparent;
+  color: var(--text);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: white;
+  box-shadow: 0 8px 20px rgba(47,158,143,0.12);
+}
+:root[data-theme="dark"] .btn-primary {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  box-shadow: 0 8px 20px rgba(10,30,50,0.18);
+}
+
+/* ============================================================
+   HLAVNÉ TRI AKCIE AKO DLAŽDICE (.game-tile)
+   Pojednávanie · Štátnicová sieň · Výzvy
+
+   Vývoj: pôvodne prstenec okolo bežnej pilulky (strácal sa), potom pilulka
+   s plným gradientom (stále pilulka – Babu chcela kartový tvar). Teraz
+   vlastný tvar: veľká štvorcová dlaždica s ikonou, názvom a jedným riadkom
+   popisu. Kartový jazyk je prevzatý z .memory-tile (zaoblenie, hover zdvih),
+   akcent z premenných --cta-* zavedených v 01f891a.
+
+   Sú to <button>, NIE .btn – zámerne mimo tlačidlovej kaskády, takže ich
+   netreba prebíjať proti dark-mode pravidlám pre .btn (tá bitka stála
+   jednu opravu špecificity v 01f891a a tu už nevzniká).
+
+   ⚠️ Vnútro dlaždice je HTML (ikona/názov/popis), nie text tlačidla –
+   nič ho nesmie prepisovať cez textContent. Zápis, ktorý to robil pri
+   #startQuizBtn, je odstránený z app.js.
+============================================================ */
+.game-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* Medzera ~ šírka dvoch písmen názvu (700 14.5px: „aa“ = 16,1 px, priemer
+     dvoch znakov 16,7 px) – dlaždice sa tým o kúsok zúžia a medzi nimi
+     vznikne dýchateľná medzera namiesto zlepeného pásu. */
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+/* Kompaktný VODOROVNÝ tvar: ikona vľavo cez oba riadky, vpravo názov a pod
+   ním popis. Štvorec 168 px zaberal ako blok cez celý pás a pôsobil obrovsky
+   aj po zmenšení – dominanciu tu nesie sýtosť gradientu, nie plocha.
+   Mriežka (nie flex), aby ikona zabrala oba riadky bez ďalšieho obalu v HTML –
+   rovnaký vzor, aký už používa mobilné zobrazenie nižšie. */
+.game-tile {
+  height: 104px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "icon name"
+    "icon desc";
+  align-content: center;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 2px;
+  text-align: left;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  color: #fff;
+  /* Trojfarebný prechod + jemný svetelný nádych vľavo hore (::after nižšie) –
+     dvojfarebný prechod pôsobil na veľkej ploche plocho. */
+  background:
+    linear-gradient(135deg, var(--cta-from) 0%, var(--cta-mid) 52%, var(--cta-to) 100%);
+  box-shadow: 0 8px 22px var(--cta-shadow), 0 2px 6px rgba(0,0,0,0.10);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, opacity .18s ease;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Svetelný nádych – dáva ploche hĺbku, aby prechod nevyzeral ako jednoliata
+   výplň. Je pod obsahom (z-index), nechytá klik (pointer-events). */
+.game-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 18% 12%, rgba(255,255,255,0.28), rgba(255,255,255,0) 62%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.game-tile-icon { grid-area: icon; font-size: 26px; line-height: 1; }
+.game-tile-name { grid-area: name; align-self: end; font-size: 14.5px; font-weight: 700; line-height: 1.25; }
+.game-tile-desc { grid-area: desc; align-self: start; font-size: 11px; line-height: 1.3; opacity: 0.92; }
+
+.game-tile:hover:not(:disabled),
+.game-tile:focus-visible:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 32px var(--cta-shadow), 0 4px 10px rgba(0,0,0,0.14);
+  /* Hover má prednosť pred pulzom – inak by si animácia a hover prehadzovali
+     transform a dlaždica by pod kurzorom poskakovala. */
+  animation: none;
+}
+
+/* ── OBČASNÝ PULZ ──
+   Cieľ je „živá stránka“, nie blikajúca reklama: cyklus trvá 9 s a samotný
+   pulz z neho zaberá ~0,7 s (88–96 %), zvyšok je úplný pokoj. Tri dlaždice
+   majú malé oneskorenie, takže prebehnú vlnou, nie naraz.
+
+   Pulzujú len POUŽITEĽNÉ dlaždice – vypnutá by lákala na klik, ktorý nič
+   nespraví. Po prvej interakcii sa animácia vypína natrvalo (trieda
+   .tiles-interacted z init.js): hráč už vie, že tam sú.  */
+@keyframes game-tile-pulse {
+  0%, 88%, 100% { transform: none; }
+  92%           { transform: scale(1.025); }
+  96%           { transform: none; }
+}
+
+.game-tile:not(:disabled) {
+  animation: game-tile-pulse 9s ease-in-out infinite;
+}
+.game-tiles .game-tile:nth-child(2):not(:disabled) { animation-delay: 0.25s; }
+.game-tiles .game-tile:nth-child(3):not(:disabled) { animation-delay: 0.5s; }
+
+.game-tiles.tiles-interacted .game-tile { animation: none; }
+
+/* Používateľ, ktorý si vypol animácie v systéme, ich tu nedostane vôbec. */
+@media (prefers-reduced-motion: reduce) {
+  .game-tile,
+  .game-tile:not(:disabled) { animation: none !important; }
+}
+
+/* VYPNUTÁ DLAŽDICA – gradient NESTRÁCA, len sa stlmí. Šedivý disabled
+   (ako .btn:disabled) by z hlavnej akcie spravil najmenej nápadný prvok
+   mriežky, čo bola presne chyba predchádzajúcej verzie. Ikona si odsýtenie
+   vracia, nech ostane čitateľná. */
+.game-tile:disabled,
+.game-tile:disabled:hover {
+  opacity: 0.78;
+  /* Odsýtenie len 0.7 (bolo 0.5) – pri silnejšom sa trojfarebný prechod
+     zlial do jednej plochy a vypnutá dlaždica pôsobila najploskejšie
+     z celej mriežky. */
+  filter: saturate(0.7);
+  cursor: not-allowed;
+  transform: none;
+  animation: none;
+  box-shadow: 0 4px 12px var(--cta-shadow);
+}
+.game-tile:disabled .game-tile-icon { filter: saturate(2); }
+
+/* Tmavá téma: dlaždice nie sú .btn, takže ich dark-mode blok pre .btn
+   nezasahuje a stačí prepnúť premenné (--cta-* v :root[data-theme=dark]).
+   Tieň sa len prehĺbi, aby na tmavom pozadí neplával. */
+:root[data-theme="dark"] .game-tile {
+  box-shadow: 0 8px 22px var(--cta-shadow), 0 2px 6px rgba(0,0,0,0.35);
+}
+:root[data-theme="dark"] .game-tile:hover:not(:disabled),
+:root[data-theme="dark"] .game-tile:focus-visible:not(:disabled) {
+  box-shadow: 0 16px 32px var(--cta-shadow), 0 4px 10px rgba(0,0,0,0.45);
+}
+
+/* ============================================================
+   VYPNUTÉ TLAČIDLÁ – po zjednotení akcií na .btn-primary by inak
+   nebolo vidieť, že „Spustiť pojednávanie“ čaká na výber oblasti
+   (appka dovtedy nemala pre disabled žiadny štýl vôbec).
+   Odvodené zo súčasných farieb – len priehľadnosť a odsýtenie.
+============================================================ */
+.btn:disabled,
+.btn:disabled:hover {
+  opacity: 0.45;
+  filter: grayscale(0.6);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .btn:disabled,
+:root[data-theme="dark"] .btn:disabled:hover {
+  box-shadow: none !important;
+}
+
+/* Akcie v spojenej hernej dlaždici. Na mobile mriežka 2×3, nech sa šesť
+   rovnakých pilúl nezalomí do rozsypaného radu. */
+/* ⚠️ Toto NIE SÚ bežné tlačidlá – sú to rovnocenné vstupy do aktivít
+   (kartičky, prípady, progres, štruktúra otázok, pokladňa vedomostí).
+   V pôvodnej veľkosti sa strácali pod veľkými dlaždicami nad nimi a
+   Štruktúra otázok, ktorá má za sebou celý pavúk aj hry, sa prehliadala.
+   Mriežka namiesto flexu drží rovnakú šírku a dvojriadkový text. */
+.game-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.game-actions .btn {
+  min-height: 64px;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: center;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .game-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+  .game-actions .btn {
+    width: 100%;
+    min-height: 60px;
+    font-size: 14px;
+    padding: 12px 10px;
+  }
+  /* Osamotená posledná pilulka v polovici riadka – nech radšej zaberie celú
+     šírku. V mriežke sú dnes 4 akcie (párny počet = bez orphanu); pri 5 by
+     posledná bola 5. potomok, teda nepárny, a roztiahla by sa. */
+  .game-actions .btn:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  /* Tri štvorce vedľa seba by na 375 px mali ~110 px – ikona s názvom aj
+     popisom sa tam nezmestí čitateľne. Na mobile preto stĺpec pod sebou a
+     dlaždica sa preklopí na VODOROVNÝ tvar (ikona vľavo, text vpravo);
+     tri plnošírkové štvorce by zabrali cez 1000 px výšky. */
+  .game-tiles {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  /* Tvar je rovnaký ako na desktope (vodorovný), mení sa len výška a to,
+     že dlaždice idú pod sebou na plnú šírku. */
+  .game-tile {
+    height: auto;
+    min-height: 84px;
+    column-gap: 14px;
+    padding: 12px 16px;
+  }
+  .game-tile-icon { font-size: 28px; }
+}
+/* @keyframes statnice-cta-glow odstránené spolu so zlatým rámom –
+   zvýraznenie Štátnice je teraz statický prstenec v akcentnej farbe. */
+
+/* ----------------------------------------------------------
+   LAYOUT & CARDS
+---------------------------------------------------------- */
+
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 26px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+/* Stĺpce sú v HTML v opačnom poradí (.right je prvý), aby prestavba do
+   množín nemusela presúvať veľké bloky – vizuálne poradie rieši `order`.
+   Pravý stĺpec má PEVNÝCH 420 px (pôvodná hodnota), ľavý berie zvyšok.
+   Pomer flex 2:1 dával pravému len ~376 px, čo bolo citeľne užšie než
+   predtým – rebríček aj senáty v ňom pôsobili stiesnene. */
+.left  { flex: 1; min-width: 0; order: 1; }
+.right { width: 420px; flex: none; min-width: 0; order: 2; }
+
+/* Rebríček a Senáty stáli po kole 2 vedľa seba (grid na .left). Nákres
+   rozloženia z 2026-08 ich chce POD SEBOU na plnú šírku v množine
+   „Súťaž a komunita“ – dvojstĺpec preto zrušený, karty sa vrátili do
+   bežného toku stĺpca. */
+
+/* ============================================================
+   MNOŽINY („podlaždice“) – jemný panel, ktorý drží skupinu kariet pokope.
+
+   Vzhľad je zámerne nenápadný a odvodený z existujúcich premenných:
+   rovnaké zaoblenie ako karty (var(--radius)) a rovnaký okraj
+   (var(--card-border)). Žiadna nová farba – pozadie je len veľmi jemné
+   presvetlenie/stmavenie podkladu, ktoré funguje v oboch témach:
+   v svetlej takmer biele, v tmavej mierne svetlejšie než pozadie.
+
+   Panel je zároveň nositeľom mobilného poradia (blok nižšie) – karty
+   vnútri sa už neradia jednotlivo.
+============================================================ */
+.set-panel {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 14px 14px 2px;   /* dole menej – posledná karta má vlastný margin */
+  margin-bottom: 18px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+:root[data-theme="dark"] .set-panel {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Množina „Ďalšie tréningy“ zanikla (Progres a Štruktúra otázok sa presunuli
+   do spojenej hernej dlaždice, Bifľovačka a Judikatúra stoja v množine
+   „Uč sa“), takže jej mriežka dvojíc už nie je potrebná. */
+
+/* ============================================================
+   NADPISY MNOŽÍN (Tréning / Ďalšie tréningy / Študijné moduly /
+   Súťaž a komunita / Servis)
+   Sú to <h3> SÚRODENCI kariet (nie obaly – mobilné display:contents +
+   order musí ďalej fungovať). Vzhľad je zámerne odvodený od nadpisov
+   VNÚTRI kariet: rovnaká rodina (Inter z body), rovnaká veľkosť
+   (prehliadačový default h3 = 1.17em, presne ako .card h3) a rovnaká
+   hrúbka 700. Oproti kartovému nadpisu sa líši len odsadením – nič
+   nové sa nezavádza. Farba ide cez var(--text), takže tmavý režim
+   funguje automaticky (premenná sa prepisuje v :root[data-theme=dark]).
+============================================================ */
+.world-heading {
+  margin: 4px 4px 0;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ============================================================
+   STAVY "PRIPRAVUJE SA" / "ČOSKORO"
+   Odvodené zo súčasných farieb – žiadna nová paleta, len odsýtenie a
+   priehľadnosť. grayscale() je použité zámerne namiesto prepisovania
+   pozadia: chip má v svetlej téme ružový gradient a v tmavej úplne iný
+   (s !important, viď sekcia nižšie), takže odsýtenie je jediný zápis,
+   ktorý sedí v OBOCH režimoch bez duplikovania gradientov. Pravidlá
+   platia len pre vypnuté prvky – bežné chipy a karty ostávajú nedotknuté.
+============================================================ */
+.chip:disabled,
+.chip:disabled:hover {
+  opacity: 0.5;
+  filter: grayscale(1);
+  cursor: not-allowed;
+  transform: none;      /* zruší hover nadskočenie */
+  box-shadow: none;
+  /* Stav sa nemá "animovať do seba" – tmavá téma dáva chipom
+     transition: all, čo by odsýtenie rozbehlo ako prechod. */
+  transition: none;
+}
+
+/* Tmavá téma dáva chipom tieň s !important – prebiť ho treba rovnako. */
+:root[data-theme="dark"] .chip:disabled,
+:root[data-theme="dark"] .chip:disabled:hover {
+  box-shadow: none !important;
+}
+
+/* Karta funkcie, ktorá ešte nebeží (dnes Obchod). Priehľadnosť je
+   téma-agnostická, takže nepotrebuje dark variant. */
+.card-soon {
+  opacity: 0.6;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+/* ----------------------------------------------------------
+   DLÁŽDICE / CHIPS – nový krásny horizontálny gradient
+---------------------------------------------------------- */
+
+.list { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin-top: 10px; 
+}
+
+.chip {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: linear-gradient(to left, #d9f0ea, #ffffff);
+  border: none;
+  cursor: pointer;
+  color: var(--accent-3);
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(47,158,143,0.12);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.chip:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: linear-gradient(to left, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(47,158,143,0.35);
+}
+
+/* 🌙 DARK MODE */
+:root[data-theme="dark"] .chip:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: linear-gradient(to left, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.65);
+}
+
+:root[data-theme="dark"] .chip:hover {
+  background: linear-gradient(to left, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.6);
+}
+/* ----------------------------------------------------------
+   VÝZVY – jednotná púdrovo‑ružová dlaždica
+---------------------------------------------------------- */
+
+.challenge-card {
+  background: linear-gradient(180deg, #f2fbf9 0%, #bfe3dc 100%);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 6px 18px rgba(47,158,143,0.12);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+}
+
+.challenge-card:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(47,158,143,0.35);
+}
+
+/* 🌙 DARK MODE */
+:root[data-theme="dark"] .challenge-card {
+  background: linear-gradient(180deg, var(--accent-1), rgba(255,255,255,0.03));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+:root[data-theme="dark"] .challenge-card:hover {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.65);
+}
+
+.challenge-card * {
+  transition: color .15s ease;
+}
+
+/* ----------------------------------------------------------
+   ⚖️ SÚDNA SIEŇ
+---------------------------------------------------------- */
+
+#courtroomCard {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+}
+
+.courtroom-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tab-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--accent-1);
+  color: var(--accent-3);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+
+.tab-btn.active {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+}
+
+#courtroom-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.case-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 12px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.case-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(47,158,143,0.18);
+}
+
+#courtroom-detail.hidden {
+  display: none !important;
+}
+
+.case-detail {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--card-border);
+}
+
+#duelPackagesList {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ----------------------------------------------------------
+   DUEL – finálny vizuálny fix
+---------------------------------------------------------- */
+
+.duel-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f2fbf9 40%, #bfe3dc 100%);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(47,158,143,0.15);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.duel-card:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(47,158,143,0.35);
+}
+/* ----------------------------------------------------------
+   DUEL – tlačidlo Poslať výzvu (FINÁLNY FIX)
+---------------------------------------------------------- */
+
+.send-challenge-btn {
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff, var(--accent-1));
+  border: none;
+  cursor: pointer;
+  color: var(--accent-3);
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(47,158,143,0.08);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.send-challenge-btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(47,158,143,0.18);
+}
+/* Fix pre header – nech sa nerozbije */
+.header {
+  height: auto;
+  min-height: 46px;
+  flex-wrap: nowrap;
+}
+
+.brand {
+  flex-shrink: 0;
+}
+
+.header-right {
+  flex-shrink: 0;
+}
+
+.header .nick-box {
+  max-width: 160px;
+  min-width: 140px;
+  margin-left: 10px;
+}
+
+.header .nick-row {
+  flex-wrap: nowrap;
+}
+
+.header #nickname {
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+.header #saveNick {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+/* -------------------------------------------
+   💎 Dark mode – dlaždice s tieňovaním zľava doprava
+------------------------------------------- */
+
+:root[data-theme="dark"] .chip,
+:root[data-theme="dark"] .btn,
+:root[data-theme="dark"] .list button {
+  background: linear-gradient(90deg, #2a2b2e 0%, #1b1c1f 100%) !important; /* zľava svetlejšia, doprava tmavšia */
+  color: #e6e9ef !important;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px; /* oblé kapsule */
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,0.08),  /* jemný vnútorný svetlý okraj */
+    inset -1px -1px 3px rgba(0,0,0,0.45),      /* tmavší spodný okraj */
+    0 2px 6px rgba(0,0,0,0.45);               /* vonkajší tieň */
+  transition: all 0.2s ease;
+}
+
+/* Hover efekt – jemné zosvetlenie zľava doprava */
+:root[data-theme="dark"] .chip:hover,
+:root[data-theme="dark"] .btn:hover,
+:root[data-theme="dark"] .list button:hover {
+  background: linear-gradient(90deg, #3a3b3e 0%, #242526 100%) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,0.12),
+    inset -1px -1px 3px rgba(0,0,0,0.55),
+    0 4px 10px rgba(0,0,0,0.55);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------
+   💎 Dark mode – čitateľný nadpis LexArena
+------------------------------------------- */
+
+:root[data-theme="dark"] .brand,
+:root[data-theme="dark"] header .brand,
+:root[data-theme="dark"] .header .brand {
+  color: #e6e9ef !important; /* svetlá šedobiela */
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6); /* jemné oddelenie od pozadia */
+}
+/* ============================
+   LexArena – dizajn odpovedí
+   ============================ */
+.opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.06);
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.opt:hover {
+  background: rgba(255,255,255,0.9);
+  transform: translateY(-1px);
+}
+
+/* správna odpoveď */
+.opt.correct {
+  background: rgba(34,197,94,0.12);
+  border-color: rgba(34,197,94,0.4);
+  position: relative;
+}
+
+.opt.correct::after {
+  content: "✓";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #16a34a;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* nesprávna odpoveď */
+.opt.wrong {
+  background: rgba(239,68,68,0.10);
+  border-color: rgba(239,68,68,0.35);
+  position: relative;
+}
+
+.opt.wrong::after {
+  content: "✗";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #dc2626;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Skryť broken images v texte odpovedí (z JSON súborov) */
+.opt img, .q-text img {
+  display: none;
+}
+
+/* ============================================================
+   🔥 OPRAVA: Banka duelov – dlaždice výziev v štýle LexAreny
+   (.duel-item, .duel-banner, .duel-accept, .duel-reject
+   sa generujú dynamicky v renderDuelBank() v scripts/duels.js
+   a doteraz nemali žiadny vlastný štýl – vyzerali ako default
+   prehliadačové tlačidlá)
+============================================================ */
+
+.duel-item {
+  background: linear-gradient(180deg, #ffffff 0%, #f2fbf9 60%, #d9f0ea 100%);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 6px 18px rgba(47,158,143,0.12);
+  margin-bottom: 12px;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.duel-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(47,158,143,0.22);
+}
+
+.duel-banner {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--accent-3);
+  margin-bottom: 6px;
+}
+
+.duel-banner .duel-topic {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.duel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.duel-title {
+  font-size: 14px;
+}
+
+.duel-expire {
+  white-space: nowrap;
+}
+
+/* Zvýraznenie kvízu po prijatí výzvy – nech ho hráč nemusí sám hľadať */
+.duel-highlight {
+  animation: duelGlow 2s ease;
+  border-radius: 14px;
+}
+
+@keyframes duelGlow {
+  0% { box-shadow: 0 0 0 3px rgba(47,158,143,0.7); }
+  100% { box-shadow: 0 0 0 0 rgba(47,158,143,0); }
+}
+
+.duel-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.duel-accept,
+.duel-reject {
+  flex: 1;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+}
+
+.duel-accept {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(47,158,143,0.25);
+}
+
+.duel-accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(47,158,143,0.4);
+}
+
+.duel-reject {
+  background: linear-gradient(to left, #d9f0ea, #ffffff);
+  color: var(--accent-3);
+  box-shadow: 0 4px 12px rgba(47,158,143,0.1);
+}
+
+.duel-reject:hover {
+  transform: translateY(-2px);
+  background: rgba(239,68,68,0.08);
+  color: var(--danger);
+  box-shadow: 0 8px 18px rgba(239,68,68,0.15);
+}
+
+/* 🌙 DARK MODE – banka duelov */
+:root[data-theme="dark"] .duel-item {
+  background: linear-gradient(180deg, #141c2b 0%, #0f1724 100%);
+  border-color: rgba(255,255,255,0.06);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+
+:root[data-theme="dark"] .duel-banner {
+  color: #bcd4ea;
+}
+
+:root[data-theme="dark"] .duel-reject {
+  background: linear-gradient(90deg, #2a2b2e 0%, #1b1c1f 100%);
+  color: #e6e9ef;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+:root[data-theme="dark"] .duel-reject:hover {
+  background: rgba(239,68,68,0.15);
+  color: #ffb4b4;
+}
+
+/* ============================================================
+   🔥 OPRAVA: RESPONZIVITA PRE MOBIL
+============================================================ */
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .left,
+  .right {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px 10px;
+    row-gap: 6px;
+  }
+
+  .brand {
+    font-size: 15px;
+    gap: 6px;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  /* 🔥 OPRAVA: na mobile nick-box nemizne, len sa preusporiada
+     na vlastný riadok pod logo/avatar, aby sa nestratila
+     možnosť zadať si nick */
+  .header .nick-box {
+    display: block;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 4px 0 0 0;
+    order: 10;
+  }
+
+  .header .nick-row {
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .header #nickname {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .player-nick-display {
+    order: 11;
+  }
+
+  .header-right {
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .header-right .btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  #transferAccountBtn,
+  #loginPinBtn {
+    display: none;
+  }
+
+  .container {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
+
+/* ============================================================
+   📱 CELOOBRAZOVKOVÝ DUELOVÝ KVÍZ NA MOBILE
+   .quiz-fullscreen sa pridáva/odoberá na <body> v quiz.js
+   (startQuiz, startDuelQuiz, finishQuiz, cancelQuiz).
+============================================================ */
+@media (max-width: 640px) {
+  body.quiz-fullscreen {
+    overflow: hidden; /* stránka pod kvízom nescrolluje */
+  }
+
+  body.quiz-fullscreen .bottom-nav {
+    display: none; /* lišta počas kvízu preč */
+  }
+
+  body.quiz-fullscreen #quizCard {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    margin: 0;
+    border-radius: 0;
+    overflow-y: auto;
+    padding: calc(10px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
+    background: var(--bg, #fff);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* #quizIntro ostáva display:none z JS (skryté pred štartom aj počas kvízu) */
+  body.quiz-fullscreen #quizArea {
+    display: flex !important; /* prebije inline style="display:block" z quiz.js */
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  body.quiz-fullscreen .quiz-top-row {
+    flex: 0 0 auto;
+    gap: 10px;
+  }
+
+  body.quiz-fullscreen #quizCancelBtn {
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Otázka + možnosti vertikálne vycentrované, prev/next dole ako súčasť
+     tej istej centrovanej skupiny; ak je otázka extra dlhá, scrolluje sa
+     len tento vnútorný blok (rodič #quizCard má overflow-y:auto). */
+  body.quiz-fullscreen .question-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+/* ============================================================
+   📱 SPODNÁ NAVIGÁCIA – len mobil (mobile-nav.js)
+============================================================ */
+.bottom-nav {
+  display: none;
+}
+
+/* ⚠️ Hranica je 900 px, nie 640: lišta je hlavná navigácia appky a pri
+   640 px ju nevidel nikto na tablete ani v úzkom okne notebooku – pôsobilo
+   to, akoby v repe vôbec nebola. Markup aj správanie boli pritom celý čas
+   na mieste (index.html .bottom-nav + mobile-nav.js). */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: 72px; /* nech lišta neprekrýva obsah */
+  }
+
+  .bottom-nav {
+    display: grid;
+    /* auto-fit, nie pevný počet: lišta prišla o Bifľovačku (je dnes
+       dlaždicou v #quizCard) a pevné repeat(5,…) by nechalo prázdny stĺpec. */
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(56px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid var(--card-border);
+    z-index: 900;
+  }
+
+  .bottom-nav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .bottom-nav button span {
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .bottom-nav button.active {
+    color: #17806f;
+  }
+}
+
+/* Hlavička sa na telefóne láme do troch riadkov (značka + avatar,
+   nick + škola, pravé tlačidlá) a zaberala 126 px z 812 – teda 15 %
+   obrazovky. Stiahnutie medzier a odsadenia ju zmenší bez zásahu do
+   veľkosti avatara či tlačidiel, takže sa nič neodreže. */
+@media (max-width: 640px) {
+  .header { padding: 4px 10px; gap: 4px; }
+  .brand { gap: 4px; row-gap: 2px; }
+  .header-right { gap: 4px; }
+}
+
+/* ============================================================
+   📱 ZBALITEĽNÉ SEKCIE – len mobil (mobile-nav.js)
+   .m-collapsible sa pridáva JS-om; .m-collapsed prepína JS toggle
+   na kliknutí na h3. Skryje sa všetko okrem hlavičky (h3).
+============================================================ */
+@media (max-width: 640px) {
+  .m-collapsible h3 {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+  }
+
+  .m-collapsible h3::after {
+    content: '▾';
+    color: var(--muted);
+    font-size: 13px;
+    margin-left: 8px;
+  }
+
+  .m-collapsible.m-collapsed h3::after {
+    content: '▸';
+  }
+
+  .m-collapsible.m-collapsed > *:not(h3) {
+    display: none;
+  }
+}
+
+/* ============================================================
+   👋 ZBALITEĽNÉ SEKCIE V DASHBOARDE ("Čo dobrať", "Skúšky") – VŠETKY
+   šírky, nie len mobil. Dashboard je v modáli s obmedzenou výškou bez
+   ohľadu na zariadenie ("dashboard je dlhý"), na rozdiel od sekcií vyššie
+   (tie sú na celej stránke, kde má zmysel zbaľovanie len na mobile).
+   Rovnaké triedy m-collapsible/m-collapsed (mobile-nav.js makeCollapsible),
+   len vlastný, nie media-query-viazaný vizuál a vlastná hlavička
+   (.dashboard-collapsible-header – dashboard nepoužíva <h3> vnútri). */
+.dashboard-collapsible-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.dashboard-collapsible-header::after {
+  content: '▾';
+  color: var(--muted);
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.m-collapsible.m-collapsed .dashboard-collapsible-header::after {
+  content: '▸';
+}
+
+.m-collapsible.m-collapsed .dashboard-collapsible-body {
+  display: none;
+}
+
+/* ============================================================
+   📱 PORADIE SEKCIÍ – len mobil
+   .left/.right sú na mobile display:contents, nech ich karty
+   (vrátane #quizCard v .right) môžu byť preusporiadané spolu
+   podľa poradia zadaného v zadaní. Desktop poradie nemenené.
+============================================================ */
+@media (max-width: 640px) {
+  .left,
+  .right {
+    display: contents;
+  }
+
+  /* Po prestavbe do množín (2026-08) sa poradie rieši na úrovni PANELOV,
+     nie jednotlivých kariet – karty stoja vnútri svojho panelu a skladajú
+     sa prirodzene. Je to výrazne menej pravidiel a nová karta sa už
+     nemôže „stratiť“ medzi množinami. */
+  .set-panel { order: 99; } /* poistka – panel bez poradia padne na koniec */
+
+  /* #setRegister zanikol (2026-08) – register pojednávaní je teraz kartou
+     vnútri #setTraining, takže na mobile ide automaticky s ním. */
+  #setTraining  { order: 1; } /* 🥊 Hraj – herná dlaždica + register pojednávaní */
+  #setStudy     { order: 2; } /* 📚 Uč sa – moduly, bifľovačka, judikatúra */
+  #setCommunity { order: 3; } /* 🏛️ Súťaž a komunita */
+  #setService   { order: 4; } /* 🧰 Servis – obchod */
+  #setAdmin     { order: 5; } /* 🔐 Správa – admin/garant panel, úplne na konci */
+}
+
+/* ============================================================
+   🏆 PRÉMIOVÝ DIZAJN REBRÍČKA DUELOV (#duelLeaderboard)
+   Riadky generuje renderLeaderboardList() v scripts/leaderboard.js
+   Štruktúra: .lb-row(.lb-rank-1/2/3) > .lb-rank + .lb-main
+                .lb-main > .lb-top-line(.lb-name + .lb-points)
+                         > .lb-bar > .lb-bar-fill
+                         > .lb-meta
+============================================================ */
+
+#duelLeaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ============================================================
+   REBRÍČEK – TOP 3 VIDITEĽNÉ, ZVYŠOK SKROLOVATEĽNE
+   Desať riadkov po 72 px robilo z karty rebríčka 997 px. Výška je
+   nastavená na tri riadky (3×72 + 2×10 gap = 236) plus kúsok navyše,
+   nech je zo štvrtého riadka vidieť, že sa dá skrolovať.
+
+   ⚠️ Aplikované na KONTAJNERY RIADKOV, nikdy na filter – riadok chipov
+   Týždeň/Mesiac/Všetko musí ostať priamym predchodcom #duelLeaderboard
+   (scripts/leaderboard.js ho hľadá cez previousElementSibling). Toto
+   pravidlo nemení DOM ani texty, len výšku zoznamu.
+   Platí pre všetky tri režimy (Jednotlivci / Senáty / Fakulty).
+============================================================ */
+#duelLeaderboard,
+#senatLeaderboard,
+#facultyFullLeaderboard {
+  /* ⚠️ .list je flex-wrap: wrap – pri obmedzenej výške by sa riadky
+     nezalomili nadol, ale do ĎALŠÍCH STĹPCOV a namiesto skrolovania by
+     sa zoznam scvrkol. Preto explicitne stĺpec bez zalamovania. */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  max-height: 252px;
+  overflow-y: auto;
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(191,227,220,0.10);
+  border: 1px solid var(--card-border);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.lb-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(47,158,143,0.15);
+}
+
+.lb-rank {
+  flex-shrink: 0;
+  width: 34px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+/* ============================================================
+   🏅 PRÉMIOVÉ CSS MEDAILY (namiesto emoji 🥇🥈🥉)
+   Kovový gradient + lesklý odlesk + malá stužka pod kruhom
+============================================================ */
+
+.lb-medal {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lb-medal-num {
+  position: relative;
+  z-index: 2;
+  font-weight: 800;
+  font-size: 13px;
+  color: rgba(0,0,0,0.55);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* lesklý odlesk navrchu medaily */
+.lb-medal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.85), rgba(255,255,255,0) 55%);
+  z-index: 1;
+}
+
+/* malá stužka pod medailou */
+.lb-medal-ribbon {
+  position: absolute;
+  bottom: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.lb-medal-1 {
+  background: linear-gradient(155deg, #fff3cf 0%, #f3c45a 45%, #c9912a 100%);
+  box-shadow: 0 3px 8px rgba(201,145,42,0.45), inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+.lb-medal-1 .lb-medal-ribbon {
+  border-top: 8px solid var(--accent-3);
+}
+
+.lb-medal-2 {
+  background: linear-gradient(155deg, #f4f7f9 0%, #c3ccd3 45%, #8f99a3 100%);
+  box-shadow: 0 3px 8px rgba(143,153,163,0.4), inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+.lb-medal-2 .lb-medal-ribbon {
+  border-top: 8px solid var(--accent-2);
+}
+
+.lb-medal-3 {
+  background: linear-gradient(155deg, #f3d9bf 0%, #cf935b 45%, #9c6232 100%);
+  box-shadow: 0 3px 8px rgba(156,98,50,0.4), inset 0 0 0 1px rgba(255,255,255,0.35);
+}
+.lb-medal-3 .lb-medal-ribbon {
+  border-top: 8px solid var(--accent-1);
+}
+
+.lb-row:hover .lb-medal {
+  animation: lbMedalShine .6s ease;
+}
+
+@keyframes lbMedalShine {
+  0%   { transform: scale(1) rotate(0deg); }
+  50%  { transform: scale(1.12) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* 🌙 DARK MODE – číslo v medaile čitateľnejšie */
+:root[data-theme="dark"] .lb-medal-num {
+  color: rgba(0,0,0,0.65);
+}
+
+.lb-rank-num {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--muted);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.04);
+}
+
+.lb-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.lb-top-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.lb-name {
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lb-points {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-3);
+  white-space: nowrap;
+}
+
+.lb-points small {
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.lb-bar {
+  margin-top: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.lb-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  transition: width .4s ease;
+}
+
+.lb-meta {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* TOP 1 – zlatá */
+.lb-row.lb-rank-1 {
+  background: linear-gradient(90deg, rgba(255,215,120,0.22), rgba(191,227,220,0.10));
+  border-color: rgba(230,180,70,0.35);
+  box-shadow: 0 6px 18px rgba(230,180,70,0.18);
+}
+.lb-row.lb-rank-1 .lb-bar-fill {
+  background: linear-gradient(90deg, #ffd778, #f7b84a);
+}
+.lb-row.lb-rank-1 .lb-points { color: #c98a13; }
+
+/* TOP 2 – strieborná */
+.lb-row.lb-rank-2 {
+  background: linear-gradient(90deg, rgba(196,206,214,0.28), rgba(191,227,220,0.08));
+  border-color: rgba(160,170,180,0.35);
+}
+.lb-row.lb-rank-2 .lb-bar-fill {
+  background: linear-gradient(90deg, #cfd8df, #9fb0bb);
+}
+
+/* TOP 3 – bronzová */
+.lb-row.lb-rank-3 {
+  background: linear-gradient(90deg, rgba(210,150,110,0.22), rgba(191,227,220,0.08));
+  border-color: rgba(190,120,80,0.3);
+}
+.lb-row.lb-rank-3 .lb-bar-fill {
+  background: linear-gradient(90deg, #e0a679, #c97f4e);
+}
+
+/* Aktívny filter Týždeň/Mesiac/Všetko */
+.chip.active {
+  background: linear-gradient(to left, var(--accent-2), var(--accent-3)) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 20px rgba(47,158,143,0.3) !important;
+}
+
+/* 🌙 DARK MODE – rebríček */
+:root[data-theme="dark"] .lb-row {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+}
+
+:root[data-theme="dark"] .lb-bar {
+  background: rgba(255,255,255,0.08);
+}
+
+:root[data-theme="dark"] .lb-rank-num {
+  background: rgba(255,255,255,0.08);
+  color: #aebac6;
+}
+
+:root[data-theme="dark"] .lb-row.lb-rank-1 {
+  background: linear-gradient(90deg, rgba(255,215,120,0.14), rgba(255,255,255,0.02));
+  border-color: rgba(230,180,70,0.3);
+}
+
+:root[data-theme="dark"] .lb-row.lb-rank-2 {
+  background: linear-gradient(90deg, rgba(196,206,214,0.14), rgba(255,255,255,0.02));
+  border-color: rgba(160,170,180,0.3);
+}
+
+:root[data-theme="dark"] .lb-row.lb-rank-3 {
+  background: linear-gradient(90deg, rgba(210,150,110,0.14), rgba(255,255,255,0.02));
+  border-color: rgba(190,120,80,0.3);
+}
+
+
+
+
+
+/* ============================================================
+   ⚖️ NAHLASOVANIE + SÚDNA SIEŇ
+============================================================ */
+
+.highlight-report {
+  border-left: 3px solid #f59e0b;
+}
+
+/* Report panel */
+.report-panel {
+  max-width: 640px !important;
+  width: 95% !important;
+}
+
+.report-form .form-row {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+.form-input {
+  width: 100%;
+  border-radius: 10px;
+  border: 1.5px solid var(--card-border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  transition: border-color .2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
+}
+
+/* Typ nezrovnalosti */
+.report-type-btns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.report-type-btn {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--card-border);
+  background: var(--surface);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .18s;
+}
+
+.report-type-btn.active {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 3px 8px rgba(245,158,11,0.3);
+}
+
+.report-error {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #dc2626;
+  margin-top: 8px;
+}
+
+/* Type badge */
+.report-type-badge {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-right: 6px;
+}
+.type-wrong_answer { background: rgba(239,68,68,0.1); color: #dc2626; }
+.type-outdated     { background: rgba(245,158,11,0.1); color: #d97706; }
+.type-unclear      { background: rgba(99,102,241,0.1); color: #6366f1; }
+.type-other        { background: rgba(100,116,139,0.1); color: #64748b; }
+
+/* Audit otázok: tlačidlo nahlásenia + pečať pri otázke */
+.question-box {
+  position: relative;
+}
+
+.report-q-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted, #888);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+
+.report-q-btn:hover {
+  color: #17806f;
+}
+
+/* Súdna sieň panel */
+.courtroom-panel {
+  max-width: 720px !important;
+  width: 95% !important;
+}
+
+.courtroom-item {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: var(--surface);
+}
+
+.courtroom-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.courtroom-question-text {
+  background: rgba(0,0,0,0.03);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.courtroom-argument {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+}
+
+.courtroom-verdict {
+  background: rgba(212,175,55,0.08);
+  border-left: 3px solid rgba(212,175,55,0.6);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.courtroom-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--card-border);
+}
+
+.courtroom-vote-btn {
+  font-size: 12px !important;
+  padding: 4px 10px !important;
+}
+
+.vote-for { border-color: rgba(34,197,94,0.3) !important; color: #16a34a !important; }
+.vote-against { border-color: rgba(239,68,68,0.3) !important; color: #dc2626 !important; }
+
+/* Komentáre */
+.courtroom-comments {
+  margin-top: 12px;
+  border-top: 1px solid var(--card-border);
+  padding-top: 12px;
+}
+
+.courtroom-comment {
+  background: rgba(0,0,0,0.02);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.comment-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.comment-stance {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+.stance-for     { background: rgba(34,197,94,0.1);  color: #16a34a; }
+.stance-against { background: rgba(239,68,68,0.1);  color: #dc2626; }
+
+.comment-form {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--card-border);
+}
+
+.comment-stance-btn {
+  font-size: 12px !important;
+  padding: 4px 10px !important;
+}
+
+.comment-stance-btn.active {
+  background: var(--accent-3) !important;
+  color: white !important;
+  border-color: transparent !important;
+}
+
+/* Pečate */
+.seal-badge {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 10px;
+  border: 1.5px solid;
+}
+
+.seal-badge.gold     { background: rgba(234,179,8,0.1);  border-color: rgba(234,179,8,0.4);  color: #b45309; }
+.seal-badge.silver   { background: rgba(148,163,184,0.1); border-color: rgba(148,163,184,0.4); color: #64748b; }
+.seal-badge.bronze   { background: rgba(180,83,9,0.1);  border-color: rgba(180,83,9,0.3);   color: #92400e; }
+.seal-badge.academic { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.4); color: #4f46e5; }
+.seal-badge.faculty  { background: rgba(47,158,143,0.12); border-color: rgba(47,158,143,0.45); color: #b23b63; }
+
+/* Krátky odznak fakulty pri nicku v hlavičke (namiesto celého názvu) */
+.faculty-badge-mini {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin-left: 6px;
+  background: rgba(47,158,143,0.12);
+  border: 1px solid rgba(47,158,143,0.4);
+  color: #b23b63;
+  white-space: nowrap;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+/* Pečať na otázke v kvíze – pilulka v pravom hornom rohu bloku otázky */
+.question-seal {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 9px;
+  border: 1px solid rgba(212,175,55,0.55);
+  background: rgba(212,175,55,0.12);
+  color: #8a6d1a;
+  white-space: nowrap;
+}
+
+.question-explanation {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 13px;
+  border-radius: 10px;
+  animation: caseStepIn .25s ease;
+}
+.question-explanation.ok { background: rgba(34,197,94,0.09); color: #15803d; }
+.question-explanation.no { background: rgba(239,68,68,0.07); color: #b91c1c; }
+
+/* AI vysvetlenie nesprávnej odpovede – tlačidlo a doplnený text.
+   Sedia VNÚTRI .question-explanation, preto dedia jeho farbu textu. */
+/* Štítok „ukážkové dáta" nad rebríčkami. Demo beží na naseedovaných
+   dátach a hráč aj hosť to musia vidieť na prvý pohľad. */
+.demo-data-badge {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  background: rgba(47,158,143,0.12);
+  color: var(--accent-2);
+  border: 1px solid rgba(47,158,143,0.28);
+}
+:root[data-theme="dark"] .demo-data-badge {
+  background: rgba(87,211,176,0.14);
+  color: #57d3b0;
+  border-color: rgba(87,211,176,0.3);
+}
+
+.ai-explain-btn {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+}
+.ai-explain-text {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-weight: 500;
+  line-height: 1.45;
+}
+:root[data-theme="dark"] .ai-explain-text { border-top-color: rgba(255,255,255,0.12); }
+
+@media (max-width: 640px) {
+  .courtroom-actions { flex-direction: column; align-items: flex-start; }
+  .report-type-btns { gap: 4px; }
+  .report-type-btn { font-size: 10px; padding: 4px 8px; }
+}
+
+/* ============================================================
+   💬 FEEDBACK DLAŽDICA
+============================================================ */
+
+.highlight-feedback {
+  border-left: 3px solid #a78bfa;
+}
+
+.feedback-options {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.feedback-type-btn {
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--card-border);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .18s;
+}
+
+.feedback-type-btn:hover {
+  border-color: #a78bfa;
+  color: #7c3aed;
+}
+
+.feedback-type-btn.active {
+  background: linear-gradient(90deg, #a78bfa, #7c3aed);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(124,58,237,0.25);
+}
+
+.feedback-textarea {
+  width: 100%;
+  min-height: 80px;
+  border-radius: 10px;
+  border: 1.5px solid var(--card-border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  padding: 10px 12px;
+  resize: vertical;
+  transition: border-color .2s;
+  box-sizing: border-box;
+}
+
+.feedback-textarea:focus {
+  outline: none;
+  border-color: #a78bfa;
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+}
+
+.feedback-textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+:root[data-theme="dark"] .feedback-textarea {
+  background: rgba(255,255,255,0.04);
+}
+
+/* ============================================================
+   📺 VIDEO DLAŽDICA
+============================================================ */
+
+.highlight-video {
+  border-left: 3px solid var(--accent-3);
+}
+
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.video-item {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  transition: box-shadow .2s;
+}
+
+.video-item:hover {
+  box-shadow: 0 4px 14px rgba(47,158,143,0.18);
+}
+
+.video-thumb {
+  position: relative;
+  height: 70px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #1a2a4a 100%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: filter .2s;
+}
+
+.video-thumb:hover {
+  filter: brightness(1.15);
+}
+
+.video-play-btn {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(47,158,143,0.4);
+  transition: transform .2s;
+}
+
+.video-thumb:hover .video-play-btn {
+  transform: scale(1.1);
+}
+
+.video-label {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  flex: 1;
+  padding-right: 12px;
+}
+
+.video-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface);
+}
+
+.video-reward-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-3);
+  background: rgba(47,158,143,0.1);
+  border: 1px solid rgba(47,158,143,0.25);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.video-reward-badge.claimed {
+  color: var(--muted);
+  background: rgba(0,0,0,0.04);
+  border-color: var(--card-border);
+  text-decoration: line-through;
+}
+
+/* Video modal */
+.video-modal-panel {
+  max-width: 680px !important;
+  width: 95% !important;
+}
+
+@media (max-width: 640px) {
+  .video-thumb { height: 56px; }
+  .video-label { font-size: 12px; }
+}
+
+/* ============================================================
+   NOVÝ HEADER DIZAJN
+============================================================ */
+
+.logo-text {
+  font-weight: 700;
+  font-size: 18px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* § Paragrafy badge */
+.par-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #fff8f0 0%, #eef8f6 100%);
+  border: 1.5px solid rgba(47,158,143,0.3);
+  border-radius: 999px;
+  padding: 5px 14px 5px 10px;
+  box-shadow: 0 2px 8px rgba(47,158,143,0.15);
+  transition: box-shadow .2s;
+  /* Po konsolidácii lišty je badge TLAČIDLO (otvára „Získaj §“), preto
+     pointer a reset vlastných štýlov <button>. Vzhľad ostáva pôvodný. */
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.par-badge:hover {
+  box-shadow: 0 4px 14px rgba(47,158,143,0.28);
+}
+
+/* Tri „čo appka vie“ v uvítacom okne. Bez novej palety – rovnaké
+   zaoblenie a orámovanie ako karty, len drobnejšie. */
+.welcome-highlights {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+.welcome-highlights > div {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  line-height: 1.35;
+}
+.welcome-hl-icon {
+  font-size: 18px;
+  margin-right: 6px;
+}
+@media (min-width: 560px) {
+  .welcome-highlights { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* Malé „＋“ napovie, že sa dá kliknúť pre ďalšie §. */
+.par-plus {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-3);
+  opacity: 0.75;
+}
+
+/* Bez nicku niet komu § pripísať – badge ostáva čitateľný, len neaktívny
+   (rovnaký vzor ako .btn:disabled). */
+.par-badge:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.par-badge:disabled .par-plus { display: none; }
+
+.par-icon {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.par-count {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Streak pill */
+.streak-pill {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--accent-3);
+  background: rgba(47,158,143,0.08);
+  border: 1px solid rgba(47,158,143,0.2);
+  border-radius: 999px;
+  padding: 4px 10px;
+  display: none; /* zobrazí sa až keď má streak */
+}
+
+.streak-pill:not(:empty) {
+  display: flex;
+  align-items: center;
+}
+
+/* Rola badge */
+.role-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1.5px solid var(--card-border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: default;
+  transition: all .2s;
+}
+
+.role-badge[data-role="garant"] {
+  border-color: rgba(214,158,46,0.4);
+  color: #b45309;
+  background: rgba(214,158,46,0.06);
+}
+
+.role-badge[data-role="admin"] {
+  border-color: rgba(220,38,38,0.3);
+  color: #dc2626;
+  background: rgba(220,38,38,0.05);
+}
+
+/* Kód tlačidlo */
+.header-login-btn {
+  font-size: 12px !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+}
+
+/* Získaj § tlačidlo */
+.header-earn-btn {
+  font-size: 12px !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  background: rgba(47,158,143,0.12) !important;
+  border: 1.5px solid rgba(47,158,143,0.4) !important;
+  color: #d6567e !important;
+  font-weight: 700 !important;
+}
+
+.header-earn-btn:hover {
+  background: rgba(47,158,143,0.22) !important;
+}
+
+.header-earn-btn .earn-btn-short { display: none; }
+
+.header-login-btn .login-btn-short { display: none; }
+
+/* Icon button (téma) */
+.icon-btn {
+  padding: 6px 8px !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  border: 1.5px solid var(--card-border) !important;
+}
+
+.icon-btn:hover {
+  background: var(--hover-bg, rgba(0,0,0,0.04)) !important;
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .par-badge {
+  background: linear-gradient(135deg, rgba(255,248,240,0.05), rgba(238,248,246,0.05));
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .par-badge { padding: 4px 10px 4px 8px; }
+  .par-icon { font-size: 15px; }
+  .par-count { font-size: 14px; }
+  .role-badge { display: none; }
+  .streak-pill { display: none !important; }
+  .header-earn-btn { padding: 6px 9px !important; }
+  .header-earn-btn .earn-btn-full { display: none; }
+  .header-earn-btn .earn-btn-short { display: inline; }
+
+  /* Prihlásenie z iného zariadenia – ikona namiesto textu, nech sa lišta nelame */
+  .header-login-btn {
+    padding: 6px 9px !important;
+    min-width: 0 !important;
+  }
+  .header-login-btn .login-btn-full { display: none; }
+  .header-login-btn .login-btn-short { display: inline; }
+
+  /* Riadok tlačidiel (§, 💰, ℹ️, 🌙, 🔑) – jeden kompaktný riadok bez lámania */
+  .header-right {
+    flex-wrap: nowrap;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  /* Formuláre: min. 16px, inak iOS pri fokuse zoomuje stránku */
+  .form-input,
+  .feedback-textarea,
+  .header #nickname {
+    font-size: 16px;
+  }
+
+  /* Dotykové ciele min. 44×44 px – možnosti kvízu/duelu, prípady, akordeón návodu
+     (pexeso .memory-card už má min-height 88px, netreba upravovať) */
+  .opt,
+  .case-opt {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .guide-accordion summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  /* Súdna sieň – hlasovanie použiteľné palcom */
+  .courtroom-vote-btn,
+  .admin-ap,
+  .admin-rj {
+    min-height: 44px !important;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+}
+
+/* ============================================================
+   🔴 PULZUJÚCI ODZNAK – tlačidlo "Uložené výzvy"
+   .has-pending-duels sa pridáva/odoberá z watchDuelBankBadge()
+   v scripts/duels.js podľa toho, či existujú čakajúce výzvy.
+============================================================ */
+
+#toggleDuelBankBtn.has-pending-duels {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(47,158,143,0.3);
+  animation: duelBtnPulse 1.8s ease-in-out infinite;
+}
+
+.duel-bank-badge {
+  display: none;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #ff3b5c;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--surface);
+  animation: duelBadgePop .4s ease;
+}
+
+@keyframes duelBtnPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(47,158,143,0.55), 0 6px 16px rgba(47,158,143,0.3); }
+  70%  { box-shadow: 0 0 0 10px rgba(47,158,143,0), 0 6px 16px rgba(47,158,143,0.3); }
+  100% { box-shadow: 0 0 0 0 rgba(47,158,143,0), 0 6px 16px rgba(47,158,143,0.3); }
+}
+
+@keyframes duelBadgePop {
+  0%   { transform: scale(0); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Celá karta "Banka duelov" jemne zvýraznená, kým existujú výzvy */
+.card:has(#toggleDuelBankBtn.has-pending-duels) {
+  border-color: rgba(47,158,143,0.45);
+  box-shadow: 0 8px 26px rgba(47,158,143,0.22);
+}
+
+:root[data-theme="dark"] .card:has(#toggleDuelBankBtn.has-pending-duels) {
+  border-color: rgba(47,158,143,0.3);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+}
+
+
+/* ============================================================
+   🐾 AVATAR ENERGIA PANEL (vedľa avatara v headeri)
+============================================================ */
+
+/* Energia ako JEDEN prvok: prúžok a percento stáli pod sebou ako dve
+   samostatné veci, teraz sú v jednej pilulke vedľa seba. Oba elementy si
+   ponechávajú ID (#avatarEnergyBar, #avatarEnergyText) – scripts/avatar.js
+   ich plní bez zmeny. Tlačidlo „Nakŕmiť“ sa zobrazuje len pri nízkej
+   energii, preto ostáva samostatné za pilulkou. */
+.avatar-energy-panel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--card-border);
+}
+
+.avatar-energy-bar-wrap {
+  width: 46px;
+  height: 6px;
+  background: rgba(0,0,0,0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  flex: none;
+}
+
+.avatar-energy-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #48bb78, #38a169);
+  transition: width .5s ease, background .5s ease;
+}
+
+.avatar-energy-text {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.avatar-feed-btn {
+  font-size: 11px !important;
+  padding: 4px 8px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3)) !important;
+  color: white !important;
+  animation: feedPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes feedPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(47,158,143,0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(47,158,143,0); }
+}
+
+/* Spánkový filter na avatar obrázok */
+#userAvatar {
+  transition: filter .5s ease;
+}
+
+/* Streak display */
+#loginStreakDisplay {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Na mobile skryť energy text, len bar */
+@media (max-width: 640px) {
+  .avatar-energy-bar-wrap {
+    width: 44px;
+  }
+  .avatar-energy-text {
+    font-size: 9px;
+  }
+  #loginStreakDisplay {
+    display: none;
+  }
+}
+
+
+/* ============================================================
+   OBLASTI V DUELOVOM KVÍZE – čipy so zvýraznením
+============================================================ */
+
+.areas-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.area-chip,
+.mode-chip {
+  transition: all .18s ease;
+}
+
+/* Commit 4b – .mode-chip.chip-active nemalo doteraz žiadne CSS (chýbalo
+   aj pred prepínačom v pojednávaniach), hoci JS triedu 'chip-active'
+   správne prepínal (app.js renderOkruhModePicker). Rovnaký vizuál ako
+   aktívna oblasť vyššie – ten istý akcent (--accent-2 → --accent-3),
+   nič nové sa nevymýšľa. */
+.area-chip.chip-active,
+.mode-chip.chip-active {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3)) !important;
+  color: white !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(47,158,143,0.35);
+  transform: scale(1.04);
+  font-weight: 600;
+}
+
+.area-chip:hover:not(.chip-active),
+.mode-chip:hover:not(.chip-active) {
+  border-color: var(--accent-3);
+  color: var(--accent-3);
+}
+
+/* ============================================================
+   KONIEC
+============================================================ */
+
+/* Avatar v rebríčku */
+.lb-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--card-border);
+  background: var(--surface);
+}
+
+.lb-rank-1 .lb-avatar { border-color: #f3c45a; }
+.lb-rank-2 .lb-avatar { border-color: #c3ccd3; }
+.lb-rank-3 .lb-avatar { border-color: #cf935b; }
+
+/* ============================================================
+   📋 NÁSTENKA + ADMIN FEEDBACK
+============================================================ */
+
+.highlight-noticeboard {
+  border-left: 3px solid #a78bfa;
+}
+
+.admin-feedback-item:last-child {
+  border-bottom: none;
+}
+
+.fb-reply-text {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   🃏 MEMORY KARTIČKY – elegantný LexArena dizajn
+============================================================ */
+
+#memoryBoard {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.memory-card {
+  position: relative;
+  min-height: 88px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 500;
+  color: var(--text, #1d2a2e);
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--card-border, rgba(0,0,0,0.08));
+  border-radius: 16px;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform .18s ease, box-shadow .18s ease,
+              border-color .18s ease, background .18s ease;
+}
+
+/* Jemný ružový prúžok hore – poznávací znak LexArena */
+.memory-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, #17806f, #0f6ea8);
+  opacity: 0;
+  transition: opacity .18s ease;
+}
+
+.memory-card:hover:not(.matched) {
+  transform: translateY(-3px);
+  border-color: rgba(47,158,143,0.55);
+  box-shadow: 0 10px 24px rgba(47,158,143,0.18);
+}
+.memory-card:hover:not(.matched)::before { opacity: 1; }
+
+/* Kartička s otázkou – serifové písmo, jemne kurzíva */
+.memory-card-q {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--muted, #54706b);
+}
+
+/* Kartička s odpoveďou – pevné písmo */
+.memory-card-a {
+  font-weight: 600;
+}
+
+/* Vybraná kartička */
+.memory-card.selected {
+  border-color: #0f6ea8;
+  background: linear-gradient(180deg, rgba(15,110,168,0.07), rgba(47,158,143,0.04));
+  color: #166f96;
+  box-shadow: 0 6px 20px rgba(15,110,168,0.25);
+}
+.memory-card.selected::before { opacity: 1; }
+
+/* Spárovaná kartička */
+.memory-card.matched {
+  border-color: rgba(34,197,94,0.45);
+  background: linear-gradient(180deg, rgba(34,197,94,0.07), rgba(34,197,94,0.03));
+  color: #15803d;
+  cursor: default;
+  box-shadow: none;
+  opacity: 0.85;
+}
+.memory-card.matched::before {
+  opacity: 1;
+  background: linear-gradient(90deg, #4ade80, #16a34a);
+}
+.memory-card.matched::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #16a34a;
+}
+
+/* Nesprávny pár */
+.memory-card.wrong {
+  border-color: rgba(239,68,68,0.5);
+  background: rgba(239,68,68,0.06);
+  color: #dc2626;
+}
+
+/* Animácie */
+.memory-card.bounce { animation: memBounce .42s ease; }
+@keyframes memBounce {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.06); }
+  70%  { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.memory-card.shake { animation: memShake .5s ease; }
+@keyframes memShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+/* Spojovacia čiara medzi pármi */
+.memory-line {
+  background: linear-gradient(90deg, #17806f, #0f6ea8);
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity .25s ease;
+  box-shadow: 0 0 8px rgba(15,110,168,0.5);
+  pointer-events: none;
+}
+.memory-line.fade { opacity: 0.85; }
+
+/* Ovládacie prvky memory */
+.memory-controls {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px !important;
+  margin-top: 14px !important;
+  padding: 10px 14px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--card-border, rgba(0,0,0,0.07));
+  border-radius: 14px;
+}
+
+.memory-controls select {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid rgba(47,158,143,0.4);
+  color: #166f96;
+  background: transparent;
+  cursor: pointer;
+}
+
+#memoryTimer, #memoryCounter, #memoryStats {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted, #54706b);
+  padding: 4px 12px;
+  background: rgba(47,158,143,0.08);
+  border-radius: 999px;
+  border: 1px solid rgba(47,158,143,0.18);
+}
+
+/* Mobil */
+@media (max-width: 640px) {
+  #memoryBoard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .memory-card {
+    min-height: 74px;
+    padding: 12px 10px;
+    font-size: 11.5px;
+    border-radius: 13px;
+  }
+  .memory-card-q { font-size: 11px; }
+}
+
+/* ============================================================
+   📋 PRÍPADY Z PRAXE – viackrokový LexArena dizajn
+============================================================ */
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.case-counter {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: #166f96;
+  margin-bottom: 4px;
+}
+
+.case-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text, #1d2a2e);
+}
+
+.case-diff {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.case-diff-ľahká,  .case-diff-lahka  { background: rgba(34,197,94,0.12); color: #15803d; }
+.case-diff-stredná,.case-diff-stredna{ background: rgba(245,158,11,0.14); color: #b45309; }
+.case-diff-ťažká,  .case-diff-tazka  { background: rgba(239,68,68,0.12); color: #b91c1c; }
+
+/* Scenár – úvodný popis situácie */
+.case-scenario {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted, #6b5f68);
+  background: linear-gradient(180deg, rgba(47,158,143,0.07), rgba(47,158,143,0.03));
+  border-left: 3px solid #17806f;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+/* Krok s otázkou */
+.case-step {
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--card-border, rgba(0,0,0,0.07));
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  animation: caseStepIn .3s ease;
+}
+
+@keyframes caseStepIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.case-step-q {
+  font-weight: 600;
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  color: var(--text, #1d2a2e);
+}
+
+.case-step-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.case-step-opt {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  border-radius: 11px;
+  border: 1.5px solid var(--card-border, rgba(0,0,0,0.08));
+  background: transparent;
+  color: var(--text, #1d2a2e);
+  cursor: pointer;
+  transition: all .16s ease;
+}
+.case-step-opt:hover:not([disabled]) {
+  border-color: rgba(47,158,143,0.55);
+  background: rgba(47,158,143,0.06);
+  transform: translateX(3px);
+}
+.case-step-opt[disabled] { cursor: default; }
+.case-step-opt.correct {
+  border-color: rgba(34,197,94,0.5);
+  background: rgba(34,197,94,0.08);
+  color: #15803d;
+  font-weight: 600;
+}
+.case-step-opt.wrong {
+  border-color: rgba(239,68,68,0.45);
+  background: rgba(239,68,68,0.06);
+  color: #b91c1c;
+}
+
+.case-step-feedback {
+  margin-top: 9px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 10px;
+  animation: caseStepIn .25s ease;
+}
+.case-step-feedback.ok { background: rgba(34,197,94,0.09); color: #15803d; }
+.case-step-feedback.no { background: rgba(239,68,68,0.07); color: #b91c1c; }
+
+/* Výsledok celého prípadu */
+.case-result {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  animation: caseStepIn .35s ease;
+}
+.case-result.ok {
+  background: linear-gradient(180deg, rgba(34,197,94,0.1), rgba(34,197,94,0.04));
+  color: #15803d;
+  border: 1.5px solid rgba(34,197,94,0.25);
+}
+.case-result.no {
+  background: linear-gradient(180deg, rgba(47,158,143,0.1), rgba(47,158,143,0.04));
+  color: #166f96;
+  border: 1.5px solid rgba(47,158,143,0.3);
+}
+
+/* Navigácia medzi prípadmi */
+.case-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .case-title { font-size: 14px; }
+  .case-step { padding: 11px 12px; }
+  .case-step-opt { font-size: 12px; padding: 9px 11px; }
+}
+
+/* ============================================================
+   🎮 HERNÉ PANELY (memory + prípady) – širšie modaly
+============================================================ */
+.game-panel {
+  max-width: 920px !important;
+  width: min(94vw, 920px) !important;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+.game-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+  border-bottom: 2px solid rgba(47,158,143,0.2);
+}
+
+.game-panel-header h3 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .game-panel {
+    width: 96vw !important;
+    max-height: 92vh;
+  }
+  .game-panel-header h3 { font-size: 14.5px; }
+}
+
+/* ============================================================
+   ℹ️ NÁVOD – tlačidlo v lište + akordeón
+============================================================ */
+.header-info-btn {
+  position: relative;
+}
+
+.header-info-btn .games-hint-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+.guide-panel {
+  max-width: 720px !important;
+}
+
+/* ============================================================
+   👋 UVÍTACIE OKNO – nový návštevník (init.js initWelcomeSystem)
+============================================================ */
+.welcome-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.welcome-body p {
+  margin: 0 0 10px 0;
+}
+
+.welcome-body p:last-child {
+  margin-bottom: 0;
+}
+
+.guide-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #17806f;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.guide-link:hover {
+  text-decoration: underline;
+}
+
+.guide-accordion .guide-section {
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.guide-accordion summary {
+  font-weight: 600;
+  padding: 12px;
+  cursor: pointer;
+  list-style: none;
+  border-left: 3px solid transparent;
+}
+
+.guide-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-accordion details[open] summary {
+  border-left-color: #17806f;
+  background: rgba(47,158,143,0.06);
+}
+
+.guide-content {
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 4px 16px 16px;
+}
+
+.guide-content p {
+  margin: 0 0 10px 0;
+}
+
+.guide-content p:last-child {
+  margin-bottom: 0;
+}
+
+.guide-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.guide-list li {
+  margin-bottom: 8px;
+}
+
+.guide-list li:last-child {
+  margin-bottom: 0;
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.guide-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.guide-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.guide-table tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 640px) {
+  .guide-table { font-size: 12px; }
+  .guide-table th, .guide-table td { padding: 5px 6px; }
+}
+
+/* ============================================================
+   Bifľovačka (Memory Trainer) – dlaždice
+============================================================ */
+/* Kompaktnejšie dlaždice: 6 oblastí × pôvodných 115 px robilo z karty
+   Bifľovačky najvyšší prvok stĺpca. Menia sa VÝHRADNE rozmery a
+   odsadenia – pozadie, orámovanie, zaoblenie aj hover ostávajú. */
+.memory-tile {
+  display: block;
+  background: var(--surface);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 9px 12px;
+  margin-bottom: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow .18s, transform .18s;
+}
+
+.memory-tile:hover {
+  box-shadow: 0 8px 22px rgba(47,158,143,0.16);
+  transform: translateY(-2px);
+}
+
+.memory-tile-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+.memory-tile-stat {
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.memory-tile-badge {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+}
+
+/* 🎮 Indikátor vybranej oblasti pre hry */
+.games-hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--muted, #54706b);
+  padding: 7px 12px;
+  background: rgba(47,158,143,0.06);
+  border: 1px dashed rgba(47,158,143,0.35);
+  border-radius: 10px;
+  transition: all .25s ease;
+}
+
+.games-hint.games-hint-ready {
+  border-style: solid;
+  border-color: rgba(34,197,94,0.35);
+  background: rgba(34,197,94,0.06);
+  color: #15803d;
+}
+
+.games-hint-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #17806f;
+  flex-shrink: 0;
+  animation: hintPulse 1.6s ease infinite;
+}
+
+.games-hint-dot.ready {
+  background: #22c55e;
+  animation: none;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .45; transform: scale(0.85); }
+}
+
+/* ============================================================
+   ⚔️ Výzva na duel cez zdieľateľný link (?duel=ID)
+   duelChallengeModal – generovaný dynamicky v init.js
+============================================================ */
+.duel-challenge-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 16px;
+}
+
+.duel-challenge-modal {
+  background: var(--surface, #fff);
+  border-radius: 14px;
+  padding: 26px 22px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(47,158,143,0.3);
+  border-top: 6px solid transparent;
+  border-image: linear-gradient(90deg, #17806f, #0f6ea8) 1;
+}
+
+.duel-challenge-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.4;
+  background: linear-gradient(90deg, #17806f, #0f6ea8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.duel-challenge-modal .btn-primary {
+  background: linear-gradient(90deg, #17806f, #0f6ea8);
+  border: none;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(47,158,143,0.35);
+}
+
+/* ============================================================
+   ⚖️ ŠTÁTNICOVÁ SIEŇ – prototyp (Pracovné právo)
+============================================================ */
+.statnice-overlay {
+  position: fixed; inset: 0; z-index: 5000;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  padding: calc(14px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+  color: #fff;
+}
+.statnice-bg {
+  position: fixed; inset: 0; z-index: -1;
+  background: linear-gradient(135deg, #1e3a6e, #0f0d12, #4a1942);
+  background-size: 200% 200%;
+  animation: statniceBgMove 20s ease infinite;
+}
+@keyframes statniceBgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .statnice-bg { animation: none; }
+}
+.statnice-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+}
+.statnice-title { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 18px; }
+.statnice-close-btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+
+.statnice-commission {
+  display: flex; justify-content: center; align-items: flex-end; gap: 16px;
+  margin-bottom: 16px; padding: 18px 16px 14px;
+  background: linear-gradient(180deg, #efe7dd, #d9cdbc);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.statnice-commissioner {
+  height: 110px; width: auto; object-fit: contain;
+  /* Tmavý drop-shadow, aby čierne/tmavé taláre nesplývali s (teraz
+     svetlým) podkladom za komisiou – kontrastný obrys namiesto
+     splynutia postavy s pozadím. */
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
+}
+.statnice-commission-fallback {
+  font-size: 42px; letter-spacing: 10px; opacity: .85;
+}
+
+.statnice-content {
+  max-width: 640px; width: 100%; margin: 0 auto;
+  background: rgba(16,26,30,0.55);
+  backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  border-radius: 16px; padding: 20px 24px;
+}
+
+.statnice-timer {
+  text-align: center; font-family: Georgia, "Times New Roman", serif; font-size: 32px; font-weight: 700;
+  margin-bottom: 14px;
+}
+.statnice-topics { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.statnice-topic-card {
+  background: rgba(255,255,255,0.08); border-radius: 12px; padding: 12px 16px;
+}
+.statnice-topic-num { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; opacity: .7; margin-bottom: 4px; }
+.statnice-topic-text { font-weight: 600; line-height: 1.4; }
+
+.statnice-notes {
+  width: 100%; min-height: 100px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: #fff; padding: 10px 12px; font-size: 14px;
+  margin-bottom: 14px; resize: vertical;
+}
+.statnice-notes::placeholder { color: rgba(255,255,255,0.5); }
+
+.statnice-ready-btn { width: 100%; padding: 12px; font-weight: 700; }
+
+.statnice-question-label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; opacity: .7; margin-bottom: 6px; }
+.statnice-current-question { font-family: Georgia, "Times New Roman", serif; font-size: 18px; font-weight: 700; line-height: 1.4; margin-bottom: 10px; }
+
+.statnice-answer-input {
+  width: 100%; min-height: 120px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: #fff; padding: 10px 12px; font-size: 14px;
+  margin: 8px 0 12px; resize: vertical;
+}
+.statnice-answer-input::placeholder { color: rgba(255,255,255,0.5); }
+
+.statnice-answer-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.statnice-answer-actions .btn { flex: 1; min-width: 140px; }
+
+/* Mikrofón bol predtým čisto priehľadné .btn – na tmavom pozadí komory
+   splývalo, ľahko sa prehliadlo (nahlásené 2026-07-19). Solid zlatý akcent
+   (rovnaký odtieň ako .statnice-cta-btn dlaždica) ho jasne odlíši od
+   ružového btn-primary (Dokončiť odpoveď) AJ od červeného aktívneho
+   nahrávania (.statnice-mic-recording nižšie, prepíše cez !important).
+   Čisto vizuálne – NEMENÍ click handler ani .start() logiku. */
+.statnice-mic-btn {
+  background: rgba(212,175,55,0.18);
+  border: 2px solid #d4af37;
+  color: #d4af37;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 14px;
+}
+.statnice-mic-btn:hover { background: rgba(212,175,55,0.28); }
+
+.statnice-mic-recording {
+  background: rgba(229,62,62,0.18) !important;
+  border-color: rgba(229,62,62,0.55) !important;
+  color: #e53e3e !important;
+  animation: statnice-mic-pulse 1.2s ease-in-out infinite;
+}
+@keyframes statnice-mic-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.statnice-followup {
+  margin: 10px 0 14px; padding: 12px 14px; border-radius: 10px;
+  background: rgba(47,158,143,0.15); border: 1px solid rgba(47,158,143,0.35);
+  font-size: 14px; line-height: 1.5;
+}
+
+.statnice-live-transcript {
+  min-height: 20px; font-size: 13px; font-style: italic; opacity: .75;
+  margin-bottom: 6px; line-height: 1.4;
+}
+
+.statnice-grade {
+  text-align: center; font-family: Georgia, "Times New Roman", serif; font-size: 28px; font-weight: 700;
+  margin-bottom: 16px;
+}
+.statnice-fb-section { margin-bottom: 14px; }
+.statnice-fb-section strong { display: block; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+.statnice-fb-section ul { padding-left: 20px; margin: 0; }
+.statnice-fb-section li { margin-bottom: 4px; line-height: 1.5; }
+
+/* Vecné chyby (incorrect[] – LLM hodnotenie, 2026-07-19) – ODLÍŠENÉ od
+   bežných "Medzery" (chýbajúce, nie nesprávne) rovnakým červeným tónom ako
+   existujúce .wrong/.opt.wrong v appke (kvíz/kartičky), pre konzistentnú
+   sémantiku farby "toto je zle", nie len "toto chýba". */
+.statnice-fb-incorrect {
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3);
+}
+.statnice-fb-incorrect strong { color: #dc2626; opacity: 1; }
+.statnice-fb-zaver { font-style: italic; margin: 14px 0; line-height: 1.5; }
+.statnice-fb-reward {
+  text-align: center; font-weight: 700; font-size: 16px;
+  background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35);
+  border-radius: 10px; padding: 10px; margin-bottom: 14px;
+}
+.statnice-finish-btn { width: 100%; padding: 12px; font-weight: 700; }
+
+.statnice-persona-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+.statnice-persona-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 16px 10px; text-align: center;
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 12px; color: #fff; cursor: pointer; transition: all .15s ease;
+}
+.statnice-persona-btn:hover { background: rgba(255,255,255,0.14); }
+.statnice-persona-btn.active {
+  border-color: var(--accent-3, #17806f); background: rgba(47,158,143,0.18);
+}
+.statnice-persona-emoji { font-size: 26px; }
+.statnice-persona-label { font-weight: 700; }
+
+.statnice-voice-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.statnice-voice-btn {
+  background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); color: #fff;
+}
+.statnice-voice-btn.active {
+  border-color: var(--accent-3, #17806f); background: rgba(47,158,143,0.18);
+}
+
+@media (max-width: 640px) {
+  .statnice-persona-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .statnice-content { padding: 16px 18px; }
+  .statnice-commissioner { height: 80px; }
+  .statnice-title { font-size: 15px; }
+  .statnice-timer { font-size: 26px; }
+  .statnice-answer-actions .btn { min-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .duel-challenge-modal {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+  .duel-challenge-title {
+    font-size: 15px;
+  }
+}
+
+/* ============================================================
+   ⚖️ Judikatúra – statická sekcia (scripts/judikatura.js),
+   #judikaturaSection sa vkladá JS-kom hneď za #biflovackaCard
+   (Svet 2 – Tréningy) v ľavom (.left) stĺpci. Používa rovnaké
+   .card/.chip vzory ako zvyšok appky – žiadny vlastný gradient/FAB,
+   žiadny position:fixed (nahradilo pôvodný plávajúci panel vpravo
+   dole, 2026-07-27).
+============================================================ */
+.judikatura-hint {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+.judikatura-error { color: var(--danger); }
+
+.judikatura-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.judikatura-institut-row {
+  display: flex;
+  flex-direction: column;
+}
+.judikatura-institut-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+  width: 100%;
+}
+.judikatura-institut-btn.judikatura-institut-active {
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: #fff;
+}
+.judikatura-oblast {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.judikatura-institut-results {
+  margin: 8px 0 4px;
+  padding: 10px 0 0 12px;
+  border-left: 2px solid var(--card-border);
+}
+
+.judikatura-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.judikatura-result-card {
+  padding: 12px;
+  margin-bottom: 0;
+}
+.judikatura-result-cislo {
+  font-weight: 700;
+  font-size: 13px;
+}
+.judikatura-result-merito {
+  font-size: 13px;
+  color: var(--text);
+  margin-top: 2px;
+}
+.judikatura-result-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.judikatura-result-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+.judikatura-collapse-btn {
+  margin-top: 10px;
+  font-size: 12px;
+  padding: 6px 12px;
+}
+
+/* ============================================================
+   NOČNÝ VÝCUC (#nightRecapCard) – audio opakovanie pred spaním.
+   Karta preberá bežný vzhľad .card/.section-card; tu je len
+   akcentový okraj (vzor highlight-*) a drobné vnútro: zoznam
+   okruhov s checkboxmi a riadky ovládania prehrávača.
+   Farby cez existujúce premenné – tmavý režim funguje sám.
+============================================================ */
+
+.highlight-nightrecap {
+  border-left: 3px solid #8b5cf6;
+}
+
+.nr-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.nr-okruh-list {
+  max-height: 260px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  padding-right: 4px;
+}
+
+.nr-okruh {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: .9rem;
+  padding: 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.nr-okruh:hover { background: var(--glass); }
+.nr-okruh input { margin-top: 3px; flex: none; }
+
+/* prepínacie „čipy“ (časovač spánku, slučka) – aktívny stav */
+.nr-chip.active {
+  background: var(--glass);
+  font-weight: 700;
+}
+
+.nr-now {
+  font-variant-numeric: tabular-nums;
+}

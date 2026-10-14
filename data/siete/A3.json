@@ -1,0 +1,114 @@
+{
+  "id": "siete-A3",
+  "title": "Typy komunikácie",
+  "schemaVersion": 1,
+  "tags": [
+    "počítačové siete",
+    "vrstvy",
+    "adresy"
+  ],
+  "summary": "Podľa počtu príjemcov rozlišujeme štyri typy komunikácie.\nUnicast: jeden → jeden.\nBroadcast: jeden → všetci v sieti.\nMulticast: jeden → skupina príjemcov.\nAnycast: jeden → jeden, ale príjemcu vyberá sieť – najbližšieho zo skupiny zariadení s rovnakou adresou.",
+  "quiz": [
+    {
+      "id": "ps11",
+      "q": "Čo znamená broadcast?",
+      "options": [
+        "Jeden → jeden",
+        "Jeden → všetci",
+        "Jeden → skupina",
+        "Jeden → najbližší zo skupiny"
+      ],
+      "correct": 1,
+      "explanation": "Broadcast posiela správu všetkým zariadeniam v sieti."
+    },
+    {
+      "id": "ps12",
+      "q": "Čo znamená unicast?",
+      "options": [
+        "Jeden → jeden",
+        "Jeden → všetci",
+        "Jeden → skupina",
+        "Všetci → jeden"
+      ],
+      "correct": 0,
+      "explanation": "Unicast je komunikácia medzi jedným odosielateľom a jedným konkrétnym príjemcom."
+    },
+    {
+      "id": "ps13",
+      "q": "Čo znamená multicast?",
+      "options": [
+        "Jeden → jeden",
+        "Jeden → všetci",
+        "Jeden → skupina",
+        "Všetci → všetci"
+      ],
+      "correct": 2,
+      "explanation": "Multicast posiela správu určenej skupine príjemcov, nie všetkým."
+    },
+    {
+      "id": "ps14",
+      "q": "Čo znamená anycast?",
+      "options": [
+        "Jeden → všetci",
+        "Jeden → celá skupina naraz",
+        "Jeden → najbližší (jeden) člen skupiny",
+        "Všetci → jeden"
+      ],
+      "correct": 2,
+      "explanation": "Anycast je tiež jeden → jeden, ale príjemcu vyberá sieť: najbližšieho zo skupiny zariadení s rovnakou adresou."
+    },
+    {
+      "id": "ps15",
+      "q": "Učiteľ pošle správu iba svojej triede, nie celej škole. Ktorý typ komunikácie to pripomína?",
+      "options": [
+        "Unicast",
+        "Broadcast",
+        "Multicast",
+        "Anycast"
+      ],
+      "correct": 2,
+      "explanation": "Správa ide určenej skupine príjemcov, čo zodpovedá multicastu (jeden → skupina)."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Typy komunikácie",
+    "branches": [
+      {
+        "label": "Unicast",
+        "leaves": [
+          "jeden → jeden",
+          "konkrétny príjemca",
+          "bežná správa jednému"
+        ]
+      },
+      {
+        "label": "Broadcast",
+        "leaves": [
+          "jeden → všetci",
+          "všetky zariadenia v sieti",
+          "hromadné oznámenie"
+        ]
+      },
+      {
+        "label": "Multicast",
+        "leaves": [
+          "jeden → skupina",
+          "len určení príjemcovia",
+          "správa pre triedu"
+        ]
+      },
+      {
+        "label": "Anycast",
+        "leaves": [
+          "jeden → najbližší zo skupiny",
+          "príjemcu vyberá sieť",
+          "skupina s rovnakou adresou"
+        ]
+      }
+    ]
+  }
+}

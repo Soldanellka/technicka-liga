@@ -1,0 +1,198 @@
+{
+  "id": "1. A",
+  "title": "Peniaze a úver",
+  "schemaVersion": "1.1",
+  "tags": ["financna-gramotnost", "uver", "rpmn", "karty", "bezpecnost", "mzda"],
+  "summary": "Peniaze a úver\n\nRPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok. Pri výbere úveru sa preto porovnáva RPMN, nie reklamný úrok.\n\nKreditná karta je úver; neskoré splatenie znamená úrok. Debetná karta oproti tomu čerpá tvoje vlastné peniaze. Rovnako aj odložená platba „Kúp teraz, zaplať neskôr“ je úverový produkt so sankciami pri omeškaní.\n\nČím kratšie je požičané, tým menej úrokov sa zaplatí; pri predčasnom splatení si over poplatok za predčasné splatenie. Ručenie je reálny záväzok, nie formalita – ručiteľ spláca úver, ak dlžník prestane.\n\nBanka nikdy nepýta údaje cez odkaz v SMS; takáto správa je phishing a údaje si treba overiť priamo v banke alebo v jej aplikácii.\n\nHrubá mzda mínus odvody a preddavok na daň = čistá mzda, teda suma, ktorá príde na účet.",
+  "quiz": [
+    {
+      "question": "Čo vyjadruje RPMN pri úvere?",
+      "options": ["len úrokovú sadzbu", "celkové ročné náklady úveru vrátane poplatkov", "výšku splátky", "dĺžku splácania"],
+      "correct": 1,
+      "explanation": {
+        "correct": "RPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok.",
+        "wrong": "Správna odpoveď: celkové ročné náklady úveru vrátane poplatkov. RPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok."
+      }
+    },
+    {
+      "question": "Rozdiel medzi debetnou a kreditnou kartou:",
+      "options": ["žiadny", "debetná čerpá tvoje peniaze, kreditná požičané od banky", "kreditná je zadarmo", "debetnou sa nedá platiť online"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Kreditná karta je úver; neskoré splatenie znamená úrok.",
+        "wrong": "Správna odpoveď: debetná čerpá tvoje peniaze, kreditná požičané od banky. Kreditná karta je úver; neskoré splatenie znamená úrok."
+      }
+    },
+    {
+      "question": "Úver A: úrok 8 %, bez poplatkov (RPMN 8 %). Úver B: úrok 6 % + vysoký poplatok, RPMN 11 %. Výhodnejší je:",
+      "options": ["B, lebo nižší úrok", "A, lebo nižšia RPMN", "rovnaké", "nedá sa porovnať"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Porovnávame RPMN, nie reklamný úrok.",
+        "wrong": "Správna odpoveď: A, lebo nižšia RPMN. Porovnávame RPMN, nie reklamný úrok."
+      }
+    },
+    {
+      "question": "Príde ti SMS „vaša banka: kliknite a potvrďte údaje“. Čo spravíš?",
+      "options": ["kliknem rýchlo", "neklikám, overím si to priamo v banke/appke", "pošlem kód", "prepošlem známym"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing.",
+        "wrong": "Správna odpoveď: neklikám, overím si to priamo v banke/appke. Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing."
+      }
+    },
+    {
+      "question": "Čistá mzda je:",
+      "options": ["mzda pred odvodmi", "mzda po odvodoch a dani, ktorú dostaneš na účet", "mzda + odmeny", "minimálna mzda"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Hrubá mzda mínus odvody a preddavok na daň = čistá.",
+        "wrong": "Správna odpoveď: mzda po odvodoch a dani, ktorú dostaneš na účet. Hrubá mzda mínus odvody a preddavok na daň = čistá."
+      }
+    },
+    {
+      "question": "Predčasné splatenie úveru:",
+      "options": ["je vždy zakázané", "znižuje celkové zaplatené úroky", "zvyšuje RPMN", "nemá vplyv"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie.",
+        "wrong": "Správna odpoveď: znižuje celkové zaplatené úroky. Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie."
+      }
+    },
+    {
+      "question": "Ručiteľ úveru:",
+      "options": ["len podpisuje papier", "spláca úver, ak dlžník prestane", "dostáva odmenu od banky", "nič neriskuje"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Ručenie je reálny záväzok, nie formalita.",
+        "wrong": "Správna odpoveď: spláca úver, ak dlžník prestane. Ručenie je reálny záväzok, nie formalita."
+      }
+    },
+    {
+      "question": "„Kúp teraz, zaplať neskôr“ (BNPL) je:",
+      "options": ["darček obchodu", "forma úveru, ktorá sa pri omeškaní predraží", "sporenie", "poistenie"],
+      "correct": 1,
+      "explanation": {
+        "correct": "Odložená platba je úverový produkt so sankciami pri omeškaní.",
+        "wrong": "Správna odpoveď: forma úveru, ktorá sa pri omeškaní predraží. Odložená platba je úverový produkt so sankciami pri omeškaní."
+      }
+    }
+  ],
+  "tiles": [
+    { "term": "RPMN", "definition": "Celkové ročné náklady úveru vrátane poplatkov. Zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok." },
+    { "term": "Kreditná karta", "definition": "Karta, ktorou čerpáš peniaze požičané od banky. Je to úver; neskoré splatenie znamená úrok." },
+    { "term": "Debetná karta", "definition": "Karta, ktorou čerpáš svoje vlastné peniaze." },
+    { "term": "Phishing", "definition": "Podvodná správa, ktorá pýta tvoje údaje cez odkaz. Banka nikdy nepýta údaje cez odkaz v SMS." },
+    { "term": "Čistá mzda", "definition": "Mzda po odvodoch a dani, ktorú dostaneš na účet. Hrubá mzda mínus odvody a preddavok na daň = čistá." },
+    { "term": "Predčasné splatenie úveru", "definition": "Skoršie splatenie, ktoré znižuje celkové zaplatené úroky. Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie." },
+    { "term": "Ručiteľ", "definition": "Ten, kto spláca úver, ak dlžník prestane. Ručenie je reálny záväzok, nie formalita." },
+    { "term": "BNPL – kúp teraz, zaplať neskôr", "definition": "Forma úveru, ktorá sa pri omeškaní predraží. Odložená platba je úverový produkt so sankciami pri omeškaní." }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 1 – SMS z „banky“",
+      "difficulty": "ľahká",
+      "steps": [
+        { "question": "Príde ti SMS: „vaša banka: kliknite a potvrďte údaje“.", "options": [], "correct": 0 },
+        {
+          "question": "Čo spravíš ako prvé?",
+          "options": ["Neklikám, overím si to priamo v banke/appke", "Kliknem rýchlo", "Prepošlem známym"],
+          "correct": 0,
+          "explanation": { "correct": "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing.", "wrong": "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing." }
+        },
+        {
+          "question": "Správa pýta aj potvrdzovací kód. Pošleš ho?",
+          "options": ["Nie", "Áno, je to predsa banka", "Áno, ak správa vyzerá dôveryhodne"],
+          "correct": 0,
+          "explanation": { "correct": "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing.", "wrong": "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing." }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 2 – Ktorý úver je výhodnejší?",
+      "difficulty": "stredná",
+      "steps": [
+        { "question": "Úver A: úrok 8 %, bez poplatkov (RPMN 8 %). Úver B: úrok 6 % + vysoký poplatok, RPMN 11 %.", "options": [], "correct": 0 },
+        {
+          "question": "Podľa čoho ich porovnáš?",
+          "options": ["Podľa RPMN", "Podľa úrokovej sadzby", "Podľa výšky splátky"],
+          "correct": 0,
+          "explanation": { "correct": "RPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok.", "wrong": "RPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok." }
+        },
+        {
+          "question": "Ktorý úver je teda výhodnejší?",
+          "options": ["A, lebo nižšia RPMN", "B, lebo nižší úrok", "Rovnaké"],
+          "correct": 0,
+          "explanation": { "correct": "Porovnávame RPMN, nie reklamný úrok.", "wrong": "Porovnávame RPMN, nie reklamný úrok." }
+        },
+        {
+          "question": "O rok máš peniaze navyše a chceš úver splatiť skôr. Čo to spraví?",
+          "options": ["Zníži celkové zaplatené úroky", "Zvýši RPMN", "Nemá to vplyv"],
+          "correct": 0,
+          "explanation": { "correct": "Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie.", "wrong": "Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie." }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 3 – Kreditná alebo debetná?",
+      "difficulty": "ľahká",
+      "steps": [
+        { "question": "V peňaženke máš dve karty – debetnú a kreditnú.", "options": [], "correct": 0 },
+        {
+          "question": "Ktorou z nich míňaš svoje vlastné peniaze?",
+          "options": ["Debetnou", "Kreditnou", "Oboma rovnako"],
+          "correct": 0,
+          "explanation": { "correct": "Debetná čerpá tvoje peniaze, kreditná požičané od banky.", "wrong": "Debetná čerpá tvoje peniaze, kreditná požičané od banky." }
+        },
+        {
+          "question": "Zaplatíš kreditnou a splatíš ju neskoro. Čo sa stane?",
+          "options": ["Banka ti pripíše úrok", "Nič, kreditná je zadarmo", "Karta sa zruší"],
+          "correct": 0,
+          "explanation": { "correct": "Kreditná karta je úver; neskoré splatenie znamená úrok.", "wrong": "Kreditná karta je úver; neskoré splatenie znamená úrok." }
+        },
+        {
+          "question": "V e-shope ti ponúknu „Kúp teraz, zaplať neskôr“. Čo to je?",
+          "options": ["Forma úveru, ktorá sa pri omeškaní predraží", "Darček obchodu", "Sporenie"],
+          "correct": 0,
+          "explanation": { "correct": "Odložená platba je úverový produkt so sankciami pri omeškaní.", "wrong": "Odložená platba je úverový produkt so sankciami pri omeškaní." }
+        }
+      ]
+    }
+  ],
+  "zdroj": { "type": "ucebnica", "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu" },
+  "spider": {
+    "center": "Peniaze a úver",
+    "branches": [
+      {
+        "label": "Cena úveru",
+        "leaves": [
+          "RPMN zahŕňa úrok aj poplatky, preto je na porovnávanie úverov lepšia než samotný úrok.",
+          "Porovnávame RPMN, nie reklamný úrok.",
+          "Čím kratšie požičané, tým menej úrokov; over si poplatok za predčasné splatenie."
+        ]
+      },
+      {
+        "label": "Karty a odložená platba",
+        "leaves": [
+          "Debetná čerpá tvoje peniaze, kreditná požičané od banky.",
+          "Kreditná karta je úver; neskoré splatenie znamená úrok.",
+          "Odložená platba je úverový produkt so sankciami pri omeškaní."
+        ]
+      },
+      {
+        "label": "Záväzok za iného",
+        "leaves": [
+          "Ručiteľ spláca úver, ak dlžník prestane.",
+          "Ručenie je reálny záväzok, nie formalita."
+        ]
+      },
+      {
+        "label": "Bezpečnosť a príjem",
+        "leaves": [
+          "Banka nikdy nepýta údaje cez odkaz v SMS; toto je phishing.",
+          "Hrubá mzda mínus odvody a preddavok na daň = čistá."
+        ]
+      }
+    ]
+  }
+}

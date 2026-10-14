@@ -1,0 +1,113 @@
+{
+  "id": "ciselne-A3",
+  "title": "Desiatková → dvojková",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "dvojková sústava"
+  ],
+  "summary": "Desiatková → dvojková: deľ dvoma, zapisuj zvyšky, kým nedostaneš 0, a zvyšky čítaj zdola nahor.",
+  "quiz": [
+    {
+      "id": "cs07",
+      "q": "Pri prevode do dvojkovej sústavy opakovaným delením čítame zvyšky:",
+      "options": [
+        "Zhora nadol",
+        "Od najväčšieho",
+        "Zdola nahor",
+        "Na poradí nezáleží"
+      ],
+      "correct": 2,
+      "explanation": "13 : 2 = 6 zv. 1; 6 : 2 = 3 zv. 0; 3 : 2 = 1 zv. 1; 1 : 2 = 0 zv. 1; zdola nahor 1101."
+    },
+    {
+      "id": "cs08",
+      "q": "Koľko je 25 v dvojkovej sústave?",
+      "options": [
+        "11001",
+        "10101",
+        "11010",
+        "10011"
+      ],
+      "correct": 0,
+      "explanation": "25 = 16 + 8 + 1, teda jednotky pod váhami 16, 8 a 1: 11001₂."
+    },
+    {
+      "id": "cs23",
+      "q": "Koľko je 19 v dvojkovej sústave?",
+      "options": [
+        "11001",
+        "10101",
+        "10011",
+        "11010"
+      ],
+      "correct": 2,
+      "explanation": "19 = 16 + 2 + 1, teda 10011₂."
+    },
+    {
+      "id": "cs24",
+      "q": "Koľko je 100 v dvojkovej sústave?",
+      "options": [
+        "1010100",
+        "1100100",
+        "1100010",
+        "1001100"
+      ],
+      "correct": 1,
+      "explanation": "100 = 64 + 32 + 4, teda 1100100₂."
+    },
+    {
+      "id": "cs25",
+      "q": "Kedy delenie končí?",
+      "options": [
+        "Keď je zvyšok 0",
+        "Po 8 krokoch",
+        "Keď je výsledok 1",
+        "Keď je výsledok 0"
+      ],
+      "correct": 3,
+      "explanation": "Posledný krok je 1 : 2 = 0, zvyšok 1. Túto jednotku nesmieš vynechať."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Desiatková → dvojková",
+    "branches": [
+      {
+        "label": "Opakované delenie",
+        "leaves": [
+          "deľ dvoma",
+          "zapíš zvyšok",
+          "kým výsledok nie je 0"
+        ]
+      },
+      {
+        "label": "Zvyšky",
+        "leaves": [
+          "párne číslo → 0",
+          "nepárne číslo → 1",
+          "čítaj zdola nahor"
+        ]
+      },
+      {
+        "label": "Odčítanie váh",
+        "leaves": [
+          "najväčšia váha, čo sa zmestí",
+          "pod ňu 1 a odčítaj",
+          "nezmestí sa → 0"
+        ]
+      },
+      {
+        "label": "Príklady",
+        "leaves": [
+          "13 = 1101₂",
+          "42 = 101010₂",
+          "100 = 1100100₂"
+        ]
+      }
+    ]
+  }
+}

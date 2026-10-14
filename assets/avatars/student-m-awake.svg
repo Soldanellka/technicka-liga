@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300">
+<defs>
+  <radialGradient id="skinM" cx="45%" cy="35%" r="65%">
+    <stop offset="0%" stop-color="#fde8d0"/>
+    <stop offset="100%" stop-color="#f0b88a"/>
+  </radialGradient>
+  <radialGradient id="hairM" cx="50%" cy="0%" r="80%">
+    <stop offset="0%" stop-color="#8a5020"/>
+    <stop offset="100%" stop-color="#3a1a05"/>
+  </radialGradient>
+  <radialGradient id="irisM" cx="35%" cy="30%" r="65%">
+    <stop offset="0%" stop-color="#c87830"/>
+    <stop offset="100%" stop-color="#6a3010"/>
+  </radialGradient>
+  <linearGradient id="suiteM" x1="0%" y1="0%" x2="10%" y2="100%">
+    <stop offset="0%" stop-color="#1a2a4a"/>
+    <stop offset="100%" stop-color="#0d1528"/>
+  </linearGradient>
+  <radialGradient id="cheekM" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#ffb0a0" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="#ff8888" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="shM"><feDropShadow dx="2" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.25)"/></filter>
+  <filter id="glowM"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- TELO modrý oblek -->
+<ellipse cx="120" cy="240" rx="65" ry="60" fill="url(#suiteM)" filter="url(#shM)"/>
+<path d="M95 185 Q120 200 145 185 L140 205 Q120 215 100 205 Z" fill="#0d1e38"/>
+<path d="M105 185 Q120 196 135 185 L132 202 Q120 210 108 202 Z" fill="#f5f5ff"/>
+<!-- kravata červená -->
+<path d="M116 185 L120 185 L122 195 L120 240 L118 195 Z" fill="#cc1122"/>
+<path d="M115 185 L120 192 L125 185 Z" fill="#cc1122"/>
+<path d="M116 185 L124 185 L122 188 L118 188 Z" fill="#aa0011"/>
+<!-- lesk oblek -->
+<path d="M90 195 Q100 225 94 260" stroke="#3a5a8a" stroke-width="10" fill="none" opacity="0.25" stroke-linecap="round"/>
+<!-- tašky cez rameno -->
+<path d="M158 185 Q175 205 178 250" stroke="#8B5a20" stroke-width="6" fill="none" stroke-linecap="round"/>
+<rect x="168" y="245" width="24" height="20" rx="4" fill="#8B4513" filter="url(#shM)"/>
+<rect x="170" y="247" width="20" height="16" rx="3" fill="#a0581a"/>
+<rect x="174" y="245" width="12" height="4" rx="2" fill="#7a3a10"/>
+
+<!-- § v ruke -->
+<text x="38" y="238" font-family="serif" font-size="42" fill="#d4af37" font-weight="bold" filter="url(#glowM)" opacity="0.95">§</text>
+<!-- ruka ľavá -->
+<ellipse cx="56" cy="222" rx="15" ry="11" fill="url(#skinM)"/>
+
+<!-- VLASY (chlapec - rozcuchané) -->
+<ellipse cx="120" cy="88" rx="68" ry="60" fill="url(#hairM)"/>
+<!-- rozcuchané pramene -->
+<path d="M78 60 Q72 40 82 38 Q85 50 88 58 Z" fill="url(#hairM)"/>
+<path d="M100 55 Q96 32 108 30 Q110 45 112 55 Z" fill="url(#hairM)"/>
+<path d="M120 52 Q118 30 130 28 Q132 44 132 54 Z" fill="url(#hairM)"/>
+<path d="M140 56 Q142 36 152 38 Q150 52 148 60 Z" fill="url(#hairM)"/>
+<path d="M158 64 Q164 44 172 48 Q168 62 162 68 Z" fill="url(#hairM)"/>
+<!-- bočné vlasy -->
+<path d="M52 100 Q38 125 44 160 Q56 150 58 130 Q55 112 54 100 Z" fill="url(#hairM)"/>
+<path d="M188 100 Q202 125 196 160 Q184 150 182 130 Q185 112 186 100 Z" fill="url(#hairM)"/>
+
+<!-- HLAVA -->
+<ellipse cx="120" cy="118" rx="62" ry="64" fill="url(#skinM)" filter="url(#shM)"/>
+
+<!-- UŠI -->
+<ellipse cx="58" cy="120" rx="12" ry="14" fill="url(#skinM)"/>
+<ellipse cx="58" cy="120" rx="8" ry="10" fill="#f0c090"/>
+<ellipse cx="182" cy="120" rx="12" ry="14" fill="url(#skinM)"/>
+<ellipse cx="182" cy="120" rx="8" ry="10" fill="#f0c090"/>
+
+<!-- OČI (chlapec - bez dlhých rias) -->
+<ellipse cx="94" cy="116" rx="18" ry="19" fill="white"/>
+<ellipse cx="94" cy="118" rx="13" ry="14" fill="url(#irisM)"/>
+<ellipse cx="94" cy="120" rx="8" ry="9" fill="#111"/>
+<circle cx="99" cy="111" r="5" fill="white"/>
+<circle cx="88" cy="123" r="2.5" fill="white" opacity="0.6"/>
+<ellipse cx="95" cy="128" rx="4" ry="2" fill="white" opacity="0.35"/>
+
+<ellipse cx="146" cy="116" rx="18" ry="19" fill="white"/>
+<ellipse cx="146" cy="118" rx="13" ry="14" fill="url(#irisM)"/>
+<ellipse cx="146" cy="120" rx="8" ry="9" fill="#111"/>
+<circle cx="151" cy="111" r="5" fill="white"/>
+<circle cx="140" cy="123" r="2.5" fill="white" opacity="0.6"/>
+<ellipse cx="147" cy="128" rx="4" ry="2" fill="white" opacity="0.35"/>
+
+<!-- OBOČIE (chlapec - tuhšie) -->
+<path d="M74 94 Q94 86 114 94" stroke="#3a1a05" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M126 94 Q146 86 166 94" stroke="#3a1a05" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+<!-- NOS -->
+<path d="M116 146 Q120 154 124 146" stroke="#d09060" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+<!-- ÚSTA (úsmev) -->
+<path d="M103 162 Q120 177 137 162" stroke="#d06050" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M105 162 Q120 174 135 162 Q120 178 105 162 Z" fill="#e08878" opacity="0.45"/>
+
+<!-- LÍCA -->
+<ellipse cx="72" cy="146" rx="18" ry="12" fill="url(#cheekM)"/>
+<ellipse cx="168" cy="146" rx="18" ry="12" fill="url(#cheekM)"/>
+
+<!-- HVIEZDIČKY -->
+<text x="20" y="78" font-size="16" fill="#d4af37" opacity="0.8" filter="url(#glowM)">✦</text>
+<text x="196" y="68" font-size="11" fill="#d4af37" opacity="0.6">✦</text>
+</svg>

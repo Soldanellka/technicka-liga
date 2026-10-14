@@ -1,0 +1,138 @@
+{
+  "id": "ciselne-A2",
+  "title": "Dvojková → desiatková",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "dvojková sústava",
+    "bity"
+  ],
+  "summary": "Dvojková → desiatková: váhy sprava sú 1, 2, 4, 8, 16, 32, 64, 128. Sčítaj váhy, pod ktorými je 1. 1101₂ = 8 + 4 + 1 = 13. 1 bit = 0 alebo 1, 1 bajt = 8 bitov (0 až 255).",
+  "quiz": [
+    {
+      "id": "cs03",
+      "q": "Koľko je 1101₂ v desiatkovej sústave?",
+      "options": [
+        "11",
+        "14",
+        "1101",
+        "13"
+      ],
+      "correct": 3,
+      "explanation": "Váhy sprava sú 1, 2, 4, 8: 1·8 + 1·4 + 0·2 + 1·1 = 8 + 4 + 0 + 1 = 13."
+    },
+    {
+      "id": "cs04",
+      "q": "Koľko je 01011001₂ v desiatkovej sústave?",
+      "options": [
+        "89",
+        "91",
+        "77",
+        "153"
+      ],
+      "correct": 0,
+      "explanation": "Jednotky sú pod váhami 64, 16, 8 a 1: 64 + 16 + 8 + 1 = 89."
+    },
+    {
+      "id": "cs05",
+      "q": "Koľko bitov má 1 bajt?",
+      "options": [
+        "4",
+        "10",
+        "16",
+        "8"
+      ],
+      "correct": 3,
+      "explanation": "1 bajt = 8 bitov."
+    },
+    {
+      "id": "cs06",
+      "q": "Najväčšie číslo, ktoré sa zmestí do 1 bajtu, je:",
+      "options": [
+        "256",
+        "255",
+        "128",
+        "99"
+      ],
+      "correct": 1,
+      "explanation": "11111111₂ = 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255; spolu s nulou je to 256 hodnôt."
+    },
+    {
+      "id": "cs20",
+      "q": "Koľko je 1011₂?",
+      "options": [
+        "11",
+        "13",
+        "9",
+        "1011"
+      ],
+      "correct": 0,
+      "explanation": "8 + 0 + 2 + 1 = 11."
+    },
+    {
+      "id": "cs21",
+      "q": "Koľko je 110010₂?",
+      "options": [
+        "52",
+        "38",
+        "50",
+        "25"
+      ],
+      "correct": 2,
+      "explanation": "Jednotky pod váhami 32, 16 a 2: 32 + 16 + 2 = 50."
+    },
+    {
+      "id": "cs22",
+      "q": "Koľko rôznych hodnôt sa zmestí do 1 bajtu?",
+      "options": [
+        "255",
+        "256",
+        "8",
+        "128"
+      ],
+      "correct": 1,
+      "explanation": "Hodnoty 0 až 255, teda 256 rôznych. Najväčšie číslo je 255."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Dvojková → desiatková",
+    "branches": [
+      {
+        "label": "Váhy bitov",
+        "leaves": [
+          "1, 2, 4, 8",
+          "16, 32, 64, 128",
+          "každá je 2× väčšia"
+        ]
+      },
+      {
+        "label": "Postup prevodu",
+        "leaves": [
+          "napíš váhy nad bity",
+          "vyber váhy pod jednotkami",
+          "sčítaj ich"
+        ]
+      },
+      {
+        "label": "Bit a bajt",
+        "leaves": [
+          "bit = 0 alebo 1",
+          "bajt = 8 bitov",
+          "do bajtu sa zmestí 256 hodnôt"
+        ]
+      },
+      {
+        "label": "Príklady",
+        "leaves": [
+          "1101₂ = 13",
+          "01011001₂ = 89",
+          "11111111₂ = 255"
+        ]
+      }
+    ]
+  }
+}

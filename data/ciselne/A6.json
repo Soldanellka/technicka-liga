@@ -1,0 +1,126 @@
+{
+  "id": "ciselne-A6",
+  "title": "Skupiny bitov",
+  "schemaVersion": 1,
+  "tags": [
+    "číselné sústavy",
+    "šestnástková sústava",
+    "osmičková sústava"
+  ],
+  "summary": "Skratka cez skupiny bitov: pre šestnástkovú ber štvorice bitov sprava (16 = 2⁴), pre osmičkovú trojice bitov sprava (8 = 2³). Chýbajúce bity vľavo doplň nulami. Výsledok vždy preveď naspäť a porovnaj.",
+  "quiz": [
+    {
+      "id": "cs14",
+      "q": "Prečo jedna šestnástková číslica zodpovedá presne 4 bitom?",
+      "options": [
+        "Lebo bajt má 4 bity",
+        "Lebo 16 = 4·4",
+        "Lebo 16 = 2⁴",
+        "Je to len dohoda"
+      ],
+      "correct": 2,
+      "explanation": "Štyri bity dajú 2⁴ = 16 kombinácií (0000 až 1111), teda presne číslice 0 až F."
+    },
+    {
+      "id": "cs15",
+      "q": "0001 1101 1000 1110₂ v šestnástkovej sústave je:",
+      "options": [
+        "1D0E",
+        "1D8E",
+        "1B8E",
+        "1D8F"
+      ],
+      "correct": 1,
+      "explanation": "Štvorice: 0001 = 1, 1101 = 13 = D, 1000 = 8, 1110 = 14 = E, spolu 1D8E₁₆."
+    },
+    {
+      "id": "cs16",
+      "q": "011 001 010₂ v osmičkovej sústave je:",
+      "options": [
+        "213₈",
+        "322₈",
+        "3112₈",
+        "312₈"
+      ],
+      "correct": 3,
+      "explanation": "Trojice: 011 = 3, 001 = 1, 010 = 2, spolu 312₈."
+    },
+    {
+      "id": "cs32",
+      "q": "110101₂ v šestnástkovej je:",
+      "options": [
+        "35₁₆",
+        "D1₁₆",
+        "65₁₆",
+        "53₁₆"
+      ],
+      "correct": 0,
+      "explanation": "Štvorice sprava s doplnením: 0011 | 0101 = 3 a 5."
+    },
+    {
+      "id": "cs33",
+      "q": "110101₂ v osmičkovej je:",
+      "options": [
+        "35₈",
+        "56₈",
+        "65₈",
+        "152₈"
+      ],
+      "correct": 2,
+      "explanation": "Trojice sprava: 110 | 101 = 6 a 5."
+    },
+    {
+      "id": "cs34",
+      "q": "3F₁₆ v dvojkovej je:",
+      "options": [
+        "11110011₂",
+        "00111111₂",
+        "00110001₂",
+        "01111110₂"
+      ],
+      "correct": 1,
+      "explanation": "3 = 0011, F = 1111, spolu 00111111₂."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Dočasná téma – poznámky k predmetu číselná technika"
+  },
+  "spider": {
+    "center": "Skupiny bitov",
+    "branches": [
+      {
+        "label": "Šestnástková",
+        "leaves": [
+          "4 bity = 1 číslica",
+          "16 = 2⁴",
+          "0111 1100 = 7C"
+        ]
+      },
+      {
+        "label": "Osmičková",
+        "leaves": [
+          "3 bity = 1 číslica",
+          "8 = 2³",
+          "011 001 010 = 312"
+        ]
+      },
+      {
+        "label": "Postup",
+        "leaves": [
+          "deľ bity sprava",
+          "doplň nuly vľavo",
+          "každú skupinu preveď"
+        ]
+      },
+      {
+        "label": "Opačný smer",
+        "leaves": [
+          "číslicu nahraď skupinou bitov",
+          "7C₁₆ → 0111 1100",
+          "57₈ → 101 111"
+        ]
+      }
+    ]
+  }
+}

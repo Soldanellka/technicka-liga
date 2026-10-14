@@ -1,0 +1,77 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 150'>
+<defs>
+<radialGradient id='ob' cx='50%' cy='35%' r='65%'><stop offset='0%' stop-color='#a08060'/><stop offset='100%' stop-color='#5a3a18'/></radialGradient>
+<radialGradient id='oy' cx='50%' cy='50%' r='55%'><stop offset='0%' stop-color='#f0e8d0'/><stop offset='100%' stop-color='#d8c8a0'/></radialGradient>
+<radialGradient id='oe' cx='35%' cy='30%' r='65%'><stop offset='0%' stop-color='#f5d030'/><stop offset='100%' stop-color='#c08010'/></radialGradient>
+<linearGradient id='om' x1='0%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='#1a1a1a'/><stop offset='100%' stop-color='#0a0a0a'/></linearGradient>
+<filter id='os'><feDropShadow dx='1' dy='2' stdDeviation='3' flood-color='rgba(0,0,0,0.22)'/></filter>
+<filter id='og'><feGaussianBlur stdDeviation='2' result='b'/><feMerge><feMergeNode in='b'/><feMergeNode in='SourceGraphic'/></feMerge></filter>
+</defs>
+<!-- Krídla -->
+<path d='M26 88 Q10 108 14 128 Q26 124 30 110 Q31 96 33 88Z' fill='url(#ob)'/>
+<path d='M28 90 Q14 108 18 124 Q28 118 30 108' stroke='#7a5a38' stroke-width='2' fill='none' opacity='.4'/>
+<path d='M94 88 Q110 108 106 128 Q94 124 90 110 Q89 96 87 88Z' fill='url(#ob)'/>
+<path d='M92 90 Q106 108 102 124 Q92 118 90 108' stroke='#7a5a38' stroke-width='2' fill='none' opacity='.4'/>
+<!-- Telo -->
+<ellipse cx='60' cy='112' rx='34' ry='36' fill='url(#ob)' filter='url(#os)'/>
+<!-- Brucho s perím vzor -->
+<ellipse cx='60' cy='118' rx='22' ry='26' fill='url(#oy)'/>
+<ellipse cx='60' cy='100' rx='15' ry='11' fill='url(#oy)' opacity='.6'/>
+<ellipse cx='60' cy='116' rx='14' ry='10' fill='url(#oy)' opacity='.5'/>
+<ellipse cx='60' cy='130' rx='13' ry='9' fill='url(#oy)' opacity='.4'/>
+<!-- Hlava -->
+<ellipse cx='60' cy='64' rx='34' ry='33' fill='url(#ob)' filter='url(#os)'/>
+<!-- Tufty peria na hlave -->
+<path d='M36 36 Q28 18 34 10 Q37 24 40 32Z' fill='url(#ob)'/>
+<path d='M40 32 Q34 14 38 6 Q41 20 43 30Z' fill='#8a6840'/>
+<path d='M84 36 Q92 18 86 10 Q83 24 80 32Z' fill='url(#ob)'/>
+<path d='M80 32 Q86 14 82 6 Q79 20 77 30Z' fill='#8a6840'/>
+<!-- Mortárová čiapka -->
+<ellipse cx='60' cy='38' rx='30' ry='9' fill='url(#om)' filter='url(#os)'/>
+<rect x='36' y='30' width='48' height='10' rx='3' fill='url(#om)'/>
+<!-- Strapec -->
+<line x1='89' y1='34' x2='98' y2='42' stroke='#d4af37' stroke-width='2'/>
+<circle cx='98' cy='43' r='3' fill='#d4af37'/>
+<line x1='98' y1='43' x2='95' y2='54' stroke='#d4af37' stroke-width='1.5'/>
+<line x1='98' y1='43' x2='98' y2='55' stroke='#d4af37' stroke-width='1.5'/>
+<line x1='98' y1='43' x2='101' y2='54' stroke='#d4af37' stroke-width='1.5'/>
+<!-- Oči veľké okrúhle -->
+<circle cx='44' cy='62' r='16' fill='white' filter='url(#os)'/>
+<circle cx='44' cy='62' r='12' fill='url(#oe)'/>
+<circle cx='44' cy='62' r='7' fill='#111'/>
+<circle cx='49' cy='56' r='4' fill='white'/><circle cx='39' cy='67' r='2' fill='white' opacity='.5'/>
+<circle cx='44' cy='62' r='15' fill='none' stroke='#8a6030' stroke-width='2' opacity='.55'/>
+<circle cx='76' cy='62' r='16' fill='white' filter='url(#os)'/>
+<circle cx='76' cy='62' r='12' fill='url(#oe)'/>
+<circle cx='76' cy='62' r='7' fill='#111'/>
+<circle cx='81' cy='56' r='4' fill='white'/><circle cx='71' cy='67' r='2' fill='white' opacity='.5'/>
+<circle cx='76' cy='62' r='15' fill='none' stroke='#8a6030' stroke-width='2' opacity='.55'/>
+<!-- Obočie vedcovské -->
+<path d='M30 46 Q44 40 58 46' stroke='#5a3a10' stroke-width='3' fill='none' stroke-linecap='round'/>
+<path d='M62 46 Q76 40 90 46' stroke='#5a3a10' stroke-width='3' fill='none' stroke-linecap='round'/>
+<!-- Zobák -->
+<polygon points='60,72 54,84 66,84' fill='#e09020'/>
+<polygon points='60,72 55,80 65,80' fill='#f0b030'/>
+<!-- Perie pod krkom -->
+<ellipse cx='60' cy='86' rx='18' ry='7' fill='url(#oy)'/>
+<path d='M44 84 Q50 89 56 84' fill='#d0c090' opacity='.5'/>
+<path d='M56 84 Q62 89 68 84' fill='#d0c090' opacity='.5'/>
+<path d='M68 84 Q74 89 76 84' fill='#d0c090' opacity='.5'/>
+<!-- Labky -->
+<ellipse cx='44' cy='140' rx='11' ry='7' fill='#c07818'/>
+<line x1='36' y1='137' x2='34' y2='147' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='40' y1='139' x2='39' y2='149' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='44' y1='140' x2='44' y2='150' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='48' y1='139' x2='49' y2='149' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<ellipse cx='76' cy='140' rx='11' ry='7' fill='#c07818'/>
+<line x1='68' y1='137' x2='66' y2='147' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='72' y1='139' x2='71' y2='149' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='76' y1='140' x2='76' y2='150' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<line x1='80' y1='139' x2='81' y2='149' stroke='#a06010' stroke-width='2.5' stroke-linecap='round'/>
+<!-- Hviezda zásluh -->
+<text x='60' y='128' text-anchor='middle' font-size='14' fill='#d4af37' filter='url(#og)'>★</text>
+<!-- Hviezdičky -->
+<text x='8' y='30' font-size='10' fill='#d4af37' opacity='.7' filter='url(#og)'>✦</text>
+<text x='104' y='24' font-size='8' fill='#d4af37' opacity='.5'>✦</text>
+<text x='108' y='44' font-size='6' fill='#d4af37' opacity='.4'>·</text>
+</svg>

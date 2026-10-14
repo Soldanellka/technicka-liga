@@ -1,0 +1,114 @@
+{
+  "id": "siete-A1",
+  "title": "Vrstvy a dátové jednotky",
+  "schemaVersion": 1,
+  "tags": [
+    "počítačové siete",
+    "vrstvy",
+    "adresy"
+  ],
+  "summary": "Sieťová komunikácia je rozdelená do vrstiev. V zošite je 5-vrstvový model: L5 aplikačná, L4 transportná, L3 sieťová, L2 spojová, L1 fyzická. (Model OSI má 7 vrstiev; tento zjednodušený model sa v praxi používa tiež.)\nDátová jednotka je blok informácií prenášaný sieťou. Na každej vrstve má iný názov: L5 dáta (správy), L4 segment, L3 datagram (paket), L2 rámec, L1 bity.\nFyzická vrstva prenáša samotný signál – bity – po kábli alebo vzduchom.",
+  "quiz": [
+    {
+      "id": "ps01",
+      "q": "Koľko vrstiev má model zo zošita?",
+      "options": [
+        "3",
+        "4",
+        "5",
+        "7"
+      ],
+      "correct": 2,
+      "explanation": "L1 fyzická, L2 spojová, L3 sieťová, L4 transportná, L5 aplikačná – spolu 5. Model OSI má 7 vrstiev, v zošite je 5-vrstvový model."
+    },
+    {
+      "id": "ps02",
+      "q": "Ako sa volá dátová jednotka na sieťovej vrstve L3?",
+      "options": [
+        "Rámec",
+        "Segment",
+        "Datagram (paket)",
+        "Bity"
+      ],
+      "correct": 2,
+      "explanation": "L5 dáta (správy), L4 segment, L3 datagram, L2 rámec, L1 bity."
+    },
+    {
+      "id": "ps03",
+      "q": "Ako sa volá dátová jednotka na spojovej vrstve L2?",
+      "options": [
+        "Rámec",
+        "Segment",
+        "Datagram",
+        "Správa"
+      ],
+      "correct": 0,
+      "explanation": "Na spojovej vrstve L2 je dátovou jednotkou rámec."
+    },
+    {
+      "id": "ps04",
+      "q": "Ktorá vrstva prenáša jednotlivé bity?",
+      "options": [
+        "L1 fyzická",
+        "L2 spojová",
+        "L3 sieťová",
+        "L5 aplikačná"
+      ],
+      "correct": 0,
+      "explanation": "Fyzická vrstva L1 prenáša signál – bity – po kábli alebo vzduchom."
+    },
+    {
+      "id": "ps05",
+      "q": "Čo je dátová jednotka?",
+      "options": [
+        "Blok informácií prenášaný sieťou",
+        "Sieťový kábel",
+        "Sieťová karta",
+        "Heslo k Wi-Fi"
+      ],
+      "correct": 0,
+      "explanation": "Dátová jednotka je blok informácií prenášaný sieťou; na každej vrstve má iný názov."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Vrstvy a dátové jednotky",
+    "branches": [
+      {
+        "label": "Horné vrstvy",
+        "leaves": [
+          "L5 aplikačná",
+          "L4 transportná",
+          "L3 sieťová"
+        ]
+      },
+      {
+        "label": "Dolné vrstvy",
+        "leaves": [
+          "L2 spojová",
+          "L1 fyzická",
+          "signál v kábli alebo vzduchu"
+        ]
+      },
+      {
+        "label": "Jednotky horných vrstiev",
+        "leaves": [
+          "dáta, správy (L5)",
+          "segment (L4)",
+          "datagram, paket (L3)"
+        ]
+      },
+      {
+        "label": "Jednotky dolných vrstiev",
+        "leaves": [
+          "rámec (L2)",
+          "bity (L1)",
+          "blok informácií prenášaný sieťou"
+        ]
+      }
+    ]
+  }
+}

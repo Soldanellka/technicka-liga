@@ -1,0 +1,89 @@
+/* duel.css – štýly pre DUEL režim */
+
+/* -----------------------------------------
+   ZÁKLAD
+----------------------------------------- */
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* -----------------------------------------
+   OBECNÉ ROZLOŽENIE
+----------------------------------------- */
+
+.duel-screen {
+  padding: 20px;
+  text-align: center;
+}
+
+.duel-header h1 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: var(--accent-3);
+}
+
+/* -----------------------------------------
+   HRÁČSKE KARTY
+----------------------------------------- */
+
+.player-card {
+  display: inline-block;
+  width: 120px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  margin: 10px;
+}
+
+.player-name {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* -----------------------------------------
+   VS
+----------------------------------------- */
+
+.vs-label {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 20px 0;
+  color: var(--accent-3);
+}
+
+/* -----------------------------------------
+   TLAČIDLÁ (len špecifické pre duel)
+----------------------------------------- */
+
+.duel-screen button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(47,158,143,0.18);
+  transition: transform .12s ease;
+}
+
+.duel-screen button:hover {
+  transform: translateY(-2px);
+}
+
+/* -----------------------------------------
+   ODPÁDNE DUPLICITY
+----------------------------------------- */
+/* avatar-placeholder sa už rieši v styles.css */
+/* button globálne rieši styles.css */
+/* farby, pozadia, tiene rieši styles.css */
+
+/* -----------------------------------------
+   KONIEC
+----------------------------------------- */

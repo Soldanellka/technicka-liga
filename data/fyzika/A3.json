@@ -1,0 +1,114 @@
+{
+  "id": "fyzika-A3",
+  "title": "Sčítanie, odčítanie a súradnice vektorov",
+  "schemaVersion": 1,
+  "tags": [
+    "fyzika",
+    "vektory",
+    "sily"
+  ],
+  "summary": "Dva vektory so spoločným začiatkom sčítame graficky tak, že ich doplníme na rovnobežník. Výslednica c = a + b je jeho uhlopriečka.\nOdčítanie je pripočítanie opačného vektora: a − b = a + (−b).\nSúradnice vektora z bodu A do bodu B: [B_x − A_x; B_y − A_y]. Napríklad A[0; 0], B[4; 3] dáva [4; 3].\nVeľkosť vektora: |v| = √(x² + y²). Pre [4; 3] je √(16 + 9) = √25 = 5.\nRovnako sa skladajú dve navzájom kolmé sily: F = √(F₁² + F₂²). Pre 4 N a 3 N je výslednica 5 N.",
+  "quiz": [
+    {
+      "id": "fy11",
+      "q": "Ako sa odčítava vektor?",
+      "options": [
+        "a − b = a + (−b)",
+        "a − b = b − a",
+        "Odčítajú sa len veľkosti",
+        "Vektory sa odčítať nedajú"
+      ],
+      "correct": 0,
+      "explanation": "Odčítať vektor b znamená pripočítať opačný vektor −b = (−1)·b."
+    },
+    {
+      "id": "fy12",
+      "q": "A[0; 0], B[4; 3]. Aké súradnice má vektor z A do B?",
+      "options": [
+        "[−4; 3]",
+        "[4; 3]",
+        "[3; 4]",
+        "[4; −3]"
+      ],
+      "correct": 1,
+      "explanation": "[B_x − A_x; B_y − A_y] = [4 − 0; 3 − 0] = [4; 3]."
+    },
+    {
+      "id": "fy13",
+      "q": "Aká je veľkosť vektora [4; 3]?",
+      "options": [
+        "7",
+        "1",
+        "5",
+        "12"
+      ],
+      "correct": 2,
+      "explanation": "√(4² + 3²) = √(16 + 9) = √25 = 5."
+    },
+    {
+      "id": "fy14",
+      "q": "Dve navzájom kolmé sily majú veľkosti F₁ = 4 N a F₂ = 3 N. Aká je veľkosť výslednice?",
+      "options": [
+        "7 N",
+        "1 N",
+        "12 N",
+        "5 N"
+      ],
+      "correct": 3,
+      "explanation": "F = √(F₁² + F₂²) = √(16 + 9) = √25 = 5 N."
+    },
+    {
+      "id": "fy15",
+      "q": "Ako graficky sčítame dva vektory so spoločným začiatkom?",
+      "options": [
+        "Sčítame len ich dĺžky",
+        "Doplníme ich na rovnobežník, výslednica je uhlopriečka",
+        "Vyberieme dlhší z nich",
+        "Spojíme ich konce"
+      ],
+      "correct": 1,
+      "explanation": "Vektory doplníme na rovnobežník; výslednica c = a + b je jeho uhlopriečka zo spoločného začiatku."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Sčítanie, odčítanie a súradnice",
+    "branches": [
+      {
+        "label": "Sčítanie vektorov",
+        "leaves": [
+          "c = a + b",
+          "doplň na rovnobežník",
+          "výslednica je uhlopriečka"
+        ]
+      },
+      {
+        "label": "Odčítanie vektorov",
+        "leaves": [
+          "a − b = a + (−b)",
+          "pripočítaj opačný vektor",
+          "−b = (−1)·b"
+        ]
+      },
+      {
+        "label": "Súradnice vektora",
+        "leaves": [
+          "koniec mínus začiatok",
+          "[B_x − A_x; B_y − A_y]",
+          "A[0; 0], B[4; 3] → [4; 3]"
+        ]
+      },
+      {
+        "label": "Veľkosť vektora",
+        "leaves": [
+          "|v| = √(x² + y²)",
+          "√(4² + 3²) = 5",
+          "kolmé sily: F = √(F₁² + F₂²)"
+        ]
+      }
+    ]
+  }
+}

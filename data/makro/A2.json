@@ -1,0 +1,328 @@
+{
+  "id": "2. A",
+  "title": "Inflácia, nezamestnanosť a ECB",
+  "schemaVersion": "1.1",
+  "tags": [
+    "inflacia",
+    "nezamestnanost",
+    "ecb",
+    "menova-politika"
+  ],
+  "summary": "Inflácia znamená všeobecný rast cien; vzniká pri vysokom dopyte alebo rastúcich nákladoch. Mierna inflácia je prirodzená a podporuje ekonomický rast, hyperinflácia je naopak veľmi rýchly a nekontrolovaný rast cien. Nezamestnaní sú ľudia, ktorí nemajú prácu a aktívne si ju hľadajú; cyklická nezamestnanosť súvisí s hospodárskym cyklom a prirodzená miera nezamestnanosti zahŕňa frikčnú a štrukturálnu nezamestnanosť. Stagflácia je kombinácia hospodárskeho poklesu a vysokej inflácie. Pri vysokej inflácii ECB zvyšuje úrokové sadzby, ktoré tlmia dopyt; nízke sadzby naopak motivujú firmy aj domácnosti investovať a míňať a nepriamo podporujú vznik pracovných miest. Kvantitatívne uvoľňovanie je nákup aktív centrálnou bankou, ktorý zvyšuje likviditu a podporuje úvery a investície.",
+  "quiz": [
+    {
+      "question": "Čo je inflácia?",
+      "options": [
+        "Pokles cien",
+        "Rast cien v ekonomike",
+        "Rast HDP",
+        "Pokles nezamestnanosti"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Inflácia znamená všeobecný rast cien.",
+        "wrong": "Správna odpoveď: Rast cien v ekonomike. Inflácia znamená všeobecný rast cien."
+      }
+    },
+    {
+      "question": "Čo spôsobuje infláciu?",
+      "options": [
+        "Pokles dopytu",
+        "Nadmerný dopyt alebo rast nákladov",
+        "Pokles výroby cien",
+        "Zníženie peňažnej zásoby"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Inflácia vzniká pri vysokom dopyte alebo rastúcich nákladoch.",
+        "wrong": "Správna odpoveď: Nadmerný dopyt alebo rast nákladov. Inflácia vzniká pri vysokom dopyte alebo rastúcich nákladoch."
+      }
+    },
+    {
+      "question": "Čo je nezamestnanosť?",
+      "options": [
+        "Počet ľudí bez práce, ktorí si prácu hľadajú",
+        "Počet študentov",
+        "Počet dôchodcov",
+        "Počet pracujúcich"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Nezamestnaní sú tí, ktorí nemajú prácu a aktívne ju hľadajú.",
+        "wrong": "Správna odpoveď: Počet ľudí bez práce, ktorí si prácu hľadajú. Nezamestnaní sú tí, ktorí nemajú prácu a aktívne ju hľadajú."
+      }
+    },
+    {
+      "question": "Ktorý typ nezamestnanosti vzniká pri hospodárskom poklese?",
+      "options": [
+        "Frikčná",
+        "Štrukturálna",
+        "Cyklická",
+        "Dobrovoľná"
+      ],
+      "correct": 2,
+      "explanation": {
+        "correct": "Cyklická nezamestnanosť súvisí s hospodárskym cyklom.",
+        "wrong": "Správna odpoveď: Cyklická. Cyklická nezamestnanosť súvisí s hospodárskym cyklom."
+      }
+    },
+    {
+      "question": "Čo je hyperinflácia?",
+      "options": [
+        "Mierny rast cien",
+        "Extrémne rýchly rast cien",
+        "Pokles cien",
+        "Stabilné ceny"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Hyperinflácia je veľmi rýchly a nekontrolovaný rast cien.",
+        "wrong": "Správna odpoveď: Extrémne rýchly rast cien. Hyperinflácia je veľmi rýchly a nekontrolovaný rast cien."
+      }
+    },
+    {
+      "question": "Ktoré tvrdenie o inflácii je správne?",
+      "options": [
+        "Nízka inflácia je bežná a často žiaduca",
+        "Inflácia je vždy škodlivá",
+        "Inflácia znamená pokles cien",
+        "Inflácia zvyšuje hodnotu peňazí"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Mierna inflácia je prirodzená a podporuje ekonomický rast.",
+        "wrong": "Správna odpoveď: Nízka inflácia je bežná a často žiaduca. Mierna inflácia je prirodzená a podporuje ekonomický rast."
+      }
+    },
+    {
+      "question": "Čo je prirodzená miera nezamestnanosti?",
+      "options": [
+        "Nezamestnanosť spôsobená krízou",
+        "Nezamestnanosť, ktorá existuje aj pri plnej zamestnanosti",
+        "Nezamestnanosť spôsobená infláciou",
+        "Nezamestnanosť spôsobená poklesom HDP"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Prirodzená nezamestnanosť zahŕňa frikčnú a štrukturálnu nezamestnanosť.",
+        "wrong": "Správna odpoveď: Nezamestnanosť, ktorá existuje aj pri plnej zamestnanosti. Prirodzená nezamestnanosť zahŕňa frikčnú a štrukturálnu nezamestnanosť."
+      }
+    },
+    {
+      "question": "Čo je stagflácia?",
+      "options": [
+        "Rast HDP a pokles cien",
+        "Pokles HDP a rast inflácie",
+        "Rast HDP a rast inflácie",
+        "Pokles inflácie a rast nezamestnanosti"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Stagflácia je kombinácia hospodárskeho poklesu a vysokej inflácie.",
+        "wrong": "Správna odpoveď: Pokles HDP a rast inflácie. Stagflácia je kombinácia hospodárskeho poklesu a vysokej inflácie."
+      }
+    },
+    {
+      "question": "Čo spraví ECB pri vysokej inflácii?",
+      "options": [
+        "Zníži úrokové sadzby",
+        "Zvýši úrokové sadzby",
+        "Zníži nezamestnanosť priamym zásahom",
+        "Zvýši štátne výdavky"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Vyššie sadzby tlmia dopyt a pomáhajú znižovať infláciu.",
+        "wrong": "Správna odpoveď: Zvýši úrokové sadzby. Vyššie sadzby tlmia dopyt a pomáhajú znižovať infláciu."
+      }
+    },
+    {
+      "question": "Ako ovplyvňuje nízka úroková sadzba ekonomiku?",
+      "options": [
+        "Znižuje dostupnosť úverov",
+        "Podporuje investície a spotrebu",
+        "Zvyšuje nezamestnanosť",
+        "Znižuje množstvo peňazí v obehu"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Nízke sadzby motivujú firmy aj domácnosti viac investovať a míňať.",
+        "wrong": "Správna odpoveď: Podporuje investície a spotrebu. Nízke sadzby motivujú firmy aj domácnosti viac investovať a míňať."
+      }
+    },
+    {
+      "question": "Čo je kvantitatívne uvoľňovanie (QE)?",
+      "options": [
+        "Znižovanie daní",
+        "Nákup aktív centrálnou bankou na podporu ekonomiky",
+        "Zvyšovanie úrokových sadzieb",
+        "Obmedzenie úverov"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "QE zvyšuje likviditu v ekonomike a podporuje úvery a investície.",
+        "wrong": "Správna odpoveď: Nákup aktív centrálnou bankou na podporu ekonomiky. QE zvyšuje likviditu v ekonomike a podporuje úvery a investície."
+      }
+    },
+    {
+      "question": "Ako môže ECB znižovať nezamestnanosť nepriamo?",
+      "options": [
+        "Tým, že priamo zamestnáva ľudí",
+        "Podporou ekonomiky cez nízke úrokové sadzby",
+        "Zvyšovaním daní",
+        "Obmedzovaním investícií"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Nízke sadzby podporujú rast, ktorý vytvára pracovné miesta.",
+        "wrong": "Správna odpoveď: Podporou ekonomiky cez nízke úrokové sadzby. Nízke sadzby podporujú rast, ktorý vytvára pracovné miesta."
+      }
+    }
+  ],
+  "tiles": [
+    {
+      "term": "Inflácia",
+      "definition": "Všeobecný rast cien; vzniká pri vysokom dopyte alebo rastúcich nákladoch."
+    },
+    {
+      "term": "Hyperinflácia",
+      "definition": "Veľmi rýchly a nekontrolovaný rast cien."
+    },
+    {
+      "term": "Nezamestnanosť",
+      "definition": "Ľudia bez práce, ktorí si prácu aktívne hľadajú."
+    },
+    {
+      "term": "Cyklická nezamestnanosť",
+      "definition": "Nezamestnanosť súvisiaca s hospodárskym cyklom – vzniká pri poklese."
+    },
+    {
+      "term": "Prirodzená miera nezamestnanosti",
+      "definition": "Nezamestnanosť existujúca aj pri plnej zamestnanosti; zahŕňa frikčnú a štrukturálnu."
+    },
+    {
+      "term": "Stagflácia",
+      "definition": "Kombinácia hospodárskeho poklesu a vysokej inflácie."
+    },
+    {
+      "term": "Kvantitatívne uvoľňovanie (QE)",
+      "definition": "Nákup aktív centrálnou bankou; zvyšuje likviditu a podporuje úvery a investície."
+    },
+    {
+      "term": "Menová politika ECB",
+      "definition": "Pri vysokej inflácii ECB zvyšuje sadzby (tlmí dopyt), nízke sadzby podporujú investície a spotrebu."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 1 – Ceny rýchlo rastú",
+      "difficulty": "ľahká",
+      "steps": [
+        {
+          "question": "V správach hlásia, že ceny v eurozóne rýchlo rastú.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Ako sa tento jav volá?",
+          "options": [
+            "Inflácia",
+            "Deflácia",
+            "Stagflácia"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Inflácia znamená všeobecný rast cien.",
+            "wrong": "Správna odpoveď: Inflácia. Inflácia znamená všeobecný rast cien."
+          }
+        },
+        {
+          "question": "Čo pravdepodobne spraví ECB?",
+          "options": [
+            "Zvýši úrokové sadzby",
+            "Zníži úrokové sadzby",
+            "Začne priamo zamestnávať ľudí"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Vyššie sadzby tlmia dopyt a pomáhajú znižovať infláciu.",
+            "wrong": "Správna odpoveď: Zvýši úrokové sadzby. Vyššie sadzby tlmia dopyt a pomáhajú znižovať infláciu."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 2 – Hospodársky pokles",
+      "difficulty": "stredná",
+      "steps": [
+        {
+          "question": "Ekonomika klesá a firmy prepúšťajú zamestnancov.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Aký typ nezamestnanosti takto vzniká?",
+          "options": [
+            "Cyklická",
+            "Frikčná",
+            "Dobrovoľná"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Cyklická nezamestnanosť súvisí s hospodárskym cyklom.",
+            "wrong": "Správna odpoveď: Cyklická. Cyklická nezamestnanosť súvisí s hospodárskym cyklom."
+          }
+        },
+        {
+          "question": "Ako môže ECB pomôcť nepriamo?",
+          "options": [
+            "Podporou ekonomiky cez nízke úrokové sadzby",
+            "Priamym zamestnávaním ľudí",
+            "Zvyšovaním daní"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Nízke sadzby podporujú rast, ktorý vytvára pracovné miesta.",
+            "wrong": "Správna odpoveď: Podporou ekonomiky cez nízke úrokové sadzby. Nízke sadzby podporujú rast, ktorý vytvára pracovné miesta."
+          }
+        }
+      ]
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu"
+  },
+  "spider": {
+    "center": "Inflácia, nezamestnanosť a ECB",
+    "branches": [
+      {
+        "label": "Inflácia",
+        "leaves": [
+          "Inflácia znamená všeobecný rast cien.",
+          "Vzniká pri vysokom dopyte alebo rastúcich nákladoch.",
+          "Mierna inflácia je prirodzená a podporuje rast.",
+          "Hyperinflácia je nekontrolovaný rast cien."
+        ]
+      },
+      {
+        "label": "Nezamestnanosť",
+        "leaves": [
+          "Nezamestnaní sú tí, ktorí nemajú prácu a aktívne ju hľadajú.",
+          "Cyklická nezamestnanosť súvisí s hospodárskym cyklom.",
+          "Prirodzená miera zahŕňa frikčnú a štrukturálnu nezamestnanosť.",
+          "Stagflácia je pokles ekonomiky spolu s vysokou infláciou."
+        ]
+      },
+      {
+        "label": "Menová politika ECB",
+        "leaves": [
+          "Pri vysokej inflácii ECB zvyšuje úrokové sadzby.",
+          "Nízke sadzby motivujú firmy aj domácnosti investovať a míňať.",
+          "QE zvyšuje likviditu a podporuje úvery a investície.",
+          "Nízke sadzby podporujú rast, ktorý vytvára pracovné miesta."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "area": "Fyzika",
+  "clusters": [
+    {
+      "label": "Veličiny a sily",
+      "okruhy": [
+        1,
+        4
+      ]
+    },
+    {
+      "label": "Počítanie s vektormi",
+      "okruhy": [
+        2,
+        3
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": 3,
+      "to": 4,
+      "note": "sily sa skladajú ako vektory"
+    }
+  ]
+}

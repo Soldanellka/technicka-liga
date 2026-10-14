@@ -1,0 +1,126 @@
+{
+  "id": "elektro-A2",
+  "title": "Prepustný a záverný smer",
+  "schemaVersion": 1,
+  "tags": [
+    "elektrotechnika",
+    "polovodiče",
+    "PN prechod"
+  ],
+  "summary": "PN prechod môže byť zapojený v prepustnom alebo závernom smere.\nPrepustný smer: polovodič P je pripojený ku kladnej svorke zdroja, N k zápornej. Hradlová vrstva sa zúži, elektróny prejdú cez hradlovú oblasť a obvodom prechádza prúd.\nZáverný smer: polovodič P je pripojený k zápornej svorke zdroja, N ku kladnej. Hradlová vrstva sa rozšíri, elektróny neprejdú a prúd obvodom neprechádza.\nNa tom je založená polovodičová dióda: prúd púšťa len jedným smerom.",
+  "quiz": [
+    {
+      "id": "el07",
+      "q": "Kam je v prepustnom smere pripojený polovodič typu P?",
+      "options": [
+        "Na kladnú svorku zdroja",
+        "Na zápornú svorku zdroja",
+        "Nikam",
+        "Na oba póly naraz"
+      ],
+      "correct": 0,
+      "explanation": "V prepustnom smere je P na kladnej svorke a N na zápornej; prúd obvodom prechádza."
+    },
+    {
+      "id": "el08",
+      "q": "Čo sa deje s prúdom v prepustnom smere?",
+      "options": [
+        "Neprechádza",
+        "Prechádza obvodom",
+        "Mení smer každú sekundu",
+        "Ostane len v hradlovej vrstve"
+      ],
+      "correct": 1,
+      "explanation": "Hradlová vrstva sa zúži, elektróny ňou prejdú a obvodom prechádza prúd."
+    },
+    {
+      "id": "el09",
+      "q": "Kam je v závernom smere pripojený polovodič typu P?",
+      "options": [
+        "Na kladnú svorku zdroja",
+        "Nikam",
+        "Na zápornú svorku zdroja",
+        "Na uzemnenie bez zdroja"
+      ],
+      "correct": 2,
+      "explanation": "V závernom smere je P na zápornej svorke a N na kladnej; prúd neprechádza."
+    },
+    {
+      "id": "el10",
+      "q": "Čo platí v závernom smere?",
+      "options": [
+        "Hradlová vrstva sa rozšíri a prúd neprechádza",
+        "Prúd tečie najľahšie",
+        "Hradlová vrstva zmizne",
+        "Dióda sa nabíja ako batéria"
+      ],
+      "correct": 0,
+      "explanation": "V závernom smere sa hradlová vrstva rozšíri, elektróny cez ňu neprejdú a obvodom prúd neprechádza."
+    },
+    {
+      "id": "el11",
+      "q": "Na čom je založená polovodičová dióda?",
+      "options": [
+        "Na magnete",
+        "Na odpore drôtu",
+        "Na PN prechode – prúd púšťa len jedným smerom",
+        "Na chemickej reakcii"
+      ],
+      "correct": 2,
+      "explanation": "Dióda využíva PN prechod: v prepustnom smere prúd prechádza, v závernom nie."
+    },
+    {
+      "id": "el12",
+      "q": "Ako môže byť PN prechod zapojený?",
+      "options": [
+        "Len sériovo",
+        "V prepustnom alebo závernom smere",
+        "Len paralelne",
+        "Len na striedavý prúd"
+      ],
+      "correct": 1,
+      "explanation": "PN prechod môže byť zapojený v prepustnom alebo závernom smere podľa toho, kam pripojíme P a N."
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Školská oblasť – poznámky žiaka z predmetu"
+  },
+  "spider": {
+    "center": "Prepustný a záverný smer",
+    "branches": [
+      {
+        "label": "Prepustný smer",
+        "leaves": [
+          "P na kladnú svorku",
+          "N na zápornú svorku",
+          "prúd prechádza"
+        ]
+      },
+      {
+        "label": "Záverný smer",
+        "leaves": [
+          "P na zápornú svorku",
+          "N na kladnú svorku",
+          "prúd neprechádza"
+        ]
+      },
+      {
+        "label": "Hradlová vrstva pri zapojení",
+        "leaves": [
+          "v prepustnom smere sa zúži",
+          "v závernom smere sa rozšíri",
+          "rozhoduje, či prúd prejde"
+        ]
+      },
+      {
+        "label": "Dióda",
+        "leaves": [
+          "púšťa prúd jedným smerom",
+          "založená na PN prechode",
+          "ako ventil pre prúd"
+        ]
+      }
+    ]
+  }
+}

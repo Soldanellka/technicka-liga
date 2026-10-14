@@ -1,0 +1,19 @@
+{
+  "area": "Investovanie",
+  "clusters": [
+    {
+      "label": "Investovanie",
+      "okruhy": [
+        1,
+        2
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": 1,
+      "to": 2,
+      "note": "riziko rozhoduje o výbere investície"
+    }
+  ]
+}

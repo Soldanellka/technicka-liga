@@ -1,0 +1,358 @@
+{
+  "avatars": [
+    {
+      "id": "studentka-tmava",
+      "name": "Študentka (tmavé vlasy)",
+      "type": "basic",
+      "base": "avatars/studentka-tmava",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "studentka-medena",
+      "name": "Študentka (medené vlasy)",
+      "type": "basic",
+      "base": "avatars/studentka-medena",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "studentka-blond",
+      "name": "Študentka (blond vlasy)",
+      "type": "basic",
+      "base": "avatars/studentka-blond",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "student-tmavy",
+      "name": "Študent (tmavé vlasy)",
+      "type": "basic",
+      "base": "avatars/student-tmavy",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "student-medeny",
+      "name": "Študent (medené vlasy)",
+      "type": "basic",
+      "base": "avatars/student-medeny",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "student-blond",
+      "name": "Študent (blond vlasy)",
+      "type": "basic",
+      "base": "avatars/student-blond",
+      "price": 0,
+      "grantedBy": null,
+      "active": true
+    },
+    {
+      "id": "student-blond-advokat",
+      "name": "Študent – modrý plášť",
+      "type": "talar",
+      "base": "avatars/student-blond-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-blond-prokurator",
+      "name": "Študent – vínový plášť",
+      "type": "talar",
+      "base": "avatars/student-blond-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-medeny-prokurator",
+      "name": "Študent (medené vlasy) – vínový plášť",
+      "type": "talar",
+      "base": "avatars/student-medeny-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-medeny-advokat",
+      "name": "Študent (medené vlasy) – modrý plášť",
+      "type": "talar",
+      "base": "avatars/student-medeny-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-tmavy-advokat",
+      "name": "Študent – modrý plášť",
+      "type": "talar",
+      "base": "avatars/student-tmavy-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-tmavy-prokurator",
+      "name": "Študent (tmavé vlasy) – vínový plášť",
+      "type": "talar",
+      "base": "avatars/student-tmavy-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-medeny-talar-cierny",
+      "name": "Študent – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/student-medeny-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-blond-talar-cierny",
+      "name": "Študent – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/student-blond-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-tmavy-talar-cierny",
+      "name": "Študent – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/student-tmavy-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-blond-advokat",
+      "name": "Študentka – modrý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-blond-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-blond-akademik",
+      "name": "Študentka – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-blond-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "studentka-tmava-akademik",
+      "name": "Študentka (tmavé vlasy) – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-tmava-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "studentka-medena-akademik",
+      "name": "Študentka (medené vlasy) – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-medena-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "student-blond-akademik",
+      "name": "Študent – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/student-blond-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "student-medeny-akademik",
+      "name": "Študent (medené vlasy) – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/student-medeny-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "student-tmavy-akademik",
+      "name": "Študent (tmavé vlasy) – zlatý plášť",
+      "type": "talar",
+      "base": "avatars/student-tmavy-akademik",
+      "price": 0,
+      "grantedBy": "admin",
+      "grantNote": "akademická pečať / admin",
+      "active": true
+    },
+    {
+      "id": "studentka-blond-prokurator",
+      "name": "Študentka – vínový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-blond-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-blond-sudca",
+      "name": "Študentka – fialový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-blond-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-blond-sudca",
+      "name": "Študent – fialový plášť",
+      "type": "talar",
+      "base": "avatars/student-blond-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-tmavy-sudca",
+      "name": "Študent (tmavé vlasy) – fialový plášť",
+      "type": "talar",
+      "base": "avatars/student-tmavy-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "student-medeny-sudca",
+      "name": "Študent (medené vlasy) – fialový plášť",
+      "type": "talar",
+      "base": "avatars/student-medeny-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-blond-talar-cierny",
+      "name": "Študentka – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/studentka-blond-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-medena-talar-cierny",
+      "name": "Študentka – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/studentka-medena-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-medena-prokurator",
+      "name": "Študentka (medené vlasy) – vínový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-medena-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-medena-sudca",
+      "name": "Študentka (medené vlasy) – fialový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-medena-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-medena-advokat",
+      "name": "Študentka (medené vlasy) – modrý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-medena-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-tmava-talar-cierny",
+      "name": "Študentka (tmavé vlasy) – slávnostný plášť",
+      "type": "talar",
+      "base": "avatars/studentka-tmava-talar-cierny",
+      "price": 200,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-tmava-advokat",
+      "name": "Študentka (tmavé vlasy) – modrý plášť",
+      "type": "talar",
+      "base": "avatars/studentka-tmava-advokat",
+      "price": 500,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-tmava-prokurator",
+      "name": "Študentka – vínový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-tmava-prokurator",
+      "price": 700,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    },
+    {
+      "id": "studentka-tmava-sudca",
+      "name": "Študentka – fialový plášť",
+      "type": "talar",
+      "base": "avatars/studentka-tmava-sudca",
+      "price": 1000,
+      "grantedBy": "shop",
+      "grantNote": "obchod za 🪙",
+      "active": true
+    }
+  ]
+}

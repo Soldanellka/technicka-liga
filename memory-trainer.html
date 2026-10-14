@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8" />
+<title>🧠 Bifľovačka – Finančná liga</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="stylesheet" href="styles.css">
+<style>
+  .mt-wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 60px; }
+  .mt-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .mt-back { text-decoration:none; color:var(--muted); font-size:14px; }
+  .mt-progress-line { font-size:13px; color:var(--muted); margin-bottom:6px; }
+  .mt-reveal-box {
+    background:var(--surface); border:1px solid rgba(0,0,0,0.06); border-radius:16px;
+    padding:28px 24px; font-size:18px; line-height:1.5; box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    min-height:120px; display:flex; align-items:center; justify-content:center; text-align:center;
+  }
+  .mt-answer-box textarea {
+    width:100%; min-height:110px; border-radius:12px; border:1px solid rgba(0,0,0,0.12);
+    padding:12px 14px; font-size:16px; font-family:inherit; resize:vertical; box-sizing:border-box;
+  }
+  .mt-actions { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .mt-actions .btn { min-height:44px; }
+  .mt-score { font-size:44px; font-weight:800; text-align:center; margin:6px 0; }
+  .mt-score.ok { color:#22c55e; }
+  .mt-score.mid { color:#eab308; }
+  .mt-score.bad { color:#ef4444; }
+  .mt-notes { text-align:center; margin-bottom:10px; }
+  .mt-keywords { text-align:center; color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .mt-reveal-answer { background:rgba(0,0,0,0.03); border-radius:12px; padding:14px 16px; margin-top:10px; font-size:14px; }
+  .mt-finish { text-align:center; padding:40px 20px; }
+  .mt-finish .seal { font-size:64px; }
+  .mt-areas-list a.memory-tile { display:block; }
+  .mt-reveal-actions { text-align:center; margin-top:10px; }
+  #mtMicBtn.mt-mic-active {
+    background: linear-gradient(90deg,#ef4444,#dc2626);
+    color:#fff;
+    animation: mtMicPulse 1.2s ease infinite;
+  }
+  @keyframes mtMicPulse { 0%,100% { opacity:1; } 50% { opacity:.6; } }
+
+  /* 🃏 Žolíky – platené pomôcky vo fáze odpovede */
+  .mt-jokers {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .mt-jokers-label { font-size: 13px; color: var(--muted); margin-right: 2px; }
+  .mt-joker {
+    padding: 6px 12px; font-size: 13px; min-height: 32px; border-radius: 999px;
+  }
+  .mt-joker:disabled { opacity: 0.5; cursor: not-allowed; }
+  .mt-joker-balance { font-size: 13px; color: var(--muted); margin-left: auto; }
+  .mt-joker-hint {
+    background: rgba(245,197,66,0.12);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+    margin-bottom: 12px;
+    word-break: break-word;
+  }
+
+  /* 🎓 Garant/admin – prepínač režimu kontroly + pečať overenia */
+  .mt-review-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    padding: 8px 14px; border-radius: 10px;
+    background: rgba(0,0,0,0.04); margin-bottom: 14px;
+  }
+  .mt-seal-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 600;
+    border-radius: 999px; padding: 4px 12px;
+    border: 1px solid rgba(212,175,55,0.55);
+    background: rgba(212,175,55,0.12);
+    color: #8a6d1a;
+    margin-bottom: 10px;
+  }
+  .mt-review-question { font-weight: 600; margin-bottom: 10px; font-size: 16px; }
+  .mt-review-textarea {
+    width: 100%; min-height: 90px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12);
+    padding: 12px 14px; font-size: 15px; font-family: inherit; resize: vertical; box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .mt-wrap { padding: 16px 12px 40px; }
+    .mt-reveal-box { padding: 20px 16px; font-size: 16px; }
+    .mt-actions { flex-direction: column; }
+    .mt-actions .btn { width: 100%; }
+    #mtSpeakBtn, #mtReadyBtn { min-height: 44px; }
+    .mt-jokers { flex-direction: column; align-items: stretch; }
+    .mt-joker { width: 100%; }
+    .mt-joker-balance { margin-left: 0; text-align: center; }
+  }
+
+  /* 🎬 Tlačidlá "Pozrieť ako video" (in-app) a "Video" (YouTube) */
+  .mt-video-row { display: flex; gap: 8px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+  .mt-video-btn {
+    background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+    color: #fff; border: none;
+  }
+
+  /* ============================================================
+     🎥 VIDEO REŽIM (in-app) – biflovackaVideo.js
+     Funguje na mobile AJ desktope (nie je scopnuté na mobilnú
+     media query, na rozdiel od fullscreen kvízu).
+  ============================================================ */
+  .bf-video-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    padding: calc(14px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+    color: #fff;
+  }
+  .bf-video-bg {
+    position: absolute; inset: -10%;
+    background: linear-gradient(120deg, #17806f, #7a2048, #1a0a14, #17806f);
+    background-size: 300% 300%;
+    animation: bfBgMove 18s ease infinite;
+    z-index: 0;
+  }
+  @keyframes bfBgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bf-video-bg { animation: none; background-position: 30% 50%; }
+  }
+  /* Moderátor stojí NA OKRAJI (nie za textom) – strana sa strieda podľa
+     párnosti defIndex (.side-right modifikátor = avatar vpravo, text
+     vľavo). Text sedí na polopriehľadnom páse s blur pozadím. */
+  .bf-video-main {
+    position: relative; flex: 1; min-height: 0;
+    display: flex; flex-direction: row; align-items: center; justify-content: center;
+    gap: 16px;
+  }
+  .bf-video-main.side-right { flex-direction: row-reverse; }
+  .bf-video-moderator {
+    position: relative; z-index: 1; flex: 0 0 auto;
+    height: 70%; max-height: 70vh; pointer-events: none;
+  }
+  .bf-video-moderator img {
+    height: 100%; width: auto; object-fit: contain;
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,0.35));
+    transition: opacity 260ms ease;
+  }
+  /* Poistka, ak PNG moderátora chýba (404) – dekoratívne emoji namiesto
+     rozbitej ikonky prehliadača, viď biflovackaVideo.js buildOverlay(). */
+  .bf-video-moderator-fallback {
+    font-size: 15vh; line-height: 1; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.35));
+  }
+  .bf-video-content {
+    position: relative; z-index: 2; flex: 1 1 auto;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    width: fit-content; max-width: 55%;
+    background: rgba(16,26,30,0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin: 0 16px;
+  }
+  .bf-video-question {
+    font-family: Georgia, "Times New Roman", serif; font-weight: 700;
+    font-size: 24px; line-height: 1.3; margin-bottom: 14px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }
+  .bf-video-answer { font-size: 17px; line-height: 1.7; }
+  .bf-video-source, .bf-video-source * { color: rgba(255,255,255,0.55) !important; }
+  .bf-sentence {
+    color: rgba(255,255,255,0.45);
+    transition: color 200ms ease;
+  }
+  .bf-sentence.done { color: rgba(255,255,255,0.85); }
+  .bf-sentence.active {
+    color: #fff; font-weight: 600;
+    text-shadow: 0 0 14px rgba(47,158,143,0.75);
+  }
+  .bf-video-dim {
+    position: absolute; inset: 0; z-index: 1;
+    background: rgba(0,0,0,0); pointer-events: none;
+    transition: background 900ms ease;
+  }
+  .bf-video-dim.active { background: rgba(0,0,0,0.5); }
+  .bf-video-bottom { position: relative; z-index: 2; }
+  .bf-video-progress {
+    height: 4px; border-radius: 999px; background: rgba(255,255,255,0.2);
+    overflow: hidden; margin-bottom: 12px;
+  }
+  .bf-video-progress-fill {
+    height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-2), var(--accent-3));
+    transition: width 200ms linear;
+  }
+  .bf-video-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .bf-video-controls .btn { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+  .bf-video-end {
+    position: absolute; inset: 0; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    background: rgba(10,5,10,0.55); flex-wrap: wrap; padding: 20px;
+  }
+  .bf-video-end-msg { font-size: 22px; font-weight: 600; text-align: center; }
+
+  @media (max-width: 640px) {
+    .bf-video-main { flex-direction: column !important; gap: 8px; }
+    .bf-video-moderator { height: 30%; max-height: 30vh; }
+    .bf-video-content { max-width: 92%; }
+    .bf-video-question { font-size: 19px; }
+    .bf-video-answer { font-size: 15px; }
+    .bf-video-controls .btn, .bf-video-end .btn { width: 100%; }
+    .bf-video-controls, .bf-video-end { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mt-wrap">
+
+  <div class="mt-header">
+    <a href="index.html" class="mt-back">← Späť na Finančnú ligu</a>
+    <div class="pill" id="mtAreaBadge"></div>
+  </div>
+
+  <h2 id="mtTitle">🧠 Bifľovačka</h2>
+
+  <!-- Prepínač režimu kontroly – vloží sa do DOM len pre admin/garant,
+       inak sa element odstráni (setup v initReviewToggle). -->
+  <div id="mtReviewToggleWrap" style="display:none">
+    <label class="mt-review-toggle">
+      <input type="checkbox" id="mtReviewToggle">
+      🔍 Režim kontroly
+    </label>
+  </div>
+
+  <!-- Výber oblasti (ak nie je zadaný ?area=) -->
+  <div id="mtAreaPicker" style="display:none">
+    <p class="small muted">Vyber úroveň, ktorú si chceš vybifľovať.</p>
+    <div id="memoryTrainerTiles" class="list mt-areas-list"></div>
+  </div>
+
+  <!-- Priebeh balíčka -->
+  <div id="mtFlow" style="display:none">
+    <div class="mt-progress-line" id="mtProgressLine"></div>
+    <div class="progress" style="margin-bottom:18px"><i id="mtProgBar" style="width:0%"></i></div>
+
+    <!-- Fáza 1: odhalenie -->
+    <div id="mtRevealPhase">
+      <div class="mt-seal-badge" id="mtSealBadge" style="display:none"></div>
+      <div class="mt-reveal-box" id="mtRevealText"></div>
+      <div class="mt-reveal-actions">
+        <button class="btn" id="mtSpeakBtn" type="button">🔊 Prečítať nahlas</button>
+      </div>
+      <div class="mt-video-row">
+        <button class="btn mt-video-btn" id="mtWatchVideoBtn" type="button">▶️ Pozrieť ako video</button>
+        <button class="btn mt-video-btn" id="mtYoutubeBtn" type="button" style="display:none">🎬 Video</button>
+      </div>
+      <div class="small muted" style="text-align:center;margin-top:8px">Zapamätaj si definíciu a klikni, keď si pripravený/á</div>
+      <div class="small muted" style="text-align:center;margin-top:4px" id="mtReadTimeHint"></div>
+      <div id="mtSourceLine" style="text-align:center"></div>
+      <div style="margin-top:10px">
+        <button class="btn btn-primary" id="mtReadyBtn" type="button" style="width:100%">Zapamätal/a som si ✅</button>
+      </div>
+      <div style="text-align:center;margin-top:6px">
+        <button class="report-q-btn" id="mtReportBtn" type="button">⚖️ Nahlásiť chybu</button>
+      </div>
+    </div>
+
+    <!-- Fáza 2: odpoveď -->
+    <div id="mtAnswerPhase" style="display:none">
+      <div class="small" style="margin-bottom:8px;font-weight:600">Napíš (alebo nahovor), čo si zapamätal/a:</div>
+      <div class="mt-jokers" id="mtJokers">
+        <span class="mt-jokers-label">Pomôcky:</span>
+        <button class="btn mt-joker" id="jokerSkeleton" type="button">🃏 Kostra</button>
+        <button class="btn mt-joker" id="jokerInitials" type="button">🔤 Iniciály</button>
+        <button class="btn mt-joker" id="jokerReplay" type="button">🔊 Vypočuť</button>
+        <button class="btn mt-joker" id="jokerVideo" type="button">🔁 Video znova</button>
+        <span class="mt-joker-balance" id="mtJokerBalance"></span>
+      </div>
+      <div class="mt-joker-hint" id="mtJokerHint" style="display:none"></div>
+      <div class="mt-answer-box">
+        <textarea id="mtAnswerInput" placeholder="Napíš vetu / definíciu tak, ako si ju zapamätal/a..."></textarea>
+      </div>
+      <div class="mt-actions">
+        <button class="btn" id="mtMicBtn" type="button">🎤 Nahrať odpoveď</button>
+        <button class="btn btn-primary" id="mtSubmitBtn">✅ Vyhodnotiť</button>
+      </div>
+    </div>
+
+    <!-- Fáza 3: výsledok -->
+    <div id="mtResultPhase" style="display:none">
+      <div class="mt-score" id="mtScoreNum">0 %</div>
+      <div class="mt-notes" id="mtNotesText"></div>
+      <div class="mt-keywords" id="mtKeywordsText"></div>
+      <div class="mt-reveal-answer" id="mtRevealAnswer"></div>
+      <div class="mt-actions" id="mtResultActions"></div>
+    </div>
+
+    <!-- Fáza kontroly (garant/admin s aktívnym prepínačom) – definícia
+         celá naraz, žiadne učenie/odmeny, len prechádzanie + opravy. -->
+    <div id="mtReviewPhase" style="display:none">
+      <div class="mt-seal-badge" id="mtReviewSealBadge" style="display:none"></div>
+      <div class="mt-review-question" id="mtReviewQuestion"></div>
+      <div class="mt-reveal-box" id="mtReviewAnswerBox"></div>
+      <div id="mtReviewSourceLine"></div>
+      <div class="mt-video-row">
+        <button class="btn mt-video-btn" id="mtReviewWatchVideoBtn" type="button">▶️ Pozrieť ako video</button>
+        <button class="btn mt-video-btn" id="mtReviewYoutubeBtn" type="button" style="display:none">🎬 Video</button>
+      </div>
+      <div class="mt-actions" id="mtReviewActions" style="margin-top:14px">
+        <button class="btn btn-primary" id="mtReviewNextBtn" type="button">Ďalej →</button>
+        <button class="btn" id="mtReviewEditBtn" type="button">✏️ Opraviť</button>
+        <button class="btn" id="mtReviewCourtBtn" type="button">⚖️ Do poroty</button>
+      </div>
+      <div id="mtReviewEditForm" style="display:none;margin-top:14px">
+        <div class="small" style="margin-bottom:4px;font-weight:600">Otázka:</div>
+        <textarea id="mtReviewEditQuestion" class="mt-review-textarea"></textarea>
+        <div class="small" style="margin-bottom:4px;font-weight:600">Odpoveď:</div>
+        <textarea id="mtReviewEditAnswer" class="mt-review-textarea"></textarea>
+        <div class="small" style="margin-bottom:4px;font-weight:600">Zdroj <span class="small muted">(voliteľné)</span></div>
+        <input id="mtReviewEditSrc" class="form-input" type="text" placeholder="napr. 🪙 42 Zákonníka práce" style="width:100%;box-sizing:border-box"/>
+        <div class="small" style="margin:8px 0 4px;font-weight:600">URL zdroja <span class="small muted">(voliteľné)</span></div>
+        <input id="mtReviewEditSrcUrl" class="form-input" type="text" placeholder="https://…" style="width:100%;box-sizing:border-box"/>
+        <div class="small" style="margin:8px 0 4px;font-weight:600">Mesiac prístupu <span class="small muted">(ak je URL)</span></div>
+        <input id="mtReviewEditSrcAccessed" class="form-input" type="month" style="width:100%;box-sizing:border-box"/>
+        <div class="mt-actions">
+          <button class="btn btn-primary" id="mtReviewSaveBtn" type="button">💾 Uložiť</button>
+          <button class="btn" id="mtReviewCancelBtn" type="button">Zrušiť</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dokončenie oblasti -->
+  <div id="mtFinish" class="mt-finish" style="display:none">
+    <div class="seal" id="mtFinishSeal">🏆</div>
+    <h2 id="mtFinishTitle">Oblasť dokončená!</h2>
+    <p id="mtFinishSub" class="small muted"></p>
+    <p><span class="badge-premium-small">🎓 Pripravený na skúšky</span></p>
+    <div style="margin-top:20px"><a href="index.html" class="btn btn-primary">Späť na dashboard</a></div>
+  </div>
+
+  <!-- Oblasť zatiaľ bez definícií (obsah sa ešte pripravuje) -->
+  <div id="mtEmptyArea" class="mt-finish" style="display:none">
+    <div class="seal">📚</div>
+    <h2>Obsah sa pripravuje</h2>
+    <p class="small muted">Pre túto oblasť ešte nie sú nahraté definície na bifľovanie. Skús to prosím neskôr.</p>
+    <div style="margin-top:20px"><a href="index.html" class="btn btn-primary">Späť na dashboard</a></div>
+  </div>
+
+</div>
+
+<!-- 🎬 YouTube video priradené ku konkrétnej definícii (Koľaj B) -->
+<div id="bfYoutubeModal" class="avatar-modal" style="display:none">
+  <div class="avatar-panel video-modal-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 id="bfYoutubeModalTitle" style="margin:0">Video</h3>
+      <button class="btn" id="bfYoutubeModalClose" type="button">✕</button>
+    </div>
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000">
+      <iframe id="bfYoutubePlayer" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"
+        allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module">
+import { MEMORY_AREAS, getAreaBySlug } from './memoryDefinitions.js';
+import {
+  loadMemoryArea, getNextMemoryItem, compareText,
+  saveMemoryScore, calculateCompletion, renderMemoryTiles,
+  speakText, isSpeechRecognitionSupported, createSpeechRecognizer, isLikelyDesktop,
+  canPlayBiflovacka, buildSkeleton, buildInitials,
+  getAllMemoryItems, saveDefinitionOverride
+} from './memoryTrainer.js';
+import { econSpendEnergy, econEnergyLeft, econEnergyMissingMsg, ECONOMY_CONFIG }
+from './scripts/economy.js';
+import { getRole } from './scripts/economyConfig.js';
+import { showRewardToast } from './ui.js';
+import { openVideoPlayer } from './biflovackaVideo.js';
+import { renderSource } from './scripts/sourceUtil.js';
+
+const $ = id => document.getElementById(id);
+
+const params = new URLSearchParams(window.location.search);
+const slug = params.get('area');
+
+const SEAL_LABEL = { bronze: '🥉 Bronzová pečať', silver: '🥈 Strieborná pečať', gold: '🥇 Zlatá pečať' };
+const SEAL_ICON = { bronze: '🥉', silver: '🥈', gold: '🥇' };
+
+let currentItem = null;
+let recognizer = null;
+let recognizing = false;
+let videoMap = {};
+
+/* ============================================================
+   🎬 YOUTUBE VIDEÁ K DEFINÍCIÁM (Koľaj B) – biflovackaVideos/{slug}
+   Jedno čítanie na oblasť (nie per definícia), cache vo videoMap.
+   Vlastný minimálny modal (rovnaké .avatar-modal/.avatar-panel
+   triedy ako #videoModal v index.html – tá stránka ale žije v
+   inom dokumente, takže DOM element nie je možné zdieľať priamo).
+============================================================ */
+async function loadVideoMap(areaSlug) {
+  try {
+    const { ref, get } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js');
+    const snap = await get(ref(window.db, `biflovackaVideos/${areaSlug}`));
+    videoMap = snap.exists() ? snap.val() : {};
+  } catch (e) {
+    console.warn('Bifľovačka: čítanie video mapovania zlyhalo', e);
+    videoMap = {};
+  }
+}
+
+function updateYoutubeButton(btnId, item) {
+  const btn = $(btnId);
+  if (!btn) return;
+  const mapping = item && item.defKey ? videoMap[item.defKey] : null;
+  if (mapping) {
+    btn.style.display = 'inline-flex';
+    btn.onclick = () => openBfYoutubeModal(mapping.youtubeId, mapping.title);
+  } else {
+    btn.style.display = 'none';
+    btn.onclick = null;
+  }
+}
+
+function openBfYoutubeModal(youtubeId, title) {
+  $('bfYoutubeModalTitle').textContent = title || 'Video';
+  $('bfYoutubePlayer').src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
+  $('bfYoutubeModal').style.display = 'flex';
+}
+
+function closeBfYoutubeModal() {
+  $('bfYoutubeModal').style.display = 'none';
+  $('bfYoutubePlayer').src = '';
+}
+
+function setupYoutubeModal() {
+  $('bfYoutubeModalClose').addEventListener('click', closeBfYoutubeModal);
+  $('bfYoutubeModal').addEventListener('click', (e) => {
+    if (e.target === $('bfYoutubeModal')) closeBfYoutubeModal();
+  });
+}
+
+/* ============================================================
+   Žolíky – pomôcky vo fáze odpovede, platené ENERGIOU (nie §).
+   Max 1 žolík na definíciu; nový pokus (nová položka aj retry
+   tej istej) žolíky resetne. Hodnotenie odpovede a odmeny za
+   okruh/oblasť sa žolíkom nemenia (rieši saveMemoryScore ako doteraz).
+============================================================ */
+/* E3 (2026-08): žolíky stoja ENERGIU, nie § (predtým SINKS.BIFLOVACKA_JOKER_*
+   a BIFLOVACKA_VIDEO_REPLAY, 3/2/1/2 §). Pomôcka je súčasť učenia, nie tovar –
+   nesmie sa dať kúpiť. `cost` je záporné číslo z ENERGY.*, do UI ide cez
+   Math.abs. */
+const JOKER_DEFS = [
+  { id: 'jokerSkeleton', type: 'skeleton', cost: ECONOMY_CONFIG.ENERGY.JOKER_SKELETON, label: '🃏 Kostra' },
+  { id: 'jokerInitials', type: 'initials', cost: ECONOMY_CONFIG.ENERGY.JOKER_INITIALS, label: '🔤 Iniciály' },
+  { id: 'jokerReplay',   type: 'replay',   cost: ECONOMY_CONFIG.ENERGY.JOKER_REPLAY,   label: '🔊 Vypočuť' },
+  { id: 'jokerVideo',    type: 'video',    cost: ECONOMY_CONFIG.ENERGY.JOKER_VIDEO,    label: '🔁 Video znova' }
+];
+
+let jokerUsed = null;
+let jokerEnergy = 0;   // zostatok ENERGIE (predtým zostatok §)
+
+function referenceText() {
+  return currentItem ? (currentItem.definition || currentItem.summary || currentItem.legalSentence || '') : '';
+}
+
+function updateJokerButtonsUI() {
+  JOKER_DEFS.forEach(def => {
+    const btn = $(def.id);
+    if (!btn) return;
+    const need = Math.abs(def.cost);
+    btn.textContent = `${def.label} (⚡ ${need})`;
+
+    /* "Video znova" má VLASTNÝ limit (videoPlays, max 2, zdieľaný
+       s tlačidlom v prehrávači) – nezávislý od jokerUsed zámku
+       textových pomôcok (kostra/iniciály/vypočuť). */
+    if (def.type === 'video') {
+      if (videoPlays >= 2) {
+        btn.disabled = true;
+        btn.title = 'Dosiahnutý limit 2 pozretí tejto definície.';
+      } else if (jokerEnergy < need) {
+        btn.disabled = true;
+        btn.title = `Potrebuješ ⚡ ${need}, máš ⚡ ${jokerEnergy}`;
+      } else {
+        btn.disabled = false;
+        btn.title = '';
+      }
+      return;
+    }
+
+    if (jokerUsed) {
+      btn.disabled = true;
+      btn.title = 'Na jednu definíciu len jeden žolík';
+    } else if (jokerEnergy < need) {
+      btn.disabled = true;
+      btn.title = `Potrebuješ ⚡ ${need}, máš ⚡ ${jokerEnergy}`;
+    } else {
+      btn.disabled = false;
+      btn.title = '';
+    }
+  });
+  const balEl = $('mtJokerBalance');
+  if (balEl) balEl.textContent = `Energia: ⚡ ${jokerEnergy}`;
+}
+
+async function refreshJokerBalance() {
+  const nick = localStorage.getItem('playerNick');
+  jokerEnergy = nick ? await econEnergyLeft() : 0;
+  updateJokerButtonsUI();
+}
+
+/* Volať pri každom novom pokuse o definíciu (nová položka aj retry). */
+function resetJokers() {
+  jokerUsed = null;
+  const hint = $('mtJokerHint');
+  if (hint) {
+    hint.style.display = 'none';
+    hint.textContent = '';
+  }
+  refreshJokerBalance();
+}
+
+async function handleJokerClick(def) {
+  if (!currentItem) return;
+
+  /* "Video znova" má vlastnú platbu/počítadlo (requestVideoReplay,
+     zdieľané s tlačidlom v prehrávači) – nejde cez jokerUsed zámok. */
+  if (def.type === 'video') {
+    await handleVideoJokerClick();
+    return;
+  }
+
+  if (jokerUsed) return;
+  const nick = localStorage.getItem('playerNick');
+  if (!nick) return;
+
+  /* Fail-soft: nedostatok energie zablokuje LEN žolíka, bifľovačka beží
+     ďalej (položka sa dá zodpovedať aj bez pomôcky). */
+  const ok = await econSpendEnergy(nick, def.cost, `žolík bifľovačka: ${def.type}`);
+  if (!ok) {
+    await refreshJokerBalance();
+    showRewardToast(econEnergyMissingMsg(def.cost, jokerEnergy));
+    return;
+  }
+
+  jokerUsed = def.type;
+  const reference = referenceText();
+
+  if (def.type === 'skeleton') {
+    showJokerHint(buildSkeleton(reference));
+  } else if (def.type === 'initials') {
+    showJokerHint(buildInitials(reference));
+  } else if (def.type === 'replay') {
+    speakText(reference);
+  }
+
+  await refreshJokerBalance();
+}
+
+function showJokerHint(text) {
+  const hint = $('mtJokerHint');
+  if (!hint) return;
+  hint.textContent = text;
+  hint.style.display = 'block';
+}
+
+function setupJokers() {
+  JOKER_DEFS.forEach(def => {
+    const btn = $(def.id);
+    if (btn) btn.addEventListener('click', () => handleJokerClick(def));
+  });
+  updateJokerButtonsUI();
+}
+
+/* ============================================================
+   🎓 GARANT/ADMIN – REŽIM KONTROLY
+   Prepínač sa vloží do DOM len pre admin/garant (čerstvé čítanie
+   users/{nick}/role, nie localStorage view-prepínač). Bežný hráč
+   ho v DOM vôbec nemá – element sa pri neúspešnej kontrole odstráni.
+============================================================ */
+let reviewMode = false;
+let reviewList = [];
+let reviewIndex = 0;
+
+function updateSealBadge(el, item) {
+  if (!el) return;
+  if (item && item.seal === 'garant') {
+    el.textContent = `🎓 Overené · ${item.sealedBy || 'garant'}`;
+    el.style.display = 'inline-flex';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+async function initReviewToggle() {
+  const nick = localStorage.getItem('playerNick');
+  const wrap = $('mtReviewToggleWrap');
+  const phase = $('mtReviewPhase');
+  if (!nick) { wrap.remove(); phase.remove(); return; }
+
+  const role = await getRole(nick);
+  if (role !== 'admin' && role !== 'garant') {
+    wrap.remove();
+    phase.remove();
+    return;
+  }
+
+  wrap.style.display = 'block';
+  $('mtReviewToggle').addEventListener('change', (e) => {
+    reviewMode = e.target.checked;
+    if (!slug) return;
+    if (reviewMode) startReviewMode(slug);
+    else exitReviewMode(slug);
+  });
+}
+
+function startReviewMode(areaSlug) {
+  reviewList = getAllMemoryItems(areaSlug);
+  reviewIndex = 0;
+  $('mtRevealPhase').style.display = 'none';
+  $('mtAnswerPhase').style.display = 'none';
+  $('mtResultPhase').style.display = 'none';
+  showReviewItem(areaSlug);
+}
+
+function exitReviewMode(areaSlug) {
+  $('mtReviewPhase').style.display = 'none';
+  $('mtReviewEditForm').style.display = 'none';
+  showNextItem(areaSlug);
+}
+
+function showReviewItem(areaSlug) {
+  $('mtReviewEditForm').style.display = 'none';
+
+  if (reviewIndex >= reviewList.length) {
+    $('mtReviewQuestion').textContent = '';
+    $('mtReviewAnswerBox').textContent = '✅ Kontrola oblasti dokončená – prešiel/prešla si všetky definície.';
+    $('mtReviewSourceLine').innerHTML = '';
+    $('mtReviewActions').style.display = 'none';
+    $('mtReviewSealBadge').style.display = 'none';
+    updateYoutubeButton('mtReviewYoutubeBtn', null);
+    $('mtReviewPhase').style.display = 'block';
+    return;
+  }
+
+  currentItem = reviewList[reviewIndex];
+  $('mtReviewActions').style.display = 'flex';
+  $('mtReviewQuestion').textContent = currentItem.question || '';
+  $('mtReviewAnswerBox').textContent = currentItem.definition || currentItem.summary || currentItem.legalSentence || '';
+  $('mtReviewSourceLine').innerHTML = renderSource(currentItem.zdroj);
+  updateSealBadge($('mtReviewSealBadge'), currentItem);
+  updateYoutubeButton('mtReviewYoutubeBtn', currentItem);
+  resetVideoPlays();
+  $('mtReviewPhase').style.display = 'block';
+}
+
+function setupReviewMode() {
+  $('mtReviewNextBtn').addEventListener('click', () => {
+    reviewIndex++;
+    showReviewItem(slug);
+  });
+
+  $('mtReviewEditBtn').addEventListener('click', () => {
+    if (!currentItem) return;
+    $('mtReviewEditQuestion').value = currentItem.question || '';
+    $('mtReviewEditAnswer').value = currentItem.definition || currentItem.summary || currentItem.legalSentence || '';
+    const zdroj = currentItem.zdroj || null;
+    $('mtReviewEditSrc').value = zdroj ? (zdroj.citation || '') : '';
+    $('mtReviewEditSrcUrl').value = zdroj ? (zdroj.url || '') : '';
+    $('mtReviewEditSrcAccessed').value = zdroj ? (zdroj.accessed || '') : '';
+    $('mtReviewActions').style.display = 'none';
+    $('mtReviewEditForm').style.display = 'block';
+  });
+
+  $('mtReviewCancelBtn').addEventListener('click', () => {
+    $('mtReviewEditForm').style.display = 'none';
+    $('mtReviewActions').style.display = 'flex';
+  });
+
+  $('mtReviewSaveBtn').addEventListener('click', async () => {
+    const question = $('mtReviewEditQuestion').value.trim();
+    const answer = $('mtReviewEditAnswer').value.trim();
+    if (!answer) { alert('Odpoveď nemôže byť prázdna.'); return; }
+
+    const srcCitation = $('mtReviewEditSrc').value.trim();
+    const srcUrl = $('mtReviewEditSrcUrl').value.trim();
+    const srcAccessed = $('mtReviewEditSrcAccessed').value.trim();
+    if (srcUrl && !srcAccessed) { alert('Pri URL zdroji zadaj aj mesiac prístupu.'); return; }
+
+    const zdroj = srcCitation ? { type: srcUrl ? 'web' : 'ucebnica', citation: srcCitation } : null;
+    if (srcUrl) { zdroj.url = srcUrl; zdroj.accessed = srcAccessed; }
+
+    const result = await saveDefinitionOverride(slug, currentItem, { question, answer, zdroj });
+    if (!result.ok) { alert(result.message || 'Uloženie zlyhalo.'); return; }
+
+    showRewardToast('✅ Opravené – definícia nesie pečať garanta');
+    reviewIndex++;
+    showReviewItem(slug);
+  });
+
+  $('mtReviewCourtBtn').addEventListener('click', () => {
+    if (!currentItem) return;
+    const area = getAreaBySlug(slug);
+    const qtext = currentItem.question || currentItem.definition || '';
+    const url = `/?report=1&area=${encodeURIComponent(area ? area.name : '')}` +
+      `&src=${encodeURIComponent(currentItem.okruhId || currentItem.source || '')}` +
+      `&qtext=${encodeURIComponent(qtext)}`;
+    window.open(url, '_blank');
+  });
+}
+
+/* ============================================================
+   🎥 VIDEO REŽIM (in-app, Koľaj A) – biflovackaVideo.js
+   Zadarmo, bez econ* volaní, neráta sa do štatistík učenia.
+   Moderátor rotuje podľa pozície definície v načítanom balíčku
+   (defIndex), nie podľa aktuálneho hráčovho avatara.
+============================================================ */
+/* ============================================================
+   🎥 Video režim – max DVE prehratia na definíciu (videoPlays 1/2),
+   zdieľané s "🔁 Video znova" žolíkom v odpovedacej fáze. Reset
+   pri prechode na inú definíciu (resetVideoPlays, volané zo
+   showNextItem/retryItem/showReviewItem).
+============================================================ */
+let videoPlays = 0;
+
+function resetVideoPlays() { videoPlays = 0; }
+
+async function canReplayVideo() {
+  if (videoPlays >= 2) return { allowed: false, reason: 'Dosiahnutý limit 2 pozretí tejto definície.' };
+  const cost = ECONOMY_CONFIG.ENERGY.JOKER_VIDEO;
+  const need = Math.abs(cost);
+  const nick = localStorage.getItem('playerNick');
+  const left = nick ? await econEnergyLeft() : 0;
+  if (left < need) return { allowed: false, reason: `Potrebuješ ⚡ ${need}, máš ⚡ ${left}.`, cost };
+  return { allowed: true, cost };
+}
+
+async function requestVideoReplay() {
+  if (videoPlays >= 2) return { ok: false };
+  const nick = localStorage.getItem('playerNick');
+  if (!nick) return { ok: false };
+  const ok = await econSpendEnergy(nick, ECONOMY_CONFIG.ENERGY.JOKER_VIDEO, 'video znova v bifľovačke');
+  if (!ok) return { ok: false };
+  videoPlays++;
+  await refreshJokerBalance();
+  return { ok: true, playNumber: videoPlays };
+}
+
+function watchCurrentAsVideo() {
+  if (!currentItem || !slug) return;
+  const items = getAllMemoryItems(slug);
+  const defIndex = Math.max(0, items.findIndex(p => p.id === currentItem.id));
+  videoPlays = Math.max(1, videoPlays); // prvé pozretie je vždy zadarmo
+  openVideoPlayer({
+    question: currentItem.question || '',
+    reference: referenceText(),
+    zdroj: currentItem.zdroj,
+    defIndex,
+    playNumber: videoPlays,
+    canReplay: canReplayVideo,
+    onRequestReplay: requestVideoReplay
+  });
+}
+
+/* Žolík "🔁 Video znova" v odpovedacej fáze – vždy platí (aj keby
+   šlo o úplne prvé pozretie tejto definície), zdieľa videoPlays
+   s tlačidlom v prehrávači. */
+async function handleVideoJokerClick() {
+  if (!currentItem || !slug) return;
+  const result = await requestVideoReplay();
+  if (!result.ok) { updateJokerButtonsUI(); return; }
+
+  const items = getAllMemoryItems(slug);
+  const defIndex = Math.max(0, items.findIndex(p => p.id === currentItem.id));
+  openVideoPlayer({
+    question: currentItem.question || '',
+    reference: referenceText(),
+    zdroj: currentItem.zdroj,
+    defIndex,
+    playNumber: result.playNumber,
+    canReplay: canReplayVideo,
+    onRequestReplay: requestVideoReplay,
+    onExit: updateJokerButtonsUI
+  });
+}
+
+function setupVideoButtons() {
+  const revealBtn = $('mtWatchVideoBtn');
+  if (revealBtn) revealBtn.addEventListener('click', watchCurrentAsVideo);
+
+  const reviewBtn = $('mtReviewWatchVideoBtn');
+  if (reviewBtn) reviewBtn.addEventListener('click', watchCurrentAsVideo);
+}
+
+function showAreaPicker() {
+  $('mtTitle').textContent = '🧠 Bifľovačka';
+  $('mtAreaPicker').style.display = 'block';
+  renderMemoryTiles('memoryTrainerTiles');
+}
+
+async function startArea(areaSlug) {
+  const area = getAreaBySlug(areaSlug);
+  if (!area) {
+    $('mtTitle').textContent = 'Neznáma oblasť';
+    return;
+  }
+
+  const canPlay = await canPlayBiflovacka();
+  if (!canPlay) {
+    showAreaPicker();
+    return;
+  }
+
+  $('mtTitle').textContent = `🧠 Bifľovačka – ${area.name}`;
+  $('mtAreaBadge').textContent = area.name;
+  $('mtFlow').style.display = 'block';
+  $('mtRevealText').textContent = 'Načítavam balíčky…';
+
+  const { packages } = await loadMemoryArea(areaSlug);
+  await loadVideoMap(areaSlug);
+
+  if (!packages.length) {
+    $('mtFlow').style.display = 'none';
+    $('mtEmptyArea').style.display = 'block';
+    return;
+  }
+
+  showNextItem(areaSlug);
+}
+
+function updateProgressLine(areaSlug) {
+  const stats = calculateCompletion(areaSlug);
+  $('mtProgressLine').textContent =
+    `Dokončené: ${stats.completed}/${stats.total} (${stats.percent} %) · Priemerná presnosť: ${stats.avgAccuracy} % · Najlepší výsledok: ${stats.bestScore} %`;
+  $('mtProgBar').style.width = stats.percent + '%';
+}
+
+function showNextItem(areaSlug) {
+  updateProgressLine(areaSlug);
+  const item = getNextMemoryItem(areaSlug);
+
+  if (!item) {
+    finishArea(areaSlug);
+    return;
+  }
+
+  currentItem = item;
+  $('mtRevealPhase').style.display = 'block';
+  $('mtAnswerPhase').style.display = 'none';
+  $('mtResultPhase').style.display = 'none';
+
+  const revealText = item.definition || item.summary || item.legalSentence;
+  $('mtRevealText').textContent = revealText;
+  $('mtAnswerInput').value = '';
+  updateReadTimeHint(revealText);
+  $('mtSourceLine').innerHTML = renderSource(item.zdroj);
+  updateSealBadge($('mtSealBadge'), item);
+  updateYoutubeButton('mtYoutubeBtn', item);
+  resetJokers();
+  resetVideoPlays();
+}
+
+/* Len informačný odhad – žiadny odpočet, definícia visí kým klikneš na tlačidlo. */
+function updateReadTimeHint(text) {
+  const hint = $('mtReadTimeHint');
+  if (hint) hint.textContent = `⏱️ ~${Math.ceil((text || '').length / 15)} s čítania`;
+}
+
+function revealToAnswerPhase() {
+  if (window.speechSynthesis && window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+  }
+  $('mtRevealPhase').style.display = 'none';
+  $('mtAnswerPhase').style.display = 'block';
+  $('mtAnswerInput').focus();
+  updateJokerButtonsUI(); // videoPlays sa mohol zmeniť, kým bola viditeľná fáza odhalenia
+}
+
+async function submitAnswer(areaSlug) {
+  // Ukončenie odpovede (toto tlačidlo) je nezávislé od mikrofónu – ak ešte
+  // beží, radšej ho vypni, nech nepočúva na pozadí do prázdna po prechode
+  // do výsledkovej fázy (continuous:true na desktope by inak držal stream
+  // otvorený aj potom, čo už niet kam zapisovať).
+  if (recognizing && recognizer) {
+    try { recognizer.stop(); } catch (e) {}
+  }
+
+  const userText = $('mtAnswerInput').value;
+  const result = compareText(userText, currentItem);
+
+  const saved = await saveMemoryScore(areaSlug, currentItem.id, result.score);
+
+  $('mtAnswerPhase').style.display = 'none';
+  $('mtResultPhase').style.display = 'block';
+
+  const scoreEl = $('mtScoreNum');
+  scoreEl.textContent = result.score + ' %';
+  scoreEl.className = 'mt-score ' + (result.score >= 80 ? 'ok' : result.score >= 50 ? 'mid' : 'bad');
+
+  $('mtNotesText').textContent = result.notes;
+  $('mtKeywordsText').textContent = `Kľúčové slová: ${result.keywordsMatched}`;
+  $('mtRevealAnswer').innerHTML = `<strong>Správne znenie:</strong><br>${escapeHtml(currentItem.definition || currentItem.summary || currentItem.legalSentence)}`;
+
+  const actions = $('mtResultActions');
+  actions.innerHTML = '';
+
+  const retryBtn = document.createElement('button');
+  retryBtn.className = 'btn';
+  retryBtn.textContent = '🔁 Skúsiť znova';
+  retryBtn.onclick = () => retryItem(areaSlug);
+  actions.appendChild(retryBtn);
+
+  if (result.score >= 50) {
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'btn btn-primary';
+    nextBtn.textContent = '➡️ Pokračovať';
+    nextBtn.onclick = () => showNextItem(areaSlug);
+    actions.appendChild(nextBtn);
+  }
+
+  updateProgressLine(areaSlug);
+
+  if (saved.areaJustFinished) {
+    setTimeout(() => finishArea(areaSlug, saved.sealTier), 900);
+  }
+}
+
+function retryItem(areaSlug) {
+  $('mtResultPhase').style.display = 'none';
+  $('mtRevealPhase').style.display = 'block';
+  const revealText = currentItem.definition || currentItem.summary || currentItem.legalSentence;
+  $('mtRevealText').textContent = revealText;
+  updateReadTimeHint(revealText);
+  $('mtSourceLine').innerHTML = renderSource(currentItem.zdroj);
+  updateSealBadge($('mtSealBadge'), currentItem);
+  updateYoutubeButton('mtYoutubeBtn', currentItem);
+  resetJokers();
+}
+
+function finishArea(areaSlug, sealTierOverride) {
+  const stats = calculateCompletion(areaSlug);
+  const area = getAreaBySlug(areaSlug);
+
+  $('mtFlow').style.display = 'none';
+  $('mtFinish').style.display = 'block';
+
+  const sealTier = sealTierOverride || (stats.avgAccuracy >= 90 ? 'gold' : stats.avgAccuracy >= 75 ? 'silver' : 'bronze');
+  $('mtFinishSeal').textContent = SEAL_ICON[sealTier] || '🏆';
+  $('mtFinishTitle').textContent = `${area ? area.name : ''} – oblasť dokončená!`;
+  $('mtFinishSub').textContent =
+    `${SEAL_LABEL[sealTier] || ''} · Priemerná presnosť ${stats.avgAccuracy} % · Najlepší výsledok ${stats.bestScore} %`;
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+/* ============================================================
+   Nahlásenie chyby – táto stránka nemá vlastný
+   reportModal (ten žije v index.html), preto otvárame hlavnú
+   stránku v novej karte s parametrami na predvyplnenie formulára.
+============================================================ */
+function setupReportButton() {
+  const btn = $('mtReportBtn');
+  btn.addEventListener('click', () => {
+    if (!currentItem) return;
+    const area = getAreaBySlug(slug);
+    const qtext = currentItem.definition || currentItem.summary || currentItem.legalSentence || '';
+    const url = `/?report=1&area=${encodeURIComponent(area ? area.name : '')}` +
+      `&src=${encodeURIComponent(currentItem.source || '')}` +
+      `&qtext=${encodeURIComponent(qtext)}`;
+    window.open(url, '_blank');
+  });
+}
+
+/* ============================================================
+   Zvuk: prehratie definície (SpeechSynthesis)
+============================================================ */
+function setupSpeakButton() {
+  const btn = $('mtSpeakBtn');
+  btn.addEventListener('click', () => {
+    if (!currentItem) return;
+    const text = currentItem.definition || currentItem.summary || currentItem.legalSentence;
+    const ok = speakText(text);
+    if (!ok) alert('Tento prehliadač nepodporuje prehrávanie hlasu.');
+  });
+}
+
+/* Definícia visí kým hráč sám neklikne – žiadny automatický časovač. */
+function setupReadyButton() {
+  $('mtReadyBtn').addEventListener('click', () => {
+    revealToAnswerPhase();
+  });
+}
+
+/* ============================================================
+   Zvuk: nahratie odpovede (SpeechRecognition)
+============================================================ */
+function setupMicButton() {
+  const btn = $('mtMicBtn');
+
+  if (!isSpeechRecognitionSupported()) {
+    btn.disabled = true;
+    btn.title = 'Rozpoznávanie hlasu nie je v tomto prehliadači podporované (skús Chrome).';
+    return;
+  }
+
+  btn.addEventListener('click', () => {
+    if (recognizing) {
+      recognizer && recognizer.stop();
+      return;
+    }
+
+    // ⚠️ continuous:true na pravdepodobnom desktope (2026-07-19, rovnaký fix
+    // ako skúška/statnice.js C-2) – bez toho Chrome ukončí reláciu po
+    // krátkej prirodzenej pauze medzi vetami. Mobil ostáva continuous:false,
+    // nedotknuté. Bifľovačka NEMÁ (a nepotrebuje) reštart-slučku ako skúška
+    // – ak by continuous relácia predsa len spadla (dlhé ticho/výpadok),
+    // onEnd nižšie jednoducho vráti tlačidlo do pokoja; študent klikne znova,
+    // rovnaké UX ako manuálne zastavenie. "✅ Vyhodnotiť" (submitAnswer) je
+    // aj tak jediné miesto, kde sa odpoveď reálne uzatvára – nezávisle od
+    // stavu mikrofónu.
+    recognizer = createSpeechRecognizer({
+      onStart: () => {
+        recognizing = true;
+        btn.classList.add('mt-mic-active');
+        btn.textContent = '⏹️ Nahrávam… (klikni pre stop)';
+      },
+      onEnd: () => {
+        recognizing = false;
+        btn.classList.remove('mt-mic-active');
+        btn.textContent = '🎤 Nahrať odpoveď';
+      },
+      onError: (e) => {
+        recognizing = false;
+        btn.classList.remove('mt-mic-active');
+        btn.textContent = '🎤 Nahrať odpoveď';
+        console.warn('Bifľovačka: rozpoznávanie hlasu zlyhalo', e);
+      },
+      onResult: (transcript) => {
+        const ta = $('mtAnswerInput');
+        ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + transcript;
+      }
+    }, { continuous: isLikelyDesktop() });
+
+    recognizer.start();
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupSpeakButton();
+  setupMicButton();
+  setupReportButton();
+  setupReadyButton();
+  setupJokers();
+  setupReviewMode();
+  initReviewToggle();
+  setupVideoButtons();
+  setupYoutubeModal();
+
+  if (slug) {
+    startArea(slug);
+    $('mtSubmitBtn').addEventListener('click', () => submitAnswer(slug));
+    $('mtAnswerInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && e.ctrlKey) submitAnswer(slug);
+    });
+  } else {
+    showAreaPicker();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+{
+  "id": "2. A",
+  "title": "Riziko, diverzifikácia a deriváty",
+  "schemaVersion": "1.1",
+  "tags": [
+    "riziko",
+    "diverzifikacia",
+    "volatilita",
+    "derivaty"
+  ],
+  "summary": "Riziko je pravdepodobnosť, že investícia stratí hodnotu, a volatilita znamená, že cena investície sa výrazne mení. Investície s vyšším potenciálnym výnosom zvyčajne nesú vyššie riziko a trhové riziko ovplyvňuje všetky investície na trhu. Diverzifikácia znižuje riziko tým, že rozkladá investície medzi rôzne aktíva, a pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach. Finančný derivát je kontrakt, ktorého hodnota sa odvíja od podkladového aktíva – príkladom je futures, ktorý sa viaže na budúci nákup alebo predaj aktíva. Opcia dáva právo, nie povinnosť, kúpiť alebo predať aktívum za vopred stanovenú cenu. Deriváty slúžia na zabezpečenie proti riziku alebo na špekuláciu; môžu mať vysokú volatilitu a pákové efekty zvyšujú riziko, preto sú pre neskúsených investorov rizikové.",
+  "quiz": [
+    {
+      "question": "Čo znamená riziko v investovaní?",
+      "options": [
+        "Istotu výnosu",
+        "Možnosť, že hodnota investície klesne",
+        "Poplatok za obchodovanie",
+        "Poistenie investora"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Riziko je pravdepodobnosť, že investícia stratí hodnotu.",
+        "wrong": "Správna odpoveď: Možnosť, že hodnota investície klesne. Riziko je pravdepodobnosť, že investícia stratí hodnotu."
+      }
+    },
+    {
+      "question": "Čo je diverzifikácia?",
+      "options": [
+        "Investovanie do jednej firmy",
+        "Rozloženie investícií do viacerých aktív",
+        "Predaj všetkých investícií",
+        "Zníženie poplatkov"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Diverzifikácia znižuje riziko tým, že rozkladá investície.",
+        "wrong": "Správna odpoveď: Rozloženie investícií do viacerých aktív. Diverzifikácia znižuje riziko tým, že rozkladá investície."
+      }
+    },
+    {
+      "question": "Ktoré tvrdenie o riziku je správne?",
+      "options": [
+        "Všetky investície majú rovnaké riziko",
+        "Vyšší potenciálny výnos často znamená vyššie riziko",
+        "Riziko sa dá úplne odstrániť",
+        "Riziko je dôležité len pri dlhopisoch"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Investície s vyšším výnosom zvyčajne nesú vyššie riziko.",
+        "wrong": "Správna odpoveď: Vyšší potenciálny výnos často znamená vyššie riziko. Investície s vyšším výnosom zvyčajne nesú vyššie riziko."
+      }
+    },
+    {
+      "question": "Čo je volatilita?",
+      "options": [
+        "Stabilita ceny",
+        "Kolísanie hodnoty investície",
+        "Poplatok za obchodovanie",
+        "Daň z investícií"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Volatilita znamená, že cena investície sa výrazne mení.",
+        "wrong": "Správna odpoveď: Kolísanie hodnoty investície. Volatilita znamená, že cena investície sa výrazne mení."
+      }
+    },
+    {
+      "question": "Prečo je dôležité investovať pravidelne?",
+      "options": [
+        "Znižuje to vplyv kolísania trhu",
+        "Zvyšuje to poplatky",
+        "Zaručuje to vysoký výnos",
+        "Odstraňuje riziko"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach.",
+        "wrong": "Správna odpoveď: Znižuje to vplyv kolísania trhu. Pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach."
+      }
+    },
+    {
+      "question": "Čo je trhové riziko?",
+      "options": [
+        "Riziko konkrétnej firmy",
+        "Riziko celkového poklesu trhu",
+        "Riziko nesprávneho výpočtu dane",
+        "Riziko podvodu"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Trhové riziko ovplyvňuje všetky investície na trhu.",
+        "wrong": "Správna odpoveď: Riziko celkového poklesu trhu. Trhové riziko ovplyvňuje všetky investície na trhu."
+      }
+    },
+    {
+      "question": "Ktorá stratégia najlepšie znižuje riziko?",
+      "options": [
+        "Investovať všetko do jednej akcie",
+        "Investovať len do kryptomien",
+        "Diverzifikovať portfólio",
+        "Vyhnúť sa investovaniu"
+      ],
+      "correct": 2,
+      "explanation": {
+        "correct": "Diverzifikácia rozkladá riziko medzi rôzne aktíva.",
+        "wrong": "Správna odpoveď: Diverzifikovať portfólio. Diverzifikácia rozkladá riziko medzi rôzne aktíva."
+      }
+    },
+    {
+      "question": "Čo je finančný derivát?",
+      "options": [
+        "Priamy nákup akcií",
+        "Nástroj, ktorého hodnota závisí od iného aktíva",
+        "Poistenie investora",
+        "Účet v banke"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Derivát je kontrakt, ktorého hodnota sa odvíja od podkladového aktíva.",
+        "wrong": "Správna odpoveď: Nástroj, ktorého hodnota závisí od iného aktíva. Derivát je kontrakt, ktorého hodnota sa odvíja od podkladového aktíva."
+      }
+    },
+    {
+      "question": "Ktorý z nasledujúcich je príklad finančného derivátu?",
+      "options": [
+        "Akcia",
+        "Dlhopis",
+        "Futures kontrakt",
+        "ETF"
+      ],
+      "correct": 2,
+      "explanation": {
+        "correct": "Futures je typ derivátu, ktorý sa viaže na budúci nákup alebo predaj aktíva.",
+        "wrong": "Správna odpoveď: Futures kontrakt. Futures je typ derivátu, ktorý sa viaže na budúci nákup alebo predaj aktíva."
+      }
+    },
+    {
+      "question": "Na čo sa často používajú finančné deriváty?",
+      "options": [
+        "Na zníženie poplatkov",
+        "Na hedging alebo špekuláciu",
+        "Na garantovanie výnosu",
+        "Na nákup akcií bez rizika"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Deriváty slúžia na zabezpečenie proti riziku alebo na špekulatívne obchody.",
+        "wrong": "Správna odpoveď: Na hedging alebo špekuláciu. Deriváty slúžia na zabezpečenie proti riziku alebo na špekulatívne obchody."
+      }
+    },
+    {
+      "question": "Čo je opcia?",
+      "options": [
+        "Zmluva, ktorá dáva právo kúpiť alebo predať aktívum",
+        "Povinnosť kúpiť aktívum za každú cenu",
+        "Poistenie investora",
+        "Úrokový bonus"
+      ],
+      "correct": 0,
+      "explanation": {
+        "correct": "Opcia dáva právo, nie povinnosť, kúpiť alebo predať aktívum za vopred stanovenú cenu.",
+        "wrong": "Správna odpoveď: Zmluva, ktorá dáva právo kúpiť alebo predať aktívum. Opcia dáva právo, nie povinnosť, kúpiť alebo predať aktívum za vopred stanovenú cenu."
+      }
+    },
+    {
+      "question": "Prečo sú deriváty rizikové pre neskúsených investorov?",
+      "options": [
+        "Majú vždy vysoké poplatky",
+        "Ich hodnota sa môže rýchlo meniť a často využívajú páku",
+        "Sú zakázané pre retail investorov",
+        "Nemajú žiadnu väzbu na trh"
+      ],
+      "correct": 1,
+      "explanation": {
+        "correct": "Deriváty môžu mať vysokú volatilitu a pákové efekty zvyšujú riziko.",
+        "wrong": "Správna odpoveď: Ich hodnota sa môže rýchlo meniť a často využívajú páku. Deriváty môžu mať vysokú volatilitu a pákové efekty zvyšujú riziko."
+      }
+    }
+  ],
+  "tiles": [
+    {
+      "term": "Riziko",
+      "definition": "Pravdepodobnosť, že investícia stratí hodnotu."
+    },
+    {
+      "term": "Volatilita",
+      "definition": "Výrazné kolísanie ceny investície."
+    },
+    {
+      "term": "Trhové riziko",
+      "definition": "Riziko celkového poklesu trhu – ovplyvňuje všetky investície."
+    },
+    {
+      "term": "Diverzifikácia",
+      "definition": "Rozloženie investícií do viacerých aktív; rozkladá riziko."
+    },
+    {
+      "term": "Pravidelné investovanie",
+      "definition": "Vyrovnáva nákupy v rôznych trhových podmienkach a znižuje vplyv kolísania trhu."
+    },
+    {
+      "term": "Finančný derivát",
+      "definition": "Kontrakt, ktorého hodnota sa odvíja od podkladového aktíva."
+    },
+    {
+      "term": "Futures",
+      "definition": "Derivát viazaný na budúci nákup alebo predaj aktíva."
+    },
+    {
+      "term": "Opcia",
+      "definition": "Právo, nie povinnosť, kúpiť alebo predať aktívum za vopred stanovenú cenu."
+    }
+  ],
+  "cases": [
+    {
+      "title": "Prípad 1 – „Zaručený“ rýchly zisk",
+      "difficulty": "ľahká",
+      "steps": [
+        {
+          "question": "Na sociálnej sieti vidíš ponuku: „všetko do jednej kryptomeny, zaručený zisk“.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Čo je na ponuke podozrivé?",
+          "options": [
+            "Sľubuje istý výnos – pritom vyšší výnos znamená vyššie riziko",
+            "Nič, zaručené výnosy existujú",
+            "Kryptomeny nemajú žiadne riziko"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Investície s vyšším výnosom zvyčajne nesú vyššie riziko.",
+            "wrong": "Správna odpoveď: Sľubuje istý výnos – pritom vyšší výnos znamená vyššie riziko. Investície s vyšším výnosom zvyčajne nesú vyššie riziko."
+          }
+        },
+        {
+          "question": "Ako by si riziko znížil/a?",
+          "options": [
+            "Diverzifikáciou portfólia",
+            "Vložením všetkého do jednej investície",
+            "Riziko sa dá úplne odstrániť"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Diverzifikácia rozkladá riziko medzi rôzne aktíva.",
+            "wrong": "Správna odpoveď: Diverzifikáciou portfólia. Diverzifikácia rozkladá riziko medzi rôzne aktíva."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Prípad 2 – Reklama na futures s pákou",
+      "difficulty": "stredná",
+      "steps": [
+        {
+          "question": "V reklame vidíš obchodovanie futures „s pákou pre každého“.",
+          "options": [],
+          "correct": 0
+        },
+        {
+          "question": "Čo je futures?",
+          "options": [
+            "Derivát viazaný na budúci nákup alebo predaj aktíva",
+            "Bežná akcia",
+            "Sporiaci účet"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Futures je typ derivátu, ktorý sa viaže na budúci nákup alebo predaj aktíva.",
+            "wrong": "Správna odpoveď: Derivát viazaný na budúci nákup alebo predaj aktíva. Futures je typ derivátu, ktorý sa viaže na budúci nákup alebo predaj aktíva."
+          }
+        },
+        {
+          "question": "Prečo je to pre začiatočníka rizikové?",
+          "options": [
+            "Hodnota derivátov sa môže rýchlo meniť a páka riziko zvyšuje",
+            "Deriváty sú bez rizika",
+            "Futures garantuje výnos"
+          ],
+          "correct": 0,
+          "explanation": {
+            "correct": "Deriváty môžu mať vysokú volatilitu a pákové efekty zvyšujú riziko.",
+            "wrong": "Správna odpoveď: Hodnota derivátov sa môže rýchlo meniť a páka riziko zvyšuje. Deriváty môžu mať vysokú volatilitu a pákové efekty zvyšujú riziko."
+          }
+        }
+      ]
+    }
+  ],
+  "zdroj": {
+    "type": "ucebnica",
+    "citation": "Demo dataset Finančnej ligy – obsah na odbornú kontrolu"
+  },
+  "spider": {
+    "center": "Riziko, diverzifikácia a deriváty",
+    "branches": [
+      {
+        "label": "Riziko",
+        "leaves": [
+          "Riziko je pravdepodobnosť, že investícia stratí hodnotu.",
+          "Volatilita znamená, že cena investície sa výrazne mení.",
+          "Trhové riziko ovplyvňuje všetky investície na trhu.",
+          "Investície s vyšším výnosom zvyčajne nesú vyššie riziko."
+        ]
+      },
+      {
+        "label": "Ochrana pred rizikom",
+        "leaves": [
+          "Diverzifikácia znižuje riziko tým, že rozkladá investície.",
+          "Pravidelné investovanie vyrovnáva nákupy v rôznych trhových podmienkach."
+        ]
+      },
+      {
+        "label": "Deriváty",
+        "leaves": [
+          "Derivát je kontrakt, ktorého hodnota sa odvíja od podkladového aktíva.",
+          "Futures sa viaže na budúci nákup alebo predaj aktíva.",
+          "Opcia dáva právo, nie povinnosť, kúpiť alebo predať aktívum.",
+          "Pákové efekty zvyšujú riziko."
+        ]
+      }
+    ]
+  }
+}
